@@ -4,11 +4,15 @@
 
     <application
         android:allowBackup="true"
-        android:icon="@mipmap/ic_launcher"
+        android:icon="@mipmap/ic_eon_memory"
         android:label="@string/app_name"
-        android:roundIcon="@mipmap/ic_launcher_round"
+        android:roundIcon="@mipmap/ic_eon_memory_round"
         android:supportsRtl="true"
         android:theme="@style/Theme.EonMemory">
+
+        <uses-permission android:name="android.permission.INTERNET" />
+        <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
+
         <activity android:name=".WelcomePageActivity"></activity>
         <activity android:name=".SplashScreenActivity">
             <intent-filter>
