@@ -41,7 +41,7 @@ public class SignInActivity extends AppCompatActivity {
         sign_in_sign_in_button.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                intent = new Intent(getBaseContext(), WelcomePageActivity.class);
+                intent = new Intent(getBaseContext(), HomePageActivity.class);
                 startActivity(intent);
                 finish();
             }
@@ -49,7 +49,7 @@ public class SignInActivity extends AppCompatActivity {
     }
 
     private void createErrorListener() {
-        
+
     }
 
     private void initialize() {
