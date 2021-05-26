@@ -2,6 +2,7 @@ package com.snap.eonmemory;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.widget.Toolbar;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentTransaction;
 
@@ -12,6 +13,7 @@ import com.google.android.material.bottomnavigation.BottomNavigationView;
 
 public class HomeActivity extends AppCompatActivity {
 
+//    private Toolbar toolbar;
     private BottomNavigationView home_bottomNavigation;
 
     @Override
@@ -62,6 +64,9 @@ public class HomeActivity extends AppCompatActivity {
 
     private void initView() {
         home_bottomNavigation = findViewById(R.id.home_bottomNavigation);
+//        toolbar = (Toolbar) findViewById(R.id.toolbar);
         setFragment(new TaskFragment());
+//        setSupportActionBar(toolbar);
+//        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
     }
 }
