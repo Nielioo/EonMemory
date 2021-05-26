@@ -1,3 +1,8 @@
 <resources>
-    <string name="app_name">EonMemory</string>
+    <string name="app_name">Eon Memory</string>
+    <string name="menu_task">Task</string>
+    <string name="menu_calendar">Calendar</string>
+    <string name="menu_note">Note</string>
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
 </resources>

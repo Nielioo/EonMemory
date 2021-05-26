@@ -13,8 +13,9 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.EonMemory">
 
-        <activity android:name=".WelcomePageActivity"></activity>
-        <activity android:name=".SplashScreenActivity">
+        <activity android:name=".SplashScreenActivity" />
+        <activity android:name=".WelcomePageActivity" />
+        <activity android:name=".HomeActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
