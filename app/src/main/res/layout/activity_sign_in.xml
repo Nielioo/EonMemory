@@ -7,7 +7,7 @@
     tools:context=".SignInActivity">
 
     <ImageView
-        android:id="@+id/imageView11"
+        android:id="@+id/sign_in_back_imageView"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="36dp"
@@ -25,8 +25,8 @@
         android:text="Sign In"
         android:textColor="@color/gray_900"
         android:textSize="36sp"
-        app:layout_constraintStart_toStartOf="@+id/imageView11"
-        app:layout_constraintTop_toBottomOf="@+id/imageView11" />
+        app:layout_constraintStart_toStartOf="@+id/sign_in_back_imageView"
+        app:layout_constraintTop_toBottomOf="@+id/sign_in_back_imageView" />
 
     <TextView
         android:id="@+id/textView9"
@@ -41,7 +41,7 @@
         app:layout_constraintTop_toBottomOf="@+id/textView8" />
 
     <com.google.android.material.textfield.TextInputLayout
-        android:id="@+id/textInputLayout"
+        android:id="@+id/sign_in_username_textInput"
         style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
@@ -73,10 +73,10 @@
         android:textColor="@color/gray_900"
         android:textSize="18sp"
         app:layout_constraintStart_toStartOf="@+id/textView9"
-        app:layout_constraintTop_toBottomOf="@+id/textInputLayout" />
+        app:layout_constraintTop_toBottomOf="@+id/sign_in_username_textInput" />
 
     <com.google.android.material.textfield.TextInputLayout
-        android:id="@+id/textInputLayout2"
+        android:id="@+id/sign_in_password_textInput"
         style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
@@ -103,7 +103,7 @@
     </com.google.android.material.textfield.TextInputLayout>
 
     <Button
-        android:id="@+id/button2"
+        android:id="@+id/sign_in_sign_in_button"
         android:layout_width="0dp"
         android:layout_height="55dp"
         android:layout_marginBottom="24dp"
@@ -112,6 +112,6 @@
         android:text="Sign In"
         android:textColor="@color/white"
         app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="@+id/textInputLayout2"
-        app:layout_constraintStart_toStartOf="@+id/textInputLayout2" />
+        app:layout_constraintEnd_toEndOf="@+id/sign_in_password_textInput"
+        app:layout_constraintStart_toStartOf="@+id/sign_in_password_textInput" />
 </androidx.constraintlayout.widget.ConstraintLayout>
