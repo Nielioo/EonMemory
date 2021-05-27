@@ -31,6 +31,40 @@ public class RegisterActivity extends AppCompatActivity {
         setContentView(R.layout.activity_register);
 
         initialize();
+
+        TextWatcher tmpWatcher = new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+
+            }
+
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+                String username = register_username_textInput.getEditText().getText().toString().trim();
+                String email = register_email_textInput.getEditText().getText().toString().trim();
+                String password = register_password_textInput.getEditText().getText().toString().trim();
+                String confirmPassword = register_confirm_password_textInput.getEditText().getText().toString().trim();
+
+                if (!username.isEmpty() && !email.isEmpty() && !password.isEmpty() && !confirmPassword.isEmpty()) {
+                    register_register_button.setEnabled(true);
+                    register_register_button.setClickable(true);
+                } else {
+                    register_register_button.setEnabled(false);
+                    register_register_button.setClickable(false);
+                }
+            }
+
+            @Override
+            public void afterTextChanged(Editable s) {
+
+            }
+        };
+
+        register_username_textInput.getEditText().addTextChangedListener(tmpWatcher);
+        register_email_textInput.getEditText().addTextChangedListener(tmpWatcher);
+        register_password_textInput.getEditText().addTextChangedListener(tmpWatcher);
+        register_confirm_password_textInput.getEditText().addTextChangedListener(tmpWatcher);
+
         createClickListener();
 
     }
@@ -54,8 +88,6 @@ public class RegisterActivity extends AppCompatActivity {
                 String confirmPassword = register_confirm_password_textInput.getEditText().getText().toString().trim();
 
                 Boolean validateUsername = false, validateEmail = false, validatePassword = false;
-
-                createTextWatcher();
 
                 if (username.isEmpty()) {
                     register_username_textInput.setError("Please fill the name column");
@@ -118,42 +150,6 @@ public class RegisterActivity extends AppCompatActivity {
         });
     }
 
-    private void createTextWatcher() {
-        TextWatcher tmpWatcher = new TextWatcher() {
-            @Override
-            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
-
-            }
-
-            @Override
-            public void onTextChanged(CharSequence s, int start, int before, int count) {
-                clearError();
-            }
-
-            @Override
-            public void afterTextChanged(Editable s) {
-                String username = register_username_textInput.getEditText().getText().toString().trim();
-                String email = register_email_textInput.getEditText().getText().toString().trim();
-                String password = register_password_textInput.getEditText().getText().toString().trim();
-                String confirmPassword = register_confirm_password_textInput.getEditText().getText().toString().trim();
-
-                if (!username.isEmpty() && !email.isEmpty() && !password.isEmpty() && !confirmPassword.isEmpty()) {
-                    register_register_button.setEnabled(true);
-                    register_register_button.setClickable(true);
-                } else {
-                    register_register_button.setEnabled(false);
-                    register_register_button.setClickable(false);
-                }
-            }
-        };
-
-        register_username_textInput.getEditText().addTextChangedListener(tmpWatcher);
-        register_email_textInput.getEditText().addTextChangedListener(tmpWatcher);
-        register_password_textInput.getEditText().addTextChangedListener(tmpWatcher);
-        register_confirm_password_textInput.getEditText().addTextChangedListener(tmpWatcher);
-
-    }
-
     private void clearError() {
         register_username_textInput.getEditText().setText("");
         register_username_textInput.setError("");
@@ -172,6 +168,9 @@ public class RegisterActivity extends AppCompatActivity {
         register_password_textInput = findViewById(R.id.register_password_textInput);
         register_confirm_password_textInput = findViewById(R.id.register_confirm_password_textInput);
         register_register_button = findViewById(R.id.register_register_button);
+
+        register_register_button.setEnabled(false);
+        register_register_button.setClickable(false);
     }
 
 }

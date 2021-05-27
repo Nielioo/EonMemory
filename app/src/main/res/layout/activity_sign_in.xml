@@ -34,14 +34,14 @@
         android:layout_height="wrap_content"
         android:layout_marginTop="36dp"
         android:fontFamily="@font/roboto"
-        android:text="Email/Username"
+        android:text="Email"
         android:textColor="@color/gray_900"
         android:textSize="18sp"
         app:layout_constraintStart_toStartOf="@+id/textView8"
         app:layout_constraintTop_toBottomOf="@+id/textView8" />
 
     <com.google.android.material.textfield.TextInputLayout
-        android:id="@+id/sign_in_username_textInput"
+        android:id="@+id/sign_in_email_textInput"
         style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
@@ -73,7 +73,7 @@
         android:textColor="@color/gray_900"
         android:textSize="18sp"
         app:layout_constraintStart_toStartOf="@+id/textView9"
-        app:layout_constraintTop_toBottomOf="@+id/sign_in_username_textInput" />
+        app:layout_constraintTop_toBottomOf="@+id/sign_in_email_textInput" />
 
     <com.google.android.material.textfield.TextInputLayout
         android:id="@+id/sign_in_password_textInput"
