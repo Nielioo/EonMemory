@@ -3,36 +3,36 @@ package model;
 import android.os.Parcel;
 import android.os.Parcelable;
 
-public class user implements Parcelable {
+public class User implements Parcelable {
     String username, email, password;
 
-    public user() {
+    public User() {
         this.username = username;
         this.email = email;
         this.password = password;
     }
 
-    public user(String username, String email, String password) {
+    public User(String username, String email, String password) {
         this.username = username;
         this.email = email;
         this.password = password;
     }
 
-    protected user(Parcel in) {
+    protected User(Parcel in) {
         username = in.readString();
         email = in.readString();
         password = in.readString();
     }
 
-    public static final Creator<user> CREATOR = new Creator<user>() {
+    public static final Creator<User> CREATOR = new Creator<User>() {
         @Override
-        public user createFromParcel(Parcel in) {
-            return new user(in);
+        public User createFromParcel(Parcel in) {
+            return new User(in);
         }
 
         @Override
-        public user[] newArray(int size) {
-            return new user[size];
+        public User[] newArray(int size) {
+            return new User[size];
         }
     };
 
