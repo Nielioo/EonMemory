@@ -10,11 +10,16 @@ import android.os.Bundle;
 import android.view.MenuItem;
 
 import com.google.android.material.bottomnavigation.BottomNavigationView;
+import com.google.android.material.floatingactionbutton.FloatingActionButton;
+
+import java.util.ArrayList;
 
 public class HomePageActivity extends AppCompatActivity {
 
 //    private Toolbar toolbar;
+    private FloatingActionButton home_FAB_createTask;
     private BottomNavigationView home_bottomNavigation;
+    private ArrayList<Item> itemList;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -63,6 +68,7 @@ public class HomePageActivity extends AppCompatActivity {
     }
 
     private void initView() {
+        home_FAB_createTask = findViewById(R.id.home_FAB_createTask);
         home_bottomNavigation = findViewById(R.id.home_bottomNavigation);
 //        toolbar = (Toolbar) findViewById(R.id.toolbar);
         setFragment(new TaskFragment());
