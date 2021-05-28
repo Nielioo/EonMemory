@@ -17,7 +17,7 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.EonMemory"
         android:usesCleartextTraffic="true">
-        <activity android:name=".ChangePasswordActivity"></activity>
+        <activity android:name=".ChangePasswordActivity" />
         <activity android:name=".ChangeEmailActivity" />
         <activity android:name=".ChangeUsernameActivity" />
         <activity android:name=".SettingPageActivity" />
@@ -27,21 +27,11 @@
         <activity android:name=".SignInActivity" />
         <activity android:name=".WelcomePageActivity" />
         <activity android:name=".SplashScreenActivity">
-        <activity android:name=".ProfilePageActivity">
-
-        </activity>
-        <activity android:name=".HomePageActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
-        </activity>
-        <activity android:name=".RegisterActivity" />
-        <activity android:name=".SignInActivity" />
-        <activity android:name=".WelcomePageActivity" />
-        <activity android:name=".SplashScreenActivity">
-
         </activity>
 
         <meta-data
