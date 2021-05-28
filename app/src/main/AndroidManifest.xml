@@ -12,10 +12,12 @@
         android:roundIcon="@mipmap/ic_eon_memory_round"
         android:supportsRtl="true"
         android:theme="@style/Theme.EonMemory">
-
-        <activity android:name=".SplashScreenActivity" />
+        <activity android:name=".ProfilePageActivity"></activity>
+        <activity android:name=".HomePageActivity" />
+        <activity android:name=".RegisterActivity" />
+        <activity android:name=".SignInActivity" />
         <activity android:name=".WelcomePageActivity" />
-        <activity android:name=".HomePageActivity">
+        <activity android:name=".SplashScreenActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
