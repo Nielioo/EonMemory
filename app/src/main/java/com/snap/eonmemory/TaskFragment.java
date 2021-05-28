@@ -29,8 +29,12 @@ public class TaskFragment extends Fragment {
         initView(view);
         setRecyclerView();
         addDummyData();
-
+        loadDataDB();
         return view;
+    }
+
+    private void loadDataDB() {
+        String url = "";
     }
 
     private void addDummyData() {
