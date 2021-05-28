@@ -53,7 +53,7 @@
                 android:fontFamily="@font/roboto_bold"
                 android:text="Mona Megistus"
                 android:textColor="@color/gray_900"
-                android:textSize="20sp"
+                android:textSize="18sp"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent" />
@@ -66,15 +66,15 @@
                 android:fontFamily="@font/roboto_light"
                 android:text="mona@gmail.com"
                 android:textColor="@color/gray_900"
-                android:textSize="16sp"
+                android:textSize="14sp"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/textView7" />
 
             <androidx.cardview.widget.CardView
                 android:id="@+id/cardView"
-                android:layout_width="144dp"
-                android:layout_height="72dp"
+                android:layout_width="136dp"
+                android:layout_height="68dp"
                 app:cardBackgroundColor="@color/amber_500"
                 app:cardCornerRadius="15dp"
                 app:layout_constraintEnd_toEndOf="parent"
@@ -94,7 +94,7 @@
                         android:fontFamily="@font/roboto"
                         android:text="Completed Task"
                         android:textColor="@color/gray_900"
-                        android:textSize="16sp"
+                        android:textSize="14sp"
                         app:layout_constraintEnd_toEndOf="parent"
                         app:layout_constraintStart_toStartOf="parent"
                         app:layout_constraintTop_toTopOf="parent" />
@@ -107,7 +107,7 @@
                         android:fontFamily="@font/roboto_bold"
                         android:text="num"
                         android:textColor="@color/gray_900"
-                        android:textSize="16sp"
+                        android:textSize="14sp"
                         app:layout_constraintBottom_toBottomOf="parent"
                         app:layout_constraintEnd_toEndOf="@+id/textView19"
                         app:layout_constraintStart_toStartOf="@+id/textView19" />
@@ -116,8 +116,8 @@
 
             <androidx.cardview.widget.CardView
                 android:id="@+id/cardView2"
-                android:layout_width="144dp"
-                android:layout_height="72dp"
+                android:layout_width="136dp"
+                android:layout_height="68dp"
                 android:layout_marginTop="24dp"
                 app:cardBackgroundColor="@color/amber_500"
                 app:cardCornerRadius="15dp"
@@ -138,7 +138,7 @@
                         android:fontFamily="@font/roboto"
                         android:text="Pending Task"
                         android:textColor="@color/gray_900"
-                        android:textSize="16sp"
+                        android:textSize="14sp"
                         app:layout_constraintEnd_toEndOf="parent"
                         app:layout_constraintStart_toStartOf="parent"
                         app:layout_constraintTop_toTopOf="parent" />
@@ -151,7 +151,7 @@
                         android:fontFamily="@font/roboto_bold"
                         android:text="num"
                         android:textColor="@color/gray_900"
-                        android:textSize="16sp"
+                        android:textSize="14sp"
                         app:layout_constraintBottom_toBottomOf="parent"
                         app:layout_constraintEnd_toEndOf="@+id/textView17"
                         app:layout_constraintStart_toStartOf="@+id/textView17" />
@@ -162,12 +162,12 @@
                 android:id="@+id/textView21"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginStart="48dp"
+                android:layout_marginStart="24dp"
                 android:layout_marginTop="48dp"
                 android:fontFamily="@font/roboto"
                 android:text="Change Username"
                 android:textColor="@color/gray_900"
-                android:textSize="16sp"
+                android:textSize="14sp"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/cardView2" />
 
@@ -179,7 +179,7 @@
                 android:fontFamily="@font/roboto"
                 android:text="Change Email"
                 android:textColor="@color/gray_900"
-                android:textSize="16sp"
+                android:textSize="14sp"
                 app:layout_constraintStart_toStartOf="@+id/textView21"
                 app:layout_constraintTop_toBottomOf="@+id/textView21" />
 
@@ -191,7 +191,7 @@
                 android:fontFamily="@font/roboto"
                 android:text="Change Password"
                 android:textColor="@color/gray_900"
-                android:textSize="16sp"
+                android:textSize="14sp"
                 app:layout_constraintStart_toStartOf="@+id/textView22"
                 app:layout_constraintTop_toBottomOf="@+id/textView22" />
 
@@ -199,7 +199,7 @@
                 android:id="@+id/imageView12"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginEnd="72dp"
+                android:layout_marginEnd="48dp"
                 app:layout_constraintBottom_toBottomOf="@+id/textView21"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintTop_toTopOf="@+id/textView21"
@@ -293,7 +293,7 @@
     <Button
         android:id="@+id/button"
         android:layout_width="0dp"
-        android:layout_height="55dp"
+        android:layout_height="48dp"
         android:layout_marginBottom="24dp"
         android:backgroundTint="#FF3434"
         android:fontFamily="@font/roboto_medium"
