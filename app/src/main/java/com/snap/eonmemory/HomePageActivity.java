@@ -31,29 +31,11 @@ public class HomePageActivity extends AppCompatActivity {
         setContentView(R.layout.activity_home_page);
 
         initView();
+        setBottomNavigation();
         setListener();
     }
 
-    private void setFragment(Fragment fragment) {
-        FragmentTransaction fm = getSupportFragmentManager().beginTransaction();
-        Fragment currentFragment = getSupportFragmentManager().findFragmentById(R.id.home_fragmentContainer);
-
-        if (currentFragment == null) {
-            fm.add(R.id.home_fragmentContainer, fragment).commit();
-        } else {
-            fm.replace(R.id.home_fragmentContainer, fragment).commit();
-        }
-
-    }
-
-    private void setListener() {
-        home_FAB_createTask.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                // Open create task
-            }
-        });
-
+    private void setBottomNavigation() {
         home_bottomNavigation.setOnNavigationItemSelectedListener(new BottomNavigationView.OnNavigationItemSelectedListener() {
             @Override
             public boolean onNavigationItemSelected(@NonNull MenuItem item) {
@@ -71,9 +53,18 @@ public class HomePageActivity extends AppCompatActivity {
                         break;
                 }
 
-                setFragment(fragment);
+                getSupportFragmentManager().beginTransaction().replace(R.id.home_fragmentContainer, fragment).commit();
 
-                return fragment != null;
+                return true;
+            }
+        });
+    }
+
+    private void setListener() {
+        home_FAB_createTask.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                // Open create task
             }
         });
     }
@@ -81,9 +72,11 @@ public class HomePageActivity extends AppCompatActivity {
     private void initView() {
         home_FAB_createTask = findViewById(R.id.home_FAB_createTask);
         home_bottomNavigation = findViewById(R.id.home_bottomNavigation);
+
 //        home_toolbar = (Toolbar) findViewById(R.id.home_toolbar);
-        setFragment(new TaskFragment());
 //        setSupportActionBar(home_toolbar);
 //        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+
+        getSupportFragmentManager().beginTransaction().replace(R.id.home_fragmentContainer, new TaskFragment()).commit();
     }
 }
