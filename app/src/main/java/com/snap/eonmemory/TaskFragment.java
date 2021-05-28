@@ -9,6 +9,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Toast;
 
 import com.android.volley.Request;
 import com.android.volley.RequestQueue;
@@ -36,11 +37,11 @@ public class TaskFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
-        View view = inflater.inflate(R.layout.fragment_task, container, false);
+        view = inflater.inflate(R.layout.fragment_task, container, false);
 
         initView();
         setRecyclerView();
-        addDummyData();
+//        addDummyData();
         loadDataDB();
 
         return view;
@@ -48,7 +49,7 @@ public class TaskFragment extends Fragment {
 
     private void loadDataDB() {
         // Localhost
-        String url = "http://192.168.1.6/EonMemory/ReadAllTask.php";
+        String url = "http://192.168.1.6/EonMemory/EonMemoryDB/ReadAllTask.php";
 
         RequestQueue queue = Volley.newRequestQueue(getContext());
 
@@ -57,7 +58,7 @@ public class TaskFragment extends Fragment {
                     @Override
                     public void onResponse(JSONObject response) {
                         try {
-                            JSONArray jsonItem = response.getJSONArray("barang");
+                            JSONArray jsonItem = response.getJSONArray("task");
                             for (int i = 0; i < jsonItem.length(); i++) {
                                 JSONObject objectItem = jsonItem.getJSONObject(i);
 
@@ -82,7 +83,7 @@ public class TaskFragment extends Fragment {
                 new Response.ErrorListener() {
                     @Override
                     public void onErrorResponse(VolleyError error) {
-
+                        Toast.makeText(getContext(), error.toString(), Toast.LENGTH_SHORT).show();
                     }
                 }
         );

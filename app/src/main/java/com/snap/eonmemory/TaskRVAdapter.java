@@ -55,12 +55,12 @@ public class TaskRVAdapter extends RecyclerView.Adapter<TaskRVAdapter.TaskViewHo
             cardView_checkBox_task = taskView.findViewById(R.id.cardView_checkBox_task);
 
             // Each card click event
-            itemView.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    // Card listener
-                }
-            });
+//            taskView.setOnClickListener(new View.OnClickListener() {
+//                @Override
+//                public void onClick(View v) {
+//                    // Card listener
+//                }
+//            });
 
         }
     }
