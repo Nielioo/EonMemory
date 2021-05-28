@@ -41,7 +41,6 @@ public class TaskFragment extends Fragment {
 
         initView();
         setRecyclerView();
-//        addDummyData();
         loadDataDB();
 
         return view;
@@ -62,6 +61,7 @@ public class TaskFragment extends Fragment {
                             for (int i = 0; i < jsonItem.length(); i++) {
                                 JSONObject objectItem = jsonItem.getJSONObject(i);
 
+                                // Get task details
                                 Task newTask = new Task();
                                 newTask.setId(objectItem.getInt("id"));
                                 newTask.setUsername(objectItem.getString("username"));
@@ -89,11 +89,6 @@ public class TaskFragment extends Fragment {
         );
 
         queue.add(request);
-    }
-
-    private void addDummyData() {
-        taskList.add(new Task(1, "user", "Halo", "hi", "hah", "a", "f", "1", "2"));
-        adapter.notifyDataSetChanged();
     }
 
     private void setRecyclerView() {
