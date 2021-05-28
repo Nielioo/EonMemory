@@ -35,6 +35,15 @@ public class HomePageActivity extends AppCompatActivity {
         setListener();
     }
 
+    private void setListener() {
+        home_FAB_createTask.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                // Open create task
+            }
+        });
+    }
+
     private void setBottomNavigation() {
         home_bottomNavigation.setOnNavigationItemSelectedListener(new BottomNavigationView.OnNavigationItemSelectedListener() {
             @Override
@@ -56,15 +65,6 @@ public class HomePageActivity extends AppCompatActivity {
                 getSupportFragmentManager().beginTransaction().replace(R.id.home_fragmentContainer, fragment).commit();
 
                 return true;
-            }
-        });
-    }
-
-    private void setListener() {
-        home_FAB_createTask.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                // Open create task
             }
         });
     }
