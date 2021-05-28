@@ -3,21 +3,25 @@
 require_once("db_controller.php");
 header("Content-Type: application/json");
 
-$query = $connection->query("SELECT * FROM `barang`");
+$query = $connection->query("SELECT * FROM `task`");
 
 $response['count'] = $query->num_rows;
-$response['barang'] = array();
+$response['task'] = array();
 
 while ($data = $query->fetch_assoc()) {
     $object = array(
         'id' => $data['id'],
-        'nama' => $data['nama'],
-        'image_path' => $data['image_path'],
-        'jumlah' => $data['jumlah'],
-        'created' => $data['created']
+        'username' => $data['username'],
+        'title' => $data['title'],
+        'description' => $data['description'],
+        'category' => $data['category'],
+        'due_date' => $data['due_date'],
+        'time' => $data['time'],
+        'created' => $data['created'],
+        'updated' => $data['updated']
     );
 
-    array_push($response['barang'], $object);
+    array_push($response['task'], $object);
 }
 
 $query->close();

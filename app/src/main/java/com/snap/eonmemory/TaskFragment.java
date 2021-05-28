@@ -10,6 +10,16 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
+import com.android.volley.Request;
+import com.android.volley.RequestQueue;
+import com.android.volley.Response;
+import com.android.volley.toolbox.JsonObjectRequest;
+import com.android.volley.toolbox.Volley;
+
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
+
 import java.util.ArrayList;
 
 import model.Task;
@@ -36,11 +46,47 @@ public class TaskFragment extends Fragment {
     }
 
     private void loadDataDB() {
+        // Localhost
         String url = "http://192.168.1.6/EonMemory/ReadAllTask.php";
+
+//        RequestQueue myqueue = Volley.newRequestQueue(this);
+
+        JsonObjectRequest request = new JsonObjectRequest(Request.Method.GET, url, null,
+                new Response.Listener<JSONObject>() {
+                    @Override
+                    public void onResponse(JSONObject response) {
+                        try {
+                            JSONArray jsonItem = response.getJSONArray("barang");
+                            for (int i = 0; i < jsonItem.length(); i++) {
+                                JSONObject objectItem = jsonItem.getJSONObject(i);
+
+//                                Item newItem = new Item();
+//                                newItem.setId(objectItem.getInt("id"));
+//                                newItem.setTitle(objectItem.getString("nama"));
+//                                newItem.setImage_path(objectItem.getString("image_path"));
+//                                newItem.setCreated(objectItem.getString("created"));
+//                                newItem.setAmount(objectItem.getInt("jumlah"));
+//                                itemList.add(newItem);
+                            }
+                            adapter.notifyDataSetChanged();
+                        } catch (JSONException e) {
+                            e.printStackTrace();
+                        }
+                    }
+                },
+                new Response.ErrorListener() {
+                    @Override
+                    public void onErrorResponse(VolleyError error) {
+
+                    }
+                }
+        );
+
+        myqueue.add(request);
     }
 
     private void addDummyData() {
-        taskList.add(new Task(1, "Halo", "hi", "hah", "a", "f"));
+        taskList.add(new Task(1, "Halo", "hi", "hah", "a", "f", "1", "2"));
         adapter.notifyDataSetChanged();
     }
 
