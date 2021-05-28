@@ -55,7 +55,7 @@ public class HomePageActivity extends AppCompatActivity {
 
         home_bottomNavigation.setOnNavigationItemSelectedListener(new BottomNavigationView.OnNavigationItemSelectedListener() {
             @Override
-            public boolean onNavigationItemSelected(@NonNull MenuItem item) {
+            public boolean onNavigationItemSelected(MenuItem item) {
                 Fragment fragment = null;
 
                 switch (item.getItemId()) {
