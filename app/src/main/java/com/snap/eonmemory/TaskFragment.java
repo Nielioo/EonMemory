@@ -36,7 +36,7 @@ public class TaskFragment extends Fragment {
     }
 
     private void loadDataDB() {
-        String url = "";
+        String url = "http://192.168.1.6/EonMemory/ReadAllTask.php";
     }
 
     private void addDummyData() {
