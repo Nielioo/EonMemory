@@ -50,7 +50,7 @@ public class TaskFragment extends Fragment {
         // Localhost
         String url = "http://192.168.1.6/EonMemory/ReadAllTask.php";
 
-//        RequestQueue myqueue = Volley.newRequestQueue(this);
+        RequestQueue queue = Volley.newRequestQueue(getContext());
 
         JsonObjectRequest request = new JsonObjectRequest(Request.Method.GET, url, null,
                 new Response.Listener<JSONObject>() {
@@ -61,13 +61,17 @@ public class TaskFragment extends Fragment {
                             for (int i = 0; i < jsonItem.length(); i++) {
                                 JSONObject objectItem = jsonItem.getJSONObject(i);
 
-//                                Item newItem = new Item();
-//                                newItem.setId(objectItem.getInt("id"));
-//                                newItem.setTitle(objectItem.getString("nama"));
-//                                newItem.setImage_path(objectItem.getString("image_path"));
-//                                newItem.setCreated(objectItem.getString("created"));
-//                                newItem.setAmount(objectItem.getInt("jumlah"));
-//                                itemList.add(newItem);
+                                Task newTask = new Task();
+                                newTask.setId(objectItem.getInt("id"));
+                                newTask.setUsername(objectItem.getString("username"));
+                                newTask.setTitle(objectItem.getString("title"));
+                                newTask.setDescription(objectItem.getString("description"));
+                                newTask.setCategory(objectItem.getString("category"));
+                                newTask.setDue_date(objectItem.getString("due_date"));
+                                newTask.setTime(objectItem.getString("time"));
+                                newTask.setCreated(objectItem.getString("created"));
+                                newTask.setUpdated(objectItem.getString("updated"));
+                                taskList.add(newTask);
                             }
                             adapter.notifyDataSetChanged();
                         } catch (JSONException e) {
@@ -83,11 +87,11 @@ public class TaskFragment extends Fragment {
                 }
         );
 
-        myqueue.add(request);
+        queue.add(request);
     }
 
     private void addDummyData() {
-        taskList.add(new Task(1, "Halo", "hi", "hah", "a", "f", "1", "2"));
+        taskList.add(new Task(1, "user", "Halo", "hi", "hah", "a", "f", "1", "2"));
         adapter.notifyDataSetChanged();
     }
 
