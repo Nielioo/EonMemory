@@ -22,16 +22,18 @@
         <activity android:name=".ChangeUsernameActivity"></activity>
         <activity android:name=".SettingPageActivity"></activity>
         <activity android:name=".ProfilePageActivity"></activity>
-        <activity android:name=".HomePageActivity"></activity>
-        <activity android:name=".RegisterActivity"></activity>
-        <activity android:name=".SignInActivity"></activity>
-        <activity android:name=".WelcomePageActivity"></activity>
-        <activity android:name=".SplashScreenActivity">
-            <intent-filter>
-                <action android:name="android.intent.action.MAIN" />
+        <activity android:name=".HomePageActivity">
+        <intent-filter>
+            <action android:name="android.intent.action.MAIN" />
 
-                <category android:name="android.intent.category.LAUNCHER" />
-            </intent-filter>
+            <category android:name="android.intent.category.LAUNCHER" />
+        </intent-filter>
+        </activity>
+        <activity android:name=".RegisterActivity" />
+        <activity android:name=".SignInActivity" />
+        <activity android:name=".WelcomePageActivity" />
+        <activity android:name=".SplashScreenActivity">
+
         </activity>
 
         <meta-data
