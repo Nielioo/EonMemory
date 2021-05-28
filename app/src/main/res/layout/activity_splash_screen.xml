@@ -42,7 +42,7 @@
         android:letterSpacing="0.01"
         android:text="Time is a created thing\nTo say 'I don\'t have time' is like saying \nI don\'t want to"
         android:textColor="@color/gray_900"
-        android:textSize="18sp"
+        android:textSize="16sp"
         app:layout_constraintBottom_toBottomOf="@+id/imageView"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
@@ -58,7 +58,7 @@
         android:letterSpacing="0.01"
         android:text="Lao Tzu"
         android:textColor="@color/gray_900"
-        android:textSize="16sp"
+        android:textSize="14sp"
         app:layout_constraintEnd_toEndOf="@+id/textView"
         app:layout_constraintTop_toBottomOf="@+id/textView" />
 </androidx.constraintlayout.widget.ConstraintLayout>

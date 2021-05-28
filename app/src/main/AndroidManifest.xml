@@ -17,15 +17,15 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.EonMemory"
         android:usesCleartextTraffic="true">
-        <activity android:name=".ChangePasswordActivity" />
-        <activity android:name=".ChangeEmailActivity" />
-        <activity android:name=".ChangeUsernameActivity" />
-        <activity android:name=".SettingPageActivity" />
-        <activity android:name=".ProfilePageActivity" />
-        <activity android:name=".HomePageActivity" />
-        <activity android:name=".RegisterActivity" />
-        <activity android:name=".SignInActivity" />
-        <activity android:name=".WelcomePageActivity" />
+        <activity android:name=".ChangePasswordActivity"></activity>
+        <activity android:name=".ChangeEmailActivity"></activity>
+        <activity android:name=".ChangeUsernameActivity"></activity>
+        <activity android:name=".SettingPageActivity"></activity>
+        <activity android:name=".ProfilePageActivity"></activity>
+        <activity android:name=".HomePageActivity"></activity>
+        <activity android:name=".RegisterActivity"></activity>
+        <activity android:name=".SignInActivity"></activity>
+        <activity android:name=".WelcomePageActivity"></activity>
         <activity android:name=".SplashScreenActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
