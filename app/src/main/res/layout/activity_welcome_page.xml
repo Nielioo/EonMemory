@@ -137,12 +137,14 @@
         android:id="@+id/textView6"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="48dp"
+        android:layout_marginTop="24dp"
+        android:layout_marginBottom="24dp"
         android:fontFamily="@font/roboto"
         android:gravity="center"
         android:text="or use Quick Login"
         android:textColor="@color/gray_700"
         android:textSize="16sp"
+        app:layout_constraintBottom_toTopOf="@+id/welcome_page_google_imageView"
         app:layout_constraintEnd_toEndOf="@+id/welcome_page_sign_in_button"
         app:layout_constraintStart_toStartOf="@+id/welcome_page_sign_in_button"
         app:layout_constraintTop_toBottomOf="@+id/welcome_page_sign_in_button" />
@@ -152,9 +154,9 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="36dp"
-        android:layout_marginTop="48dp"
+        android:layout_marginBottom="48dp"
+        app:layout_constraintBottom_toTopOf="@+id/welcome_page_register_textView"
         app:layout_constraintStart_toStartOf="@+id/textView6"
-        app:layout_constraintTop_toBottomOf="@+id/textView6"
         app:srcCompat="@drawable/google_icon" />
 
     <ImageView
@@ -170,13 +172,13 @@
         android:id="@+id/welcome_page_register_textView"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="48dp"
+        android:layout_marginBottom="36dp"
         android:fontFamily="@font/roboto"
         android:gravity="center"
         android:text="Create an Account"
         android:textColor="@color/gray_900"
         android:textSize="20sp"
+        app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="@+id/welcome_page_sign_in_button"
-        app:layout_constraintStart_toStartOf="@+id/welcome_page_sign_in_button"
-        app:layout_constraintTop_toBottomOf="@+id/welcome_page_google_imageView" />
+        app:layout_constraintStart_toStartOf="@+id/welcome_page_sign_in_button" />
 </androidx.constraintlayout.widget.ConstraintLayout>
