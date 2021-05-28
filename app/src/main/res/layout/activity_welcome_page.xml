@@ -112,7 +112,7 @@
         android:fontFamily="@font/roboto"
         android:gravity="top"
         android:letterSpacing="0.03"
-        android:text="let's create an everlasting memory\n\n\n\n\n\n\n\n\nJoin for free"
+        android:text="let's create an everlasting memory\n\n\n\n\nJoin for free"
         android:textColor="@color/gray_700"
         android:textSize="18sp"
         app:layout_constraintStart_toStartOf="@+id/textView4"
