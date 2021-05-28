@@ -14,6 +14,7 @@ import android.view.View;
 import android.widget.Toast;
 
 import com.google.android.material.bottomnavigation.BottomNavigationView;
+import com.google.android.material.bottomsheet.BottomSheetBehavior;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
 import java.util.ArrayList;
@@ -40,7 +41,9 @@ public class HomePageActivity extends AppCompatActivity {
         home_FAB_createTask.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                // Open create task
+                CreateTaskFragment createTask = new CreateTaskFragment();
+//                BottomSheetBehavior bottomSheetBehavior = BottomSheetBehavior.from(createTask);
+                createTask.show(getSupportFragmentManager(), null);
             }
         });
     }
