@@ -1,0 +1,39 @@
+{
+  "project_info": {
+    "project_number": "681847565740",
+    "project_id": "eon-memory-firebase",
+    "storage_bucket": "eon-memory-firebase.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:681847565740:android:cc0af9e2e33fb9f6db5e09",
+        "android_client_info": {
+          "package_name": "com.snap.eonmemory"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "681847565740-pr3fkhqmb44qpulvicpsh205kqultrmp.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyA8A8zftO65YuvpZO8H3_jFOwUyBtjAqPo"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "681847565740-pr3fkhqmb44qpulvicpsh205kqultrmp.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
