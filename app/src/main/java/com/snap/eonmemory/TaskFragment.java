@@ -16,6 +16,7 @@ import model.Task;
 
 public class TaskFragment extends Fragment {
 
+    private View view;
     private RecyclerView home_recyclerView_task;
     private ArrayList<Task> taskList;
     private TaskRVAdapter adapter;
@@ -26,10 +27,11 @@ public class TaskFragment extends Fragment {
         // Inflate the layout for this fragment
         View view = inflater.inflate(R.layout.fragment_task, container, false);
 
-        initView(view);
+        initView();
         setRecyclerView();
         addDummyData();
         loadDataDB();
+
         return view;
     }
 
@@ -48,7 +50,7 @@ public class TaskFragment extends Fragment {
         home_recyclerView_task.setAdapter(adapter);
     }
 
-    private void initView(View view) {
+    private void initView() {
         home_recyclerView_task = view.findViewById(R.id.home_recyclerView_task);
         taskList = new ArrayList<Task>();
         adapter = new TaskRVAdapter(taskList); // Add card listener later
