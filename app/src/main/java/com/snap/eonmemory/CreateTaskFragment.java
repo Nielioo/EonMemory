@@ -1,6 +1,7 @@
 package com.snap.eonmemory;
 
 import android.content.DialogInterface;
+import android.content.Intent;
 import android.graphics.Color;
 import android.os.Bundle;
 
@@ -18,18 +19,30 @@ import android.widget.PopupMenu;
 import android.widget.Toast;
 
 import androidx.annotation.Nullable;
+import androidx.fragment.app.FragmentManager;
 
+import com.android.volley.AuthFailureError;
+import com.android.volley.Request;
+import com.android.volley.RequestQueue;
+import com.android.volley.Response;
+import com.android.volley.VolleyError;
+import com.android.volley.toolbox.StringRequest;
+import com.android.volley.toolbox.Volley;
 import com.google.android.material.bottomsheet.BottomSheetBehavior;
 import com.google.android.material.bottomsheet.BottomSheetDialog;
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment;
 import com.google.android.material.textfield.TextInputEditText;
 import com.google.android.material.textfield.TextInputLayout;
 
+import java.util.HashMap;
+import java.util.Map;
+
+import model.Task;
+
 public class CreateTaskFragment extends BottomSheetDialogFragment {
 
     private View view;
     private TextInputLayout createTask_TILayout_title;
-    private TextInputEditText createTask_TIEditText_title;
     private Button createTask_button_category;
     private ImageButton createTask_imageButton_calendar, createTask_imageButton_save;
     private PopupMenu categoryList;
@@ -55,6 +68,39 @@ public class CreateTaskFragment extends BottomSheetDialogFragment {
         setListener();
 
         return view;
+    }
+
+    private void uploadDataDB(Task task) {
+        String url = "http://192.168.1.6/EonMemory/EonMemoryDB/CreateTask.php";
+        RequestQueue queue = Volley.newRequestQueue(getContext());
+
+        StringRequest request = new StringRequest(Request.Method.POST, url,
+                new Response.Listener<String>() {
+                    @Override
+                    public void onResponse(String response) {
+
+                    }
+                },
+
+                new Response.ErrorListener() {
+                    @Override
+                    public void onErrorResponse(VolleyError error) {
+                        Toast.makeText(getContext(), error.toString(), Toast.LENGTH_SHORT).show();
+                    }
+                }
+        ){
+            @Override
+            protected Map<String, String> getParams() throws AuthFailureError {
+                Map<String, String> data = new HashMap<>();
+                data.put("username", task.getUsername());
+                data.put("title", task.getTitle());
+                data.put("category", task.getCategory());
+
+                return data;
+            }
+        };
+
+        queue.add(request);
     }
 
     private void isSaveValid(boolean validateTitle) {
@@ -113,7 +159,11 @@ public class CreateTaskFragment extends BottomSheetDialogFragment {
                 if (title.length() > maxVarChar) {
                     Toast.makeText(getContext(), "Title must not exceed 255 characters", Toast.LENGTH_SHORT).show();
                 } else {
-                    Toast.makeText(getContext(), "Saved", Toast.LENGTH_SHORT).show();
+                    // Change this
+                    uploadDataDB(new Task("user random", title, "kategori apa"));
+
+                    // Close bottom sheet
+                    dismiss();
                 }
             }
         });
@@ -136,7 +186,6 @@ public class CreateTaskFragment extends BottomSheetDialogFragment {
 
     private void initView() {
         createTask_TILayout_title = view.findViewById(R.id.createTask_TILayout_title);
-        createTask_TIEditText_title = view.findViewById(R.id.createTask_TIEditText_title);
         createTask_button_category = view.findViewById(R.id.createTask_button_category);
         createTask_imageButton_calendar = view.findViewById(R.id.createTask_imageButton_calendar);
         createTask_imageButton_save = view.findViewById(R.id.createTask_imageButton_save);

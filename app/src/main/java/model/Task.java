@@ -19,6 +19,12 @@ public class Task implements Parcelable {
         this.updated = "";
     }
 
+    public Task(String username, String title, String category) {
+        this.username = username;
+        this.title = title;
+        this.category = category;
+    }
+
     public Task(int id, String username, String title, String description, String category, String due_date, String time, String created, String updated) {
         this.id = id;
         this.username = username;
