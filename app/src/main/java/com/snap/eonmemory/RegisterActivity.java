@@ -9,9 +9,14 @@ import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.Toast;
 
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.Task;
 import com.google.android.material.textfield.TextInputLayout;
+import com.google.firebase.auth.AuthResult;
+import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 
@@ -27,8 +32,7 @@ public class RegisterActivity extends AppCompatActivity {
     Button register_register_button;
     Intent intent;
 
-    FirebaseDatabase rootNode;
-    DatabaseReference databaseReference;
+    FirebaseAuth mAuth;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -36,6 +40,8 @@ public class RegisterActivity extends AppCompatActivity {
         setContentView(R.layout.activity_register);
 
         initialize();
+
+        mAuth = FirebaseAuth.getInstance();
 
         TextWatcher tmpWatcher = new TextWatcher() {
             @Override
@@ -70,11 +76,6 @@ public class RegisterActivity extends AppCompatActivity {
         register_password_textInput.getEditText().addTextChangedListener(tmpWatcher);
         register_confirm_password_textInput.getEditText().addTextChangedListener(tmpWatcher);
 
-        createClickListener();
-
-    }
-
-    private void createClickListener() {
         register_back_imageView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -151,18 +152,30 @@ public class RegisterActivity extends AppCompatActivity {
 
                     clearError();
 
-                    User newUser = new User(username, email, password);
-                    UserList.addUserToUserList(newUser);
+                    mAuth.createUserWithEmailAndPassword(email, password).addOnCompleteListener(RegisterActivity.this, new OnCompleteListener<AuthResult>() {
+                        @Override
+                        public void onComplete(Task<AuthResult> task) {
+                            if(task.isSuccessful()){
+                                User newUser = new User(username, email, password);
+                                UserList.addUserToUserList(newUser);
 
-                    intent = new Intent(getBaseContext(), WelcomePageActivity.class);
-                    intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
-                    Toast.makeText(RegisterActivity.this, "Account Created!", Toast.LENGTH_SHORT).show();
-                    finish();
-                    startActivity(intent);
+                                intent = new Intent(getBaseContext(), WelcomePageActivity.class);
+                                intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
+                                Toast.makeText(RegisterActivity.this, "Account Created!", Toast.LENGTH_SHORT).show();
+                                finish();
+                                startActivity(intent);
+                            } else {
+                                Toast.makeText(RegisterActivity.this, "Failed to Create Account!", Toast.LENGTH_SHORT).show();
+                            }
+                        }
+                    });
+
+
                 }
 
             }
         });
+
     }
 
     private void clearError() {

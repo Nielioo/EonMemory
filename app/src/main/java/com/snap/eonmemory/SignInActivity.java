@@ -11,7 +11,10 @@ import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.material.textfield.TextInputLayout;
+import com.google.firebase.auth.AuthResult;
+import com.google.firebase.auth.FirebaseAuth;
 
 import model.User;
 import model.UserList;
@@ -23,12 +26,16 @@ public class SignInActivity extends AppCompatActivity {
     Button sign_in_sign_in_button;
     Intent intent;
 
+    FirebaseAuth mAuth;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_sign_in);
 
         initialize();
+
+        mAuth = FirebaseAuth.getInstance();
 
         TextWatcher tmpWatcher = new TextWatcher() {
             @Override
@@ -56,12 +63,6 @@ public class SignInActivity extends AppCompatActivity {
             }
         };
 
-        createClickListener();
-    }
-
-
-
-    private void createClickListener() {
         sign_in_back_imageView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -77,28 +78,31 @@ public class SignInActivity extends AppCompatActivity {
                 String email = sign_in_email_textInput.getEditText().getText().toString().trim();
                 String password = sign_in_password_textInput.getEditText().getText().toString().trim();
 
-                if(!email.isEmpty() && !password.isEmpty()){
-                    User thisUser = UserList.getUser(email, password);
+                if (!email.isEmpty() && !password.isEmpty()) {
 
-                    if(thisUser != null){
-                        Toast.makeText(SignInActivity.this, "Login Successful", Toast.LENGTH_SHORT).show();
-                        intent = new Intent(getBaseContext(), HomePageActivity.class);
-                        intent.putExtra("thisUser", thisUser);
+                    mAuth.signInWithEmailAndPassword(email, password).addOnSuccessListener(new OnSuccessListener<AuthResult>() {
+                        @Override
+                        public void onSuccess(AuthResult authResult) {
+                            User thisUser = UserList.getUser(email, password);
 
-                        sign_in_email_textInput.getEditText().setText("");
-                        sign_in_email_textInput.setError("");
-                        sign_in_password_textInput.getEditText().setText("");
-                        sign_in_password_textInput.setError("");
+                            intent = new Intent(getBaseContext(), ProfilePageActivity.class);
+                            intent.putExtra("thisUser", thisUser);
+                            Toast.makeText(SignInActivity.this, "Login Successful", Toast.LENGTH_SHORT).show();
 
-                        finish();
-                        startActivity(intent);
-                    } else {
-                        Toast.makeText(SignInActivity.this, "invalid email or password", Toast.LENGTH_SHORT).show();
-                    }
+                            sign_in_email_textInput.getEditText().setText("");
+                            sign_in_email_textInput.setError("");
+                            sign_in_password_textInput.getEditText().setText("");
+                            sign_in_password_textInput.setError("");
+
+                            finish();
+                            startActivity(intent);
+                        }
+                    });
 
                 }
             }
         });
+
     }
 
     private void initialize() {
