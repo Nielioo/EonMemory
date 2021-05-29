@@ -4,16 +4,16 @@ require_once("db_controller.php");
 header("Content-Type: application/json");
 
 // For Android Studio
-// $value = json_decode(file_get_contents('php://input'));
-// $id = $value->id;
+$value = json_decode(file_get_contents('php://input'));
+$id = $value->id;
 
 // For Postman
-if (!empty($_POST)) {
+// if (!empty($_POST)) {
 
-    $id = $_POST['id'];
-} else {
-    $id = -1;
-}
+//     $id = $_POST['id'];
+// } else {
+//     $id = -1;
+// }
 
 $query = $connection->prepare("SELECT * FROM `task` WHERE `id`= ?");
 $query->bind_param("i", $id);
