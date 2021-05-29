@@ -9,6 +9,9 @@ import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
+
 public class WelcomePageActivity extends AppCompatActivity {
 
     Button welcome_page_sign_in_button;
@@ -23,6 +26,20 @@ public class WelcomePageActivity extends AppCompatActivity {
 
         initialize();
         createClickListener();
+
+    }
+
+    @Override
+    protected void onStart() {
+        super.onStart();
+
+        FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
+
+        if(user != null){
+            intent = new Intent(getBaseContext(), ProfilePageActivity.class);
+            intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK);
+            startActivity(intent);
+        }
 
     }
 

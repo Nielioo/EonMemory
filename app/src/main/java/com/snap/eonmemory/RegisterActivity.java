@@ -162,6 +162,7 @@ public class RegisterActivity extends AppCompatActivity {
                                 intent = new Intent(getBaseContext(), WelcomePageActivity.class);
                                 intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
                                 Toast.makeText(RegisterActivity.this, "Account Created!", Toast.LENGTH_SHORT).show();
+
                                 finish();
                                 startActivity(intent);
                             } else {
