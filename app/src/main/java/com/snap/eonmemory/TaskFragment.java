@@ -1,5 +1,6 @@
 package com.snap.eonmemory;
 
+import android.content.Intent;
 import android.os.Bundle;
 
 import androidx.fragment.app.Fragment;
@@ -28,7 +29,7 @@ import java.util.ArrayList;
 
 import model.Task;
 
-public class TaskFragment extends Fragment {
+public class TaskFragment extends Fragment implements OnCardClickListener {
 
     private View view;
     private RecyclerView home_recyclerView_task;
@@ -132,6 +133,14 @@ public class TaskFragment extends Fragment {
         task_swipeRefresh = view.findViewById(R.id.task_swipeRefresh);
         task_FAB_create = view.findViewById(R.id.task_FAB_create);
         taskList = new ArrayList<Task>();
-        adapter = new TaskRVAdapter(taskList); // Add card listener later
+        adapter = new TaskRVAdapter(taskList, this); // Add card listener later
+    }
+
+    @Override
+    public void onClick(int position) {
+        int id = taskList.get(position).getId();
+        Intent intent = new Intent(getContext(), EditTaskActivity.class);
+        intent.putExtra("id", id);
+        startActivity(intent);
     }
 }

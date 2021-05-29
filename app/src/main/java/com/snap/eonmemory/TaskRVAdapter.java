@@ -4,6 +4,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.CheckBox;
+import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
@@ -15,11 +16,11 @@ import model.Task;
 public class TaskRVAdapter extends RecyclerView.Adapter<TaskRVAdapter.TaskViewHolder> {
 
     private ArrayList<Task> taskList;
-    // Card listener
+    private OnCardClickListener cardClickListener;
 
-    public TaskRVAdapter(ArrayList<Task> taskList) {
+    public TaskRVAdapter(ArrayList<Task> taskList, OnCardClickListener cardListener) {
         this.taskList = taskList;
-        // Card listener
+        this.cardClickListener = cardListener;
     }
 
 
@@ -35,7 +36,7 @@ public class TaskRVAdapter extends RecyclerView.Adapter<TaskRVAdapter.TaskViewHo
     @Override
     public void onBindViewHolder(@NonNull TaskRVAdapter.TaskViewHolder holder, int position) {
         // Set elements
-        holder.cardView_checkBox_task.setText(taskList.get(position).getTitle());
+        holder.cardView_textView_title.setText(taskList.get(position).getTitle());
     }
 
     @Override
@@ -46,6 +47,7 @@ public class TaskRVAdapter extends RecyclerView.Adapter<TaskRVAdapter.TaskViewHo
     public class TaskViewHolder extends RecyclerView.ViewHolder {
         // Card elements
         private CheckBox cardView_checkBox_task;
+        private TextView cardView_textView_title;
 
         public TaskViewHolder(@NonNull View taskView) {
             // Something needed
@@ -53,14 +55,15 @@ public class TaskRVAdapter extends RecyclerView.Adapter<TaskRVAdapter.TaskViewHo
 
             // Initialize
             cardView_checkBox_task = taskView.findViewById(R.id.cardView_checkBox_task);
+            cardView_textView_title = taskView.findViewById(R.id.cardView_textView_title);
 
             // Each card click event
-//            taskView.setOnClickListener(new View.OnClickListener() {
-//                @Override
-//                public void onClick(View v) {
-//                    // Card listener
-//                }
-//            });
+            taskView.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    cardClickListener.onClick(getAdapterPosition());
+                }
+            });
 
         }
     }
