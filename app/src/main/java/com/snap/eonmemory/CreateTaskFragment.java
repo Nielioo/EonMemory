@@ -74,9 +74,6 @@ public class CreateTaskFragment extends BottomSheetDialogFragment {
 
                 if (title.isEmpty()) {
                     validateTitle = false;
-                } else if (title.length() > maxVarChar) {
-                    createTask_TILayout_title.setError("Title must not exceed 255 characters");
-                    validateTitle = false;
                 } else {
                     createTask_TILayout_title.setError(null);
                     validateTitle = true;
@@ -111,7 +108,13 @@ public class CreateTaskFragment extends BottomSheetDialogFragment {
             @Override
             public void onClick(View v) {
                 // Save task to database
-                Toast.makeText(getContext(), "Saved", Toast.LENGTH_SHORT).show();
+                String title = createTask_TILayout_title.getEditText().getText().toString().trim();
+
+                if (title.length() > maxVarChar) {
+                    Toast.makeText(getContext(), "Title must not exceed 255 characters", Toast.LENGTH_SHORT).show();
+                } else {
+                    Toast.makeText(getContext(), "Saved", Toast.LENGTH_SHORT).show();
+                }
             }
         });
     }
