@@ -12,6 +12,8 @@ import android.widget.Toast;
 import androidx.appcompat.app.AppCompatActivity;
 
 import com.google.android.material.textfield.TextInputLayout;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
 
 import java.util.regex.Pattern;
 
@@ -24,6 +26,9 @@ public class RegisterActivity extends AppCompatActivity {
     TextInputLayout register_username_textInput, register_email_textInput, register_password_textInput, register_confirm_password_textInput;
     Button register_register_button;
     Intent intent;
+
+    FirebaseDatabase rootNode;
+    DatabaseReference databaseReference;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -91,6 +96,7 @@ public class RegisterActivity extends AppCompatActivity {
 
                 if (username.isEmpty()) {
                     register_username_textInput.setError("Please fill the name column");
+                    validateUsername = false;
                 } else {
                     register_username_textInput.setError("");
                     validateUsername = true;
@@ -100,24 +106,29 @@ public class RegisterActivity extends AppCompatActivity {
 
                 if (email.isEmpty()) {
                     register_email_textInput.setError("Please fill the email column");
+                    validateEmail = false;
                 } else {
                     if (!EMAIL_ADDRESS_PATTERN.matcher(email).matches()) {
                         register_email_textInput.setError("Wrong email format");
+                        validateEmail = false;
                     } else {
                         register_email_textInput.setError("");
                         validateEmail = true;
                     }
                 }
 
-                Pattern PASSWORD_PATTERN = Pattern.compile("^" + "[a-zA-Z0-9]" + "(?=.*[@#$%^&+=])" + "(?=\\S+$)" + ".{8,20}" + "$");
+                Pattern PASSWORD_PATTERN = Pattern.compile("^" + "[a-zA-Z0-9]" + "(?=.*[@#$%^&+=])" + "(?=\\S+$)" + ".{7,20}" + "$");
 
                 if(password.isEmpty()){
                     register_password_textInput.setError("Please fill the password column");
+                    validatePassword = false;
                 } else {
                     if (password.length() < 8 || password.length() > 20) {
                         register_password_textInput.setError("Must contains 8-20 Characters");
+                        validatePassword = false;
                     } else if (!PASSWORD_PATTERN.matcher(password).matches()) {
                         register_password_textInput.setError("Must contains at least uppercase/lowercase, number, and special character");
+                        validatePassword = false;
                     } else {
                         register_password_textInput.setError("");
                     }
@@ -125,19 +136,23 @@ public class RegisterActivity extends AppCompatActivity {
 
                 if(confirmPassword.isEmpty()){
                     register_confirm_password_textInput.setError("Please confirm your password");
+                    validatePassword = false;
                 } else {
                     if(!confirmPassword.equalsIgnoreCase(password)){
                         register_confirm_password_textInput.setError("Password doesn't match");
+                        validatePassword = false;
                     } else {
                         register_confirm_password_textInput.setError("");
                         validatePassword = true;
                     }
                 }
 
-                if(validateUsername && validateUsername && validatePassword){
+                if(validateUsername && validateEmail && validatePassword){
+
+                    clearError();
+
                     User newUser = new User(username, email, password);
                     UserList.addUserToUserList(newUser);
-                    clearError();
 
                     intent = new Intent(getBaseContext(), WelcomePageActivity.class);
                     intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
