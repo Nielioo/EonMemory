@@ -38,6 +38,8 @@ public class ProfilePageActivity extends AppCompatActivity {
 
         initialize();
 
+        intent = getIntent();
+
         profile_sign_out_imageView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
