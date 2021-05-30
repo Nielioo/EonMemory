@@ -93,6 +93,7 @@ public class HomePageActivity extends AppCompatActivity {
                 switch (item.getItemId()) {
                     case R.id.home_toolbar_menu_addCategory:
                         createCategory_dialog.show();
+                        createCategory_textInput_category.getEditText().requestFocus();
                         break;
                 }
                 return true;

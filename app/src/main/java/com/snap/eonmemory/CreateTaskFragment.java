@@ -165,6 +165,11 @@ public class CreateTaskFragment extends BottomSheetDialogFragment {
 
     private void setPopupMenu() {
         categoryList = new PopupMenu(getContext(), view);
+
+//        DocumentReference category = fStore.collection("user_collection").document(userID)
+//                .collection("category_collection").document("category_list");
+        
+        categoryList.getMenu().add("category 2");
         categoryList.getMenuInflater().inflate(R.menu.category_menu, categoryList.getMenu());
 
         categoryList.setOnMenuItemClickListener(new PopupMenu.OnMenuItemClickListener() {
