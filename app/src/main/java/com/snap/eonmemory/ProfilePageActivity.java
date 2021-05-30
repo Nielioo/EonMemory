@@ -10,6 +10,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 
 import com.google.android.gms.tasks.OnCompleteListener;
@@ -18,7 +19,11 @@ import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.firestore.DocumentReference;
+import com.google.firebase.firestore.DocumentSnapshot;
+import com.google.firebase.firestore.EventListener;
 import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.firebase.firestore.FirebaseFirestoreException;
 import com.google.firebase.firestore.SetOptions;
 
 import java.util.HashMap;
@@ -31,6 +36,10 @@ public class ProfilePageActivity extends AppCompatActivity {
     Button profile_delete_button;
     Intent intent;
 
+    FirebaseAuth mAuth;
+    FirebaseFirestore fStore;
+    String userID;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -38,7 +47,43 @@ public class ProfilePageActivity extends AppCompatActivity {
 
         initialize();
 
-        intent = getIntent();
+        mAuth = FirebaseAuth.getInstance();
+        fStore = FirebaseFirestore.getInstance();
+
+        userID = mAuth.getCurrentUser().getUid();
+
+        DocumentReference userReference = fStore.collection("user_collection").document(userID);
+        userReference.addSnapshotListener(this, new EventListener<DocumentSnapshot>() {
+            @Override
+            public void onEvent(DocumentSnapshot documentSnapshot, FirebaseFirestoreException error) {
+                profile_username_textView.setText(documentSnapshot.getString("username"));
+                profile_email_textView.setText(documentSnapshot.getString("email"));
+            }
+        });
+
+        profile_edit_username_imageView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                intent = new Intent(getBaseContext(), ChangeUsernameActivity.class);
+                startActivity(intent);
+            }
+        });
+
+        profile_edit_email_imageView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                intent = new Intent(getBaseContext(), ChangeEmailActivity.class);
+                startActivity(intent);
+            }
+        });
+
+        profile_edit_password_imageView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                intent = new Intent(getBaseContext(), ChangePasswordActivity.class);
+                startActivity(intent);
+            }
+        });
 
         profile_sign_out_imageView.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -57,19 +102,7 @@ public class ProfilePageActivity extends AppCompatActivity {
         profile_delete_button.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                FirebaseDatabase.getInstance().getReference().child("user").child("username").setValue("halo").
-                        addOnSuccessListener(new OnSuccessListener<Void>() {
-                            @Override
-                            public void onSuccess(Void aVoid) {
-                                Toast.makeText(ProfilePageActivity.this, "Success", Toast.LENGTH_SHORT).show();
-                            }
-                        }).addOnFailureListener(new OnFailureListener() {
-                    @Override
-                    public void onFailure(@NonNull Exception e) {
-                        Toast.makeText(ProfilePageActivity.this, "Failed", Toast.LENGTH_SHORT).show();
-                        Log.d("error", String.valueOf(e));
-                    }
-                });
+
             }
         });
 
@@ -79,7 +112,7 @@ public class ProfilePageActivity extends AppCompatActivity {
         profile_back_imageView = findViewById(R.id.profile_back_imageView);
         profile_image_imageView = findViewById(R.id.profile_image_imageView);
         profile_edit_image_imageView = findViewById(R.id.profile_edit_image_imageView);
-        profile_edit_username_imageView = findViewById(R.id.profile_edit_email_imageView);
+        profile_edit_username_imageView = findViewById(R.id.profile_edit_username_imageView);
         profile_edit_email_imageView = findViewById(R.id.profile_edit_email_imageView);
         profile_edit_password_imageView = findViewById(R.id.profile_edit_password_imageView);
         profile_sign_out_imageView = findViewById(R.id.profile_sign_out_imageView);
