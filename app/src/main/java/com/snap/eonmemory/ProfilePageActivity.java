@@ -61,6 +61,15 @@ public class ProfilePageActivity extends AppCompatActivity {
             }
         });
 
+        profile_edit_image_imageView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+
+                Intent openGalleryIntent = new Intent();
+
+            }
+        });
+
         profile_edit_username_imageView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {

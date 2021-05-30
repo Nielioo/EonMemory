@@ -17,23 +17,45 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.EonMemory"
         android:usesCleartextTraffic="true">
-        <activity android:name=".EditTaskActivity"></activity>
-        <activity android:name=".ChangePasswordActivity" />
-        <activity android:name=".ChangeEmailActivity" />
-        <activity android:name=".ChangeUsernameActivity" />
-        <activity android:name=".SettingPageActivity" />
-        <activity android:name=".ProfilePageActivity" />
-        <activity android:name=".HomePageActivity">
+        <activity
+            android:name=".EditTaskActivity"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".ChangePasswordActivity"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".ChangeEmailActivity"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".ChangeUsernameActivity"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".SettingPageActivity"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".ProfilePageActivity"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".HomePageActivity"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".RegisterActivity"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".SignInActivity"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".WelcomePageActivity"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".SplashScreenActivity"
+            android:screenOrientation="portrait">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name=".RegisterActivity" />
-        <activity android:name=".SignInActivity" />
-        <activity android:name=".WelcomePageActivity" />
-        <activity android:name=".SplashScreenActivity"></activity>
 
         <meta-data
             android:name="preloaded_fonts"
