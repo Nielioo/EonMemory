@@ -86,10 +86,8 @@ public class SignInActivity extends AppCompatActivity {
                     mAuth.signInWithEmailAndPassword(email, password).addOnSuccessListener(new OnSuccessListener<AuthResult>() {
                         @Override
                         public void onSuccess(AuthResult authResult) {
-                            User thisUser = UserList.getUser(email, password);
 
                             intent = new Intent(getBaseContext(), ProfilePageActivity.class);
-                            intent.putExtra("thisUser", thisUser);
                             Toast.makeText(SignInActivity.this, "Login Successful", Toast.LENGTH_SHORT).show();
 
                             sign_in_email_textInput.getEditText().setText("");
