@@ -63,6 +63,9 @@ public class SignInActivity extends AppCompatActivity {
             }
         };
 
+        sign_in_email_textInput.getEditText().addTextChangedListener(tmpWatcher);
+        sign_in_password_textInput.getEditText().addTextChangedListener(tmpWatcher);
+
         sign_in_back_imageView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
