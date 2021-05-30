@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="utf-8"?>
+<selector xmlns:android="http://schemas.android.com/apk/res/android">
+    <item android:state_pressed="true">
+        <ripple android:color="@color/saveButtonPressed">
+            <item>
+                <shape android:shape="oval">
+                    <solid android:color="@color/saveButtonEnabled" />
+                    <size android:height="48dp" android:width="48dp" />
+                </shape>
+            </item>
+        </ripple>
+    </item>
+    <item android:state_enabled="true">
+        <shape android:shape="oval">
+            <solid android:color="@color/saveButtonEnabled" />
+            <size android:height="48dp" android:width="48dp" />
+        </shape>
+    </item>
+    <item android:state_enabled="false">
+        <shape android:shape="oval">
+            <solid android:color="@color/saveButtonDisabled" />
+            <size android:height="48dp" android:width="48dp" />
+        </shape>
+    </item>
+</selector>
