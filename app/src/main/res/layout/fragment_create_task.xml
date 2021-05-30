@@ -22,21 +22,21 @@
     <com.google.android.material.textfield.TextInputLayout
         android:id="@+id/createTask_TILayout_title"
         style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
-        android:layout_width="match_parent"
+        android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginStart="16dp"
         android:layout_marginTop="16dp"
         android:layout_marginEnd="16dp"
         app:hintEnabled="false"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="@+id/imageView21"
-        app:layout_constraintTop_toTopOf="@+id/imageView21">
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent">
 
         <com.google.android.material.textfield.TextInputEditText
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:gravity="center_vertical"
-            android:hint="Add task title"
+            android:hint="Add new task"
+            android:maxLength="255"
             android:maxLines="3" />
     </com.google.android.material.textfield.TextInputLayout>
 
@@ -44,7 +44,7 @@
         android:id="@+id/createTask_button_category"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="8dp"
+        android:layout_marginTop="16dp"
         android:layout_marginBottom="16dp"
         android:background="@drawable/create_task_category_button_state"
         android:paddingStart="16dp"
@@ -86,6 +86,6 @@
         app:layout_constraintEnd_toEndOf="@+id/createTask_TILayout_title"
         app:layout_constraintHorizontal_bias="1.0"
         app:layout_constraintStart_toStartOf="@+id/guideline2"
-        app:layout_constraintTop_toTopOf="@+id/createTask_button_category" />
+        app:layout_constraintTop_toTopOf="@+id/createTask_imageButton_calendar" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

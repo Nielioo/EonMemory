@@ -57,7 +57,6 @@ public class CreateTaskFragment extends BottomSheetDialogFragment {
     private Button createTask_button_category;
     private ImageButton createTask_imageButton_calendar, createTask_imageButton_save;
     private PopupMenu categoryList;
-    private int maxVarChar;
     private boolean validateTitle;
 
     private FirebaseAuth mAuth;
@@ -156,14 +155,10 @@ public class CreateTaskFragment extends BottomSheetDialogFragment {
                 // Save task to database
                 String title = createTask_TILayout_title.getEditText().getText().toString().trim();
 
-                if (title.length() > maxVarChar) {
-                    Toast.makeText(getContext(), "Title must not exceed 255 characters", Toast.LENGTH_SHORT).show();
-                } else {
-                    createTask(title);
+                createTask(title);
 
-                    // Close bottom sheet
-                    dismiss();
-                }
+                // Close bottom sheet
+                dismiss();
             }
         });
     }
@@ -191,8 +186,6 @@ public class CreateTaskFragment extends BottomSheetDialogFragment {
 
         createTask_TILayout_title.requestFocus();
         createTask_imageButton_save.setEnabled(false);
-
-        maxVarChar = 255;
     }
 
     private void initFirebase() {
