@@ -7,7 +7,7 @@
     tools:context=".ChangeEmailActivity">
 
     <ImageView
-        android:id="@+id/imageView19"
+        android:id="@+id/change_email_back_imageView"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="36dp"
@@ -25,8 +25,8 @@
         android:text="Change Email"
         android:textColor="@color/gray_900"
         android:textSize="36sp"
-        app:layout_constraintStart_toStartOf="@+id/imageView19"
-        app:layout_constraintTop_toBottomOf="@+id/imageView19" />
+        app:layout_constraintStart_toStartOf="@+id/change_email_back_imageView"
+        app:layout_constraintTop_toBottomOf="@+id/change_email_back_imageView" />
 
     <TextView
         android:id="@+id/textView32"
@@ -41,7 +41,7 @@
         app:layout_constraintTop_toBottomOf="@+id/textView31" />
 
     <com.google.android.material.textfield.TextInputLayout
-        android:id="@+id/textInputLayout4"
+        android:id="@+id/change_email_new_email_textInput"
         style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
@@ -73,18 +73,18 @@
         android:textColor="@color/gray_900"
         android:textSize="18sp"
         app:layout_constraintStart_toStartOf="@+id/textView32"
-        app:layout_constraintTop_toBottomOf="@+id/textInputLayout4" />
+        app:layout_constraintTop_toBottomOf="@+id/change_email_new_email_textInput" />
 
     <com.google.android.material.textfield.TextInputLayout
-        android:id="@+id/textInputLayout5"
+        android:id="@+id/change_email_confirm_email_textInput"
         style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         app:boxBackgroundMode="outline"
         app:boxStrokeColor="@color/amber_500"
         app:errorEnabled="true"
-        app:layout_constraintEnd_toEndOf="@+id/textInputLayout4"
-        app:layout_constraintStart_toStartOf="@+id/textInputLayout4"
+        app:layout_constraintEnd_toEndOf="@+id/change_email_new_email_textInput"
+        app:layout_constraintStart_toStartOf="@+id/change_email_new_email_textInput"
         app:layout_constraintTop_toBottomOf="@+id/textView33">
 
         <com.google.android.material.textfield.TextInputEditText
@@ -97,7 +97,7 @@
     </com.google.android.material.textfield.TextInputLayout>
 
     <Button
-        android:id="@+id/button5"
+        android:id="@+id/change_email_save_button"
         android:layout_width="0dp"
         android:layout_height="48dp"
         android:layout_marginBottom="24dp"
@@ -106,6 +106,6 @@
         android:text="Save"
         android:textColor="@color/white"
         app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="@+id/textInputLayout5"
-        app:layout_constraintStart_toStartOf="@+id/textInputLayout5" />
+        app:layout_constraintEnd_toEndOf="@+id/change_email_confirm_email_textInput"
+        app:layout_constraintStart_toStartOf="@+id/change_email_confirm_email_textInput" />
 </androidx.constraintlayout.widget.ConstraintLayout>
