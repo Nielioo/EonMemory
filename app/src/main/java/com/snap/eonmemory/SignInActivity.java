@@ -16,9 +16,6 @@ import com.google.android.material.textfield.TextInputLayout;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
 
-import model.User;
-import model.UserList;
-
 public class SignInActivity extends AppCompatActivity {
 
     ImageView sign_in_back_imageView;
