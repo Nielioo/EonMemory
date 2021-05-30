@@ -46,9 +46,9 @@ public class TaskFragment extends Fragment implements OnCardClickListener {
     private ArrayList<Task> taskList;
     private TaskRVAdapter adapter;
 
-    FirebaseAuth mAuth;
-    FirebaseFirestore fStore;
-    String userID;
+    private FirebaseAuth mAuth;
+    private FirebaseFirestore fStore;
+    private String userID;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -56,29 +56,12 @@ public class TaskFragment extends Fragment implements OnCardClickListener {
         // Inflate the layout for this fragment
         view = inflater.inflate(R.layout.fragment_task, container, false);
 
-        mAuth = FirebaseAuth.getInstance();
-        fStore = FirebaseFirestore.getInstance();
-        userID = mAuth.getCurrentUser().getUid();
-
-//        initFirebase();
+        initFirebase();
         initView();
         setRecyclerView();
         loadDataDB();
         setListener();
         setSwipeRefresh();
-
-        CollectionReference taskReference = fStore.collection("user_collection")
-                .document(userID).collection("task_collection");
-        Map<String, Object> task = new HashMap<>();
-        task.put("title", "judul");
-        task.put("description", "deskripsi");
-
-        taskReference.add(task).addOnSuccessListener(new OnSuccessListener<DocumentReference>() {
-            @Override
-            public void onSuccess(DocumentReference documentReference) {
-                Toast.makeText(getContext(), "Task saved", Toast.LENGTH_SHORT).show();
-            }
-        });
 
         return view;
     }
@@ -175,6 +158,8 @@ public class TaskFragment extends Fragment implements OnCardClickListener {
     }
 
     private void initFirebase() {
-
+        mAuth = FirebaseAuth.getInstance();
+        fStore = FirebaseFirestore.getInstance();
+        userID = mAuth.getCurrentUser().getUid();
     }
 }

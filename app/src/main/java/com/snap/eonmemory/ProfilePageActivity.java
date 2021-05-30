@@ -160,7 +160,6 @@ public class ProfilePageActivity extends AppCompatActivity {
             @Override
             public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
                 Toast.makeText(ProfilePageActivity.this, "Image Uploaded!", Toast.LENGTH_SHORT).show();
-                imageReference.getDownloadUrl().addOnSuccessListener()
             }
         }).addOnFailureListener(new OnFailureListener() {
             @Override
