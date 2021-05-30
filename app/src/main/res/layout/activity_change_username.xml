@@ -7,7 +7,7 @@
     tools:context=".ChangeUsernameActivity">
 
     <ImageView
-        android:id="@+id/imageView17"
+        android:id="@+id/change_username_back_imageView"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="36dp"
@@ -25,8 +25,8 @@
         android:text="Change Username"
         android:textColor="@color/gray_900"
         android:textSize="36sp"
-        app:layout_constraintStart_toStartOf="@+id/imageView17"
-        app:layout_constraintTop_toBottomOf="@+id/imageView17" />
+        app:layout_constraintStart_toStartOf="@+id/change_username_back_imageView"
+        app:layout_constraintTop_toBottomOf="@+id/change_username_back_imageView" />
 
     <TextView
         android:id="@+id/textView25"
@@ -41,7 +41,7 @@
         app:layout_constraintTop_toBottomOf="@+id/textView24" />
 
     <com.google.android.material.textfield.TextInputLayout
-        android:id="@+id/textInputLayout"
+        android:id="@+id/change_username_new_username_textInput"
         style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
@@ -76,10 +76,10 @@
         android:textColor="@color/gray_900"
         android:textSize="18sp"
         app:layout_constraintStart_toStartOf="@+id/textView25"
-        app:layout_constraintTop_toBottomOf="@+id/textInputLayout" />
+        app:layout_constraintTop_toBottomOf="@+id/change_username_new_username_textInput" />
 
     <com.google.android.material.textfield.TextInputLayout
-        android:id="@+id/textInputLayout2"
+        android:id="@+id/change_username_confirm_username_textInput"
         style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
@@ -89,8 +89,8 @@
         app:counterMaxLength="20"
         app:counterTextColor="@color/gray_700"
         app:errorEnabled="true"
-        app:layout_constraintEnd_toEndOf="@+id/textInputLayout"
-        app:layout_constraintStart_toStartOf="@+id/textInputLayout"
+        app:layout_constraintEnd_toEndOf="@+id/change_username_new_username_textInput"
+        app:layout_constraintStart_toStartOf="@+id/change_username_new_username_textInput"
         app:layout_constraintTop_toBottomOf="@+id/textView26">
 
         <com.google.android.material.textfield.TextInputEditText
@@ -103,7 +103,7 @@
     </com.google.android.material.textfield.TextInputLayout>
 
     <Button
-        android:id="@+id/button2"
+        android:id="@+id/change_username_save_button"
         android:layout_width="0dp"
         android:layout_height="48dp"
         android:layout_marginBottom="24dp"
@@ -112,6 +112,6 @@
         android:text="Save"
         android:textColor="@color/white"
         app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="@+id/textInputLayout2"
-        app:layout_constraintStart_toStartOf="@+id/textInputLayout2" />
+        app:layout_constraintEnd_toEndOf="@+id/change_username_confirm_username_textInput"
+        app:layout_constraintStart_toStartOf="@+id/change_username_confirm_username_textInput" />
 </androidx.constraintlayout.widget.ConstraintLayout>
