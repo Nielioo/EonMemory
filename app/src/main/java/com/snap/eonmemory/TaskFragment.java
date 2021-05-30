@@ -19,9 +19,12 @@ import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.JsonObjectRequest;
 import com.android.volley.toolbox.Volley;
+import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.firestore.CollectionReference;
+import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.FirebaseFirestore;
 
 import org.json.JSONArray;
@@ -29,6 +32,8 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.Map;
 
 import model.Task;
 
@@ -41,9 +46,9 @@ public class TaskFragment extends Fragment implements OnCardClickListener {
     private ArrayList<Task> taskList;
     private TaskRVAdapter adapter;
 
-    private FirebaseAuth mAuth;
-    private FirebaseFirestore fStore;
-    private FirebaseUser user;
+    FirebaseAuth mAuth;
+    FirebaseFirestore fStore;
+    String userID;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -51,12 +56,29 @@ public class TaskFragment extends Fragment implements OnCardClickListener {
         // Inflate the layout for this fragment
         view = inflater.inflate(R.layout.fragment_task, container, false);
 
-        initFirebase();
+        mAuth = FirebaseAuth.getInstance();
+        fStore = FirebaseFirestore.getInstance();
+        userID = mAuth.getCurrentUser().getUid();
+
+//        initFirebase();
         initView();
         setRecyclerView();
         loadDataDB();
         setListener();
         setSwipeRefresh();
+
+        CollectionReference taskReference = fStore.collection("user_collection")
+                .document(userID).collection("task_collection");
+        Map<String, Object> task = new HashMap<>();
+        task.put("title", "judul");
+        task.put("description", "deskripsi");
+
+        taskReference.add(task).addOnSuccessListener(new OnSuccessListener<DocumentReference>() {
+            @Override
+            public void onSuccess(DocumentReference documentReference) {
+                Toast.makeText(getContext(), "Task saved", Toast.LENGTH_SHORT).show();
+            }
+        });
 
         return view;
     }
@@ -153,8 +175,6 @@ public class TaskFragment extends Fragment implements OnCardClickListener {
     }
 
     private void initFirebase() {
-        mAuth = FirebaseAuth.getInstance();
-        fStore = FirebaseFirestore.getInstance();
-        user = mAuth.getCurrentUser();
+
     }
 }
