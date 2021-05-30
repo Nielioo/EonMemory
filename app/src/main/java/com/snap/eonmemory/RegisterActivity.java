@@ -100,7 +100,7 @@ public class RegisterActivity extends AppCompatActivity {
                 String password = register_password_textInput.getEditText().getText().toString().trim();
                 String confirmPassword = register_confirm_password_textInput.getEditText().getText().toString().trim();
 
-                Boolean validateUsername = false, validateEmail = false, validatePassword = false;
+                Boolean validateUsername = false, validateEmail = false, validatePassword = false, validateConfirmPassword = false;
 
                 if (username.isEmpty()) {
                     register_username_textInput.setError("Please fill the name column");
@@ -139,23 +139,24 @@ public class RegisterActivity extends AppCompatActivity {
                         validatePassword = false;
                     } else {
                         register_password_textInput.setError("");
+                        validatePassword = true;
                     }
                 }
 
                 if (confirmPassword.isEmpty()) {
                     register_confirm_password_textInput.setError("Please confirm your password");
-                    validatePassword = false;
+                    validateConfirmPassword = false;
                 } else {
                     if (!confirmPassword.equalsIgnoreCase(password)) {
                         register_confirm_password_textInput.setError("Password doesn't match");
-                        validatePassword = false;
+                        validateConfirmPassword = false;
                     } else {
                         register_confirm_password_textInput.setError("");
-                        validatePassword = true;
+                        validateConfirmPassword = true;
                     }
                 }
 
-                if (validateUsername && validateEmail && validatePassword) {
+                if (validateUsername && validateEmail && validatePassword && validateConfirmPassword) {
 
                     clearError();
 
