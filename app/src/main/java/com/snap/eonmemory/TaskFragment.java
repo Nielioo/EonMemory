@@ -59,7 +59,7 @@ public class TaskFragment extends Fragment implements OnCardClickListener {
         initFirebase();
         initView();
         setRecyclerView();
-        loadDataDB();
+//        loadDataDB();
         setListener();
         setSwipeRefresh();
 

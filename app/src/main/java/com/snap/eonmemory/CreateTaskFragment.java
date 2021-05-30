@@ -87,12 +87,12 @@ public class CreateTaskFragment extends BottomSheetDialogFragment {
     }
 
     // Using Firebase
-    private void uploadTask(String title, String description) {
+    private void createTask(String title) {
         CollectionReference taskReference = fStore.collection("user_collection")
-                .document(userID).collection("task_collection").document("category_list").collection("category");
+                .document(userID).collection("task_collection");
+
         Map<String, Object> task = new HashMap<>();
         task.put("title", title);
-        task.put("description", description);
         task.put("created", FieldValue.serverTimestamp());
 
         taskReference.add(task).addOnFailureListener(new OnFailureListener() {
@@ -159,7 +159,7 @@ public class CreateTaskFragment extends BottomSheetDialogFragment {
                 if (title.length() > maxVarChar) {
                     Toast.makeText(getContext(), "Title must not exceed 255 characters", Toast.LENGTH_SHORT).show();
                 } else {
-                    uploadTask(title, "");
+                    createTask(title);
 
                     // Close bottom sheet
                     dismiss();
