@@ -4,22 +4,26 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.text.Editable;
 import android.text.TextWatcher;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.Toast;
 
-import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
 import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.OnFailureListener;
+import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
 import com.google.android.material.textfield.TextInputLayout;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
-import com.google.firebase.database.DatabaseReference;
-import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.firestore.DocumentReference;
+import com.google.firebase.firestore.FirebaseFirestore;
 
+import java.util.HashMap;
+import java.util.Map;
 import java.util.regex.Pattern;
 
 import model.User;
@@ -33,6 +37,8 @@ public class RegisterActivity extends AppCompatActivity {
     Intent intent;
 
     FirebaseAuth mAuth;
+    FirebaseFirestore fStore;
+    String userID;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -42,6 +48,7 @@ public class RegisterActivity extends AppCompatActivity {
         initialize();
 
         mAuth = FirebaseAuth.getInstance();
+        fStore = FirebaseFirestore.getInstance();
 
         TextWatcher tmpWatcher = new TextWatcher() {
             @Override
@@ -120,7 +127,7 @@ public class RegisterActivity extends AppCompatActivity {
 
                 Pattern PASSWORD_PATTERN = Pattern.compile("^" + "[a-zA-Z0-9]" + "(?=.*[@#$%^&+=])" + "(?=\\S+$)" + ".{7,20}" + "$");
 
-                if(password.isEmpty()){
+                if (password.isEmpty()) {
                     register_password_textInput.setError("Please fill the password column");
                     validatePassword = false;
                 } else {
@@ -135,11 +142,11 @@ public class RegisterActivity extends AppCompatActivity {
                     }
                 }
 
-                if(confirmPassword.isEmpty()){
+                if (confirmPassword.isEmpty()) {
                     register_confirm_password_textInput.setError("Please confirm your password");
                     validatePassword = false;
                 } else {
-                    if(!confirmPassword.equalsIgnoreCase(password)){
+                    if (!confirmPassword.equalsIgnoreCase(password)) {
                         register_confirm_password_textInput.setError("Password doesn't match");
                         validatePassword = false;
                     } else {
@@ -148,20 +155,38 @@ public class RegisterActivity extends AppCompatActivity {
                     }
                 }
 
-                if(validateUsername && validateEmail && validatePassword){
+                if (validateUsername && validateEmail && validatePassword) {
 
                     clearError();
 
                     mAuth.createUserWithEmailAndPassword(email, password).addOnCompleteListener(RegisterActivity.this, new OnCompleteListener<AuthResult>() {
                         @Override
                         public void onComplete(Task<AuthResult> task) {
-                            if(task.isSuccessful()){
+                            if (task.isSuccessful()) {
                                 User newUser = new User(username, email, password);
                                 UserList.addUserToUserList(newUser);
 
+                                userID = mAuth.getCurrentUser().getUid();
+                                DocumentReference userReference = fStore.collection("user_collection").document(userID);
+                                Map<String, Object> user_info = new HashMap<>();
+                                user_info.put("username", username);
+                                user_info.put("email", email);
+
+                                userReference.set(user_info).addOnSuccessListener(new OnSuccessListener<Void>() {
+                                    @Override
+                                    public void onSuccess(Void unused) {
+                                        Toast.makeText(RegisterActivity.this, "Account Registered!", Toast.LENGTH_SHORT).show();
+                                    }
+                                }).addOnFailureListener(new OnFailureListener() {
+                                    @Override
+                                    public void onFailure(Exception e) {
+                                        Toast.makeText(RegisterActivity.this, "Failed to Register", Toast.LENGTH_SHORT).show();
+                                        Log.d("error", e.toString());
+                                    }
+                                });
+
                                 intent = new Intent(getBaseContext(), WelcomePageActivity.class);
                                 intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
-                                Toast.makeText(RegisterActivity.this, "Account Created!", Toast.LENGTH_SHORT).show();
 
                                 finish();
                                 startActivity(intent);
