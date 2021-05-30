@@ -141,11 +141,7 @@ public class ChangeUsernameActivity extends AppCompatActivity {
                         }
                     });
 
-
-
                 }
-
-
 
             }
         });
