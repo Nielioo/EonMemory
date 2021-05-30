@@ -16,23 +16,42 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.google.android.material.bottomnavigation.BottomNavigationView;
+import com.google.android.material.textfield.TextInputEditText;
+import com.google.android.material.textfield.TextInputLayout;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.firestore.DocumentReference;
+import com.google.firebase.firestore.FieldValue;
+import com.google.firebase.firestore.FirebaseFirestore;
 
 public class HomePageActivity extends AppCompatActivity {
 
     private Toolbar home_toolbar;
     private BottomNavigationView home_bottomNavigation;
     private Dialog createCategory_dialog;
+    private TextInputLayout createCategory_textInput_category;
     private TextView createCategory_textView_create, createCategory_textView_cancel;
+
+    FirebaseAuth mAuth;
+    FirebaseFirestore fStore;
+    String userID;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_home_page);
 
+        initFirebase();
         initView();
         setBottomNavigation();
         setListener();
         setDialog();
+    }
+
+    private void createCategory(String category) {
+        DocumentReference categoryList = fStore.collection("user_collection").document(userID)
+                .collection("category_collection").document("category_list");
+
+        categoryList.update("category", FieldValue.arrayUnion(category));
     }
 
     private void setDialog() {
@@ -43,12 +62,18 @@ public class HomePageActivity extends AppCompatActivity {
         createCategory_dialog.getWindow().setLayout(ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT);
         createCategory_dialog.getWindow().addFlags(WindowManager.LayoutParams.FLAG_DIM_BEHIND);
 
+        createCategory_textInput_category = createCategory_dialog.findViewById(R.id.createCategory_textInput_category);
         createCategory_textView_create = createCategory_dialog.findViewById(R.id.createCategory_textView_create);
         createCategory_textView_cancel = createCategory_dialog.findViewById(R.id.createCategory_textView_cancel);
 
         createCategory_textView_create.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                String category = createCategory_textInput_category.getEditText().getText().toString().trim();
+
+                createCategory(category);
+
+                createCategory_dialog.dismiss();
                 Toast.makeText(getBaseContext(), "Category created", Toast.LENGTH_SHORT).show();
             }
         });
@@ -115,5 +140,11 @@ public class HomePageActivity extends AppCompatActivity {
         home_bottomNavigation = findViewById(R.id.home_bottomNavigation);
 
         getSupportFragmentManager().beginTransaction().replace(R.id.home_fragmentContainer, new TaskFragment()).commit();
+    }
+
+    private void initFirebase() {
+        mAuth = FirebaseAuth.getInstance();
+        fStore = FirebaseFirestore.getInstance();
+        userID = mAuth.getCurrentUser().getUid();
     }
 }
