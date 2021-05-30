@@ -113,6 +113,9 @@ public class SignInActivity extends AppCompatActivity {
         sign_in_email_textInput = findViewById(R.id.sign_in_email_textInput);
         sign_in_password_textInput = findViewById(R.id.sign_in_password_textInput);
         sign_in_sign_in_button = findViewById(R.id.sign_in_sign_in_button);
+
+        sign_in_sign_in_button.setEnabled(false);
+        sign_in_sign_in_button.setClickable(false);
     }
 
 }
