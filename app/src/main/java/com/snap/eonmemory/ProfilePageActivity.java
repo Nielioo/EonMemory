@@ -1,7 +1,10 @@
 package com.snap.eonmemory;
 
+import android.app.Activity;
 import android.content.Intent;
+import android.net.Uri;
 import android.os.Bundle;
+import android.provider.MediaStore;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
@@ -25,6 +28,9 @@ import com.google.firebase.firestore.EventListener;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.FirebaseFirestoreException;
 import com.google.firebase.firestore.SetOptions;
+import com.google.firebase.storage.FirebaseStorage;
+import com.google.firebase.storage.StorageReference;
+import com.google.firebase.storage.UploadTask;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -40,6 +46,8 @@ public class ProfilePageActivity extends AppCompatActivity {
     FirebaseFirestore fStore;
     String userID;
 
+    StorageReference storageReference;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -49,6 +57,7 @@ public class ProfilePageActivity extends AppCompatActivity {
 
         mAuth = FirebaseAuth.getInstance();
         fStore = FirebaseFirestore.getInstance();
+        storageReference = FirebaseStorage.getInstance().getReference();
 
         userID = mAuth.getCurrentUser().getUid();
 
@@ -61,11 +70,23 @@ public class ProfilePageActivity extends AppCompatActivity {
             }
         });
 
+        profile_back_imageView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                intent = new Intent(getBaseContext(), HomePageActivity.class);
+                intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
+
+                finish();
+                startActivity(intent);
+            }
+        });
+
         profile_edit_image_imageView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
 
-                Intent openGalleryIntent = new Intent();
+                Intent openGalleryIntent = new Intent(Intent.ACTION_PICK, MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
+                startActivityForResult(openGalleryIntent, 1000);
 
             }
         });
@@ -115,6 +136,39 @@ public class ProfilePageActivity extends AppCompatActivity {
             }
         });
 
+    }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+
+        if(requestCode == 1000){
+            if(resultCode == Activity.RESULT_OK){
+                Uri imageUri = data.getData();
+                profile_image_imageView.setImageURI(imageUri);
+
+                uploadImageToFirebase(imageUri);
+
+            }
+        }
+
+    }
+
+    private void uploadImageToFirebase(Uri imageUri) {
+        StorageReference imageReference = storageReference.child("profile_picture.png");
+        imageReference.putFile(imageUri).addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
+            @Override
+            public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
+                Toast.makeText(ProfilePageActivity.this, "Image Uploaded!", Toast.LENGTH_SHORT).show();
+                imageReference.getDownloadUrl().addOnSuccessListener()
+            }
+        }).addOnFailureListener(new OnFailureListener() {
+            @Override
+            public void onFailure(Exception e) {
+                Toast.makeText(ProfilePageActivity.this, "Failed to upload image", Toast.LENGTH_SHORT).show();
+                Log.d("error", e.toString());
+            }
+        });
     }
 
     private void initialize() {
