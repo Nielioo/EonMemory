@@ -19,13 +19,21 @@ import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.JsonObjectRequest;
 import com.android.volley.toolbox.Volley;
+import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.firestore.CollectionReference;
+import com.google.firebase.firestore.DocumentReference;
+import com.google.firebase.firestore.FirebaseFirestore;
 
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.Map;
 
 import model.Task;
 
@@ -38,12 +46,17 @@ public class TaskFragment extends Fragment implements OnCardClickListener {
     private ArrayList<Task> taskList;
     private TaskRVAdapter adapter;
 
+    private FirebaseAuth mAuth;
+    private FirebaseFirestore fStore;
+    private String userID;
+
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         view = inflater.inflate(R.layout.fragment_task, container, false);
 
+        initFirebase();
         initView();
         setRecyclerView();
 //        loadDataDB();
@@ -51,6 +64,14 @@ public class TaskFragment extends Fragment implements OnCardClickListener {
         setSwipeRefresh();
 
         return view;
+    }
+
+    @Override
+    public void onClick(int position) {
+        int id = taskList.get(position).getId();
+        Intent intent = new Intent(getContext(), EditTaskActivity.class);
+        intent.putExtra("id", id);
+        startActivity(intent);
     }
 
     private void setSwipeRefresh() {
@@ -136,11 +157,9 @@ public class TaskFragment extends Fragment implements OnCardClickListener {
         adapter = new TaskRVAdapter(taskList, this); // Add card listener later
     }
 
-    @Override
-    public void onClick(int position) {
-        int id = taskList.get(position).getId();
-        Intent intent = new Intent(getContext(), EditTaskActivity.class);
-        intent.putExtra("id", id);
-        startActivity(intent);
+    private void initFirebase() {
+        mAuth = FirebaseAuth.getInstance();
+        fStore = FirebaseFirestore.getInstance();
+        userID = mAuth.getCurrentUser().getUid();
     }
 }
