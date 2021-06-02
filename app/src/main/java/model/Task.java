@@ -1,10 +1,14 @@
 package model;
 
+import com.google.firebase.Timestamp;
 import com.google.firebase.firestore.FieldValue;
 
+import java.sql.Time;
+
 public class Task extends TaskId {
-    public int status;
-    public String title, description, category, due_date, time, created, updated;
+    private int status;
+    private String title, description, category, due_date, time;
+    private Timestamp created, updated;
 
     public int getStatus() {
         return status;
@@ -54,19 +58,19 @@ public class Task extends TaskId {
         this.time = time;
     }
 
-    public String getCreated() {
+    public Timestamp getCreated() {
         return created;
     }
 
-    public void setCreated(String created) {
+    public void setCreated(Timestamp created) {
         this.created = created;
     }
 
-    public String getUpdated() {
+    public Timestamp getUpdated() {
         return updated;
     }
 
-    public void setUpdated(String updated) {
+    public void setUpdated(Timestamp updated) {
         this.updated = updated;
     }
 }
