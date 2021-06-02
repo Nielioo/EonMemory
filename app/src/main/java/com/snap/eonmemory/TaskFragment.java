@@ -3,6 +3,7 @@ package com.snap.eonmemory;
 import android.content.Intent;
 import android.os.Bundle;
 
+import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
@@ -24,14 +25,20 @@ import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.firestore.CollectionReference;
+import com.google.firebase.firestore.DocumentChange;
 import com.google.firebase.firestore.DocumentReference;
+import com.google.firebase.firestore.DocumentSnapshot;
+import com.google.firebase.firestore.EventListener;
 import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.firebase.firestore.FirebaseFirestoreException;
+import com.google.firebase.firestore.QuerySnapshot;
 
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -59,7 +66,7 @@ public class TaskFragment extends Fragment implements OnCardClickListener {
         initFirebase();
         initView();
         setRecyclerView();
-//        loadDataDB();
+        loadTask();
         setListener();
         setSwipeRefresh();
 
@@ -68,17 +75,17 @@ public class TaskFragment extends Fragment implements OnCardClickListener {
 
     @Override
     public void onClick(int position) {
-        int id = taskList.get(position).getId();
-        Intent intent = new Intent(getContext(), EditTaskActivity.class);
-        intent.putExtra("id", id);
-        startActivity(intent);
+//        int id = taskList.get(position).getId();
+//        Intent intent = new Intent(getContext(), EditTaskActivity.class);
+//        intent.putExtra("id", id);
+//        startActivity(intent);
     }
 
     private void setSwipeRefresh() {
         task_swipeRefresh.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
             @Override
             public void onRefresh() {
-                loadDataDB();
+//                loadDataDB();
 
                 task_swipeRefresh.setRefreshing(false);
             }
@@ -95,52 +102,33 @@ public class TaskFragment extends Fragment implements OnCardClickListener {
         });
     }
 
-    private void loadDataDB() {
-        // Clear arraylist to prevent same data to be loaded twice
-        taskList.clear();
+    private void loadTask() {
+        CollectionReference taskReference = fStore.collection("user_collection")
+                .document(userID).collection("task_collection");
 
-        // Localhost
-        String url = "http://192.168.1.6/EonMemory/EonMemoryDB/ReadAllTask.php";
+        taskReference.addSnapshotListener(new EventListener<QuerySnapshot>() {
+            @Override
+            public void onEvent(@Nullable QuerySnapshot value, @Nullable FirebaseFirestoreException error) {
+                // For each document loop
+                for (DocumentChange documentChange : value.getDocumentChanges()) {
+                    // If it's new
+                    if (documentChange.getType() == DocumentChange.Type.ADDED) {
+                        // Get the document ID
+                        String id = documentChange.getDocument().getId();
+                        Task task = documentChange.getDocument().toObject(Task.class).withId(id);
 
-        RequestQueue queue = Volley.newRequestQueue(getContext());
-
-        JsonObjectRequest request = new JsonObjectRequest(Request.Method.GET, url, null,
-                new Response.Listener<JSONObject>() {
-                    @Override
-                    public void onResponse(JSONObject response) {
-                        try {
-                            JSONArray jsonItem = response.getJSONArray("task");
-                            for (int i = 0; i < jsonItem.length(); i++) {
-                                JSONObject objectItem = jsonItem.getJSONObject(i);
-
-                                // Get task details
-                                Task newTask = new Task();
-                                newTask.setId(objectItem.getInt("id"));
-                                newTask.setUsername(objectItem.getString("username"));
-                                newTask.setTitle(objectItem.getString("title"));
-                                newTask.setDescription(objectItem.getString("description"));
-                                newTask.setCategory(objectItem.getString("category"));
-                                newTask.setDue_date(objectItem.getString("due_date"));
-                                newTask.setTime(objectItem.getString("time"));
-                                newTask.setCreated(objectItem.getString("created"));
-                                newTask.setUpdated(objectItem.getString("updated"));
-                                taskList.add(newTask);
-                            }
-                            adapter.notifyDataSetChanged();
-                        } catch (JSONException e) {
-                            e.printStackTrace();
-                        }
-                    }
-                },
-                new Response.ErrorListener() {
-                    @Override
-                    public void onErrorResponse(VolleyError error) {
-                        Toast.makeText(getContext(), error.toString(), Toast.LENGTH_SHORT).show();
+                        // Add task to taskList
+                        taskList.add(task);
+                        adapter.notifyDataSetChanged();
                     }
                 }
-        );
 
-        queue.add(request);
+                // Reverse the order as newest first
+                Collections.reverse(taskList);
+            }
+        });
+
+        Toast.makeText(getContext(), String.valueOf(taskList.size()), Toast.LENGTH_SHORT).show();
     }
 
     private void setRecyclerView() {

@@ -40,10 +40,7 @@ import com.google.android.material.textfield.TextInputLayout;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.ServerValue;
 import com.google.firebase.firestore.CollectionReference;
-import com.google.firebase.firestore.DocumentReference;
-import com.google.firebase.firestore.FieldValue;
 import com.google.firebase.firestore.FirebaseFirestore;
-import com.google.firebase.firestore.ServerTimestamp;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -92,7 +89,7 @@ public class CreateTaskFragment extends BottomSheetDialogFragment {
 
         Map<String, Object> task = new HashMap<>();
         task.put("title", title);
-        task.put("created", FieldValue.serverTimestamp());
+        task.put("status", 0);
 
         taskReference.add(task).addOnFailureListener(new OnFailureListener() {
             @Override

@@ -4,10 +4,15 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.CheckBox;
+import android.widget.CompoundButton;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
+
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.firestore.DocumentReference;
+import com.google.firebase.firestore.FirebaseFirestore;
 
 import java.util.ArrayList;
 
@@ -17,6 +22,9 @@ public class TaskRVAdapter extends RecyclerView.Adapter<TaskRVAdapter.TaskViewHo
 
     private ArrayList<Task> taskList;
     private OnCardClickListener cardClickListener;
+    private FirebaseAuth mAuth;
+    private FirebaseFirestore fStore;
+    private String userID;
 
     public TaskRVAdapter(ArrayList<Task> taskList, OnCardClickListener cardListener) {
         this.taskList = taskList;
@@ -30,13 +38,40 @@ public class TaskRVAdapter extends RecyclerView.Adapter<TaskRVAdapter.TaskViewHo
         // Set view
         LayoutInflater layoutInflater = LayoutInflater.from(parent.getContext());
         View view = layoutInflater.inflate(R.layout.cardview_task, parent, false);
+
+        // Initialize
+        mAuth = FirebaseAuth.getInstance();
+        fStore = FirebaseFirestore.getInstance();
+        userID = mAuth.getCurrentUser().getUid();
+
         return new TaskViewHolder(view);
     }
 
     @Override
     public void onBindViewHolder(@NonNull TaskRVAdapter.TaskViewHolder holder, int position) {
         // Set elements
-        holder.cardView_textView_title.setText(taskList.get(position).getTitle());
+        Task task = taskList.get(position);
+        holder.cardView_textView_title.setText(task.getTitle());
+        holder.cardView_checkBox_task.setChecked(toBoolean(task.getStatus()));
+        // Add etc
+
+        holder.cardView_checkBox_task.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+                DocumentReference taskReference = fStore.collection("user_collection").document(userID)
+                        .collection("task_collection").document(task.TaskId);
+
+                if (isChecked) {
+                    taskReference.update("status", 1);
+                } else {
+                    taskReference.update("status", 0);
+                }
+            }
+        });
+    }
+
+    private Boolean toBoolean(int status) {
+        return status != 0;
     }
 
     @Override
