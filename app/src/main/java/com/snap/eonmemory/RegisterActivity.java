@@ -26,9 +26,6 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.regex.Pattern;
 
-import model.User;
-import model.UserList;
-
 public class RegisterActivity extends AppCompatActivity {
 
     ImageView register_back_imageView;
@@ -164,8 +161,6 @@ public class RegisterActivity extends AppCompatActivity {
                         @Override
                         public void onComplete(Task<AuthResult> task) {
                             if (task.isSuccessful()) {
-                                User newUser = new User(username, email, password);
-                                UserList.addUserToUserList(newUser);
 
                                 userID = mAuth.getCurrentUser().getUid();
                                 DocumentReference userReference = fStore.collection("user_collection").document(userID);
@@ -196,7 +191,6 @@ public class RegisterActivity extends AppCompatActivity {
                             }
                         }
                     });
-
 
                 }
 
