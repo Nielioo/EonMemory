@@ -16,6 +16,9 @@ import com.google.android.material.textfield.TextInputLayout;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
 
+import model.User;
+import model.UserList;
+
 public class SignInActivity extends AppCompatActivity {
 
     ImageView sign_in_back_imageView;
@@ -83,8 +86,10 @@ public class SignInActivity extends AppCompatActivity {
                     mAuth.signInWithEmailAndPassword(email, password).addOnSuccessListener(new OnSuccessListener<AuthResult>() {
                         @Override
                         public void onSuccess(AuthResult authResult) {
+                            User thisUser = UserList.getUser(email, password);
 
                             intent = new Intent(getBaseContext(), ProfilePageActivity.class);
+                            intent.putExtra("thisUser", thisUser);
                             Toast.makeText(SignInActivity.this, "Login Successful", Toast.LENGTH_SHORT).show();
 
                             sign_in_email_textInput.getEditText().setText("");
