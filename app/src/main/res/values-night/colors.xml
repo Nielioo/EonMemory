@@ -10,11 +10,6 @@
     <color name="saveButtonEnabled">@color/blue</color>
     <color name="saveButtonDisabled">#1FFFFFFF</color>
 
-    <!--  Create Category  -->
-    <color name="createCategoryButtonCreateText">@color/gray_900</color>
-    <color name="createCategoryButtonCancelText">@color/gray_500</color>
-    <color name="createCategoryDialog">@color/black</color>
-
     <!--  Bottom Sheet Dialog  -->
     <color name="create_task_shape">@color/black</color>
 </resources>
