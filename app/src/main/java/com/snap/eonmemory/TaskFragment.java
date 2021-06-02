@@ -46,7 +46,7 @@ public class TaskFragment extends Fragment implements OnCardClickListener {
 
         initView();
         setRecyclerView();
-        loadDataDB();
+//        loadDataDB();
         setListener();
         setSwipeRefresh();
 

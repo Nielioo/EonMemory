@@ -46,7 +46,6 @@ public class CreateTaskFragment extends BottomSheetDialogFragment {
     private Button createTask_button_category;
     private ImageButton createTask_imageButton_calendar, createTask_imageButton_save;
     private PopupMenu categoryList;
-    private int maxVarChar;
     private boolean validateTitle;
 
     public CreateTaskFragment() {
@@ -70,17 +69,14 @@ public class CreateTaskFragment extends BottomSheetDialogFragment {
         return view;
     }
 
-    private void uploadDataDB(Task task) {
-        String url = "http://192.168.1.6/EonMemory/EonMemoryDB/CreateTask.php";
-        RequestQueue queue = Volley.newRequestQueue(getContext());
+    // Using Firebase
+    private void createTask(String title) {
+        CollectionReference taskReference = fStore.collection("user_collection")
+                .document(userID).collection("task_collection");
 
-        StringRequest request = new StringRequest(Request.Method.POST, url,
-                new Response.Listener<String>() {
-                    @Override
-                    public void onResponse(String response) {
-
-                    }
-                },
+        Map<String, Object> task = new HashMap<>();
+        task.put("title", title);
+        task.put("created", FieldValue.serverTimestamp());
 
                 new Response.ErrorListener() {
                     @Override
@@ -156,21 +152,21 @@ public class CreateTaskFragment extends BottomSheetDialogFragment {
                 // Save task to database
                 String title = createTask_TILayout_title.getEditText().getText().toString().trim();
 
-                if (title.length() > maxVarChar) {
-                    Toast.makeText(getContext(), "Title must not exceed 255 characters", Toast.LENGTH_SHORT).show();
-                } else {
-                    // Change this
-                    uploadDataDB(new Task("user random", title, "kategori apa"));
+                createTask(title);
 
-                    // Close bottom sheet
-                    dismiss();
-                }
+                // Close bottom sheet
+                dismiss();
             }
         });
     }
 
     private void setPopupMenu() {
         categoryList = new PopupMenu(getContext(), view);
+
+//        DocumentReference category = fStore.collection("user_collection").document(userID)
+//                .collection("category_collection").document("category_list");
+        
+        categoryList.getMenu().add("category 2");
         categoryList.getMenuInflater().inflate(R.menu.category_menu, categoryList.getMenu());
 
         categoryList.setOnMenuItemClickListener(new PopupMenu.OnMenuItemClickListener() {
@@ -192,7 +188,5 @@ public class CreateTaskFragment extends BottomSheetDialogFragment {
 
         createTask_TILayout_title.requestFocus();
         createTask_imageButton_save.setEnabled(false);
-
-        maxVarChar = 255;
     }
 }
