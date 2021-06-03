@@ -1,9 +1,6 @@
 package model;
 
 import com.google.firebase.Timestamp;
-import com.google.firebase.firestore.FieldValue;
-
-import java.sql.Time;
 
 public class Task extends TaskId {
     private int status;

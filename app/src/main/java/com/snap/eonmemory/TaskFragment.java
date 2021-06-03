@@ -1,10 +1,10 @@
 package com.snap.eonmemory;
 
-import android.content.Intent;
 import android.os.Bundle;
 
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentManager;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
@@ -12,23 +12,23 @@ import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Toast;
 
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.firebase.auth.FirebaseAuth;
-import com.google.firebase.firestore.CollectionReference;
-import com.google.firebase.firestore.DocumentChange;
 import com.google.firebase.firestore.EventListener;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.FirebaseFirestoreException;
+import com.google.firebase.firestore.Query;
+import com.google.firebase.firestore.QueryDocumentSnapshot;
 import com.google.firebase.firestore.QuerySnapshot;
 
 import java.util.ArrayList;
-import java.util.Collections;
 
+import model.OnCardClickListener;
 import model.Task;
+import model.setRefresh;
 
-public class TaskFragment extends Fragment implements OnCardClickListener {
+public class TaskFragment extends Fragment implements OnCardClickListener, setRefresh {
 
     private View view;
     private RecyclerView home_recyclerView_task;
@@ -36,6 +36,8 @@ public class TaskFragment extends Fragment implements OnCardClickListener {
     private FloatingActionButton task_FAB_create;
     private ArrayList<Task> taskList;
     private TaskRVAdapter adapter;
+
+    private Query taskReference;
 
     private FirebaseAuth mAuth;
     private FirebaseFirestore fStore;
@@ -65,11 +67,14 @@ public class TaskFragment extends Fragment implements OnCardClickListener {
 //        startActivity(intent);
     }
 
-    private void setSwipeRefresh() {
+    @Override
+    public void setSwipeRefresh() {
         task_swipeRefresh.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
             @Override
             public void onRefresh() {
+                taskList.clear();
                 loadTask();
+//                adapter.notifyDataSetChanged();
 
                 task_swipeRefresh.setRefreshing(false);
             }
@@ -80,35 +85,33 @@ public class TaskFragment extends Fragment implements OnCardClickListener {
         task_FAB_create.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                CreateTaskFragment createTask = new CreateTaskFragment();
-                createTask.show(getParentFragmentManager(), null);
+                FragmentManager fm = getParentFragmentManager();
+                CreateTaskFragment createTask = new CreateTaskFragment(TaskFragment.this);
+                createTask.show(fm, null);
             }
         });
     }
 
     private void loadTask() {
-        CollectionReference taskReference = fStore.collection("user_collection")
-                .document(userID).collection("task_collection");
+        taskReference = fStore.collection("user_collection")
+                .document(userID).collection("task_collection")
+                .orderBy("created", Query.Direction.DESCENDING);
 
         taskReference.addSnapshotListener(new EventListener<QuerySnapshot>() {
             @Override
             public void onEvent(@Nullable QuerySnapshot value, @Nullable FirebaseFirestoreException error) {
-                // For each document loop
-                for (DocumentChange documentChange : value.getDocumentChanges()) {
-                    // If it's new
-                    if (documentChange.getType() == DocumentChange.Type.ADDED) {
-                        // Get the document ID
-                        String id = documentChange.getDocument().getId();
-                        Task task = documentChange.getDocument().toObject(Task.class).withId(id);
+                taskList.clear();
+
+                for (QueryDocumentSnapshot doc : value) {
+                    if (!value.isEmpty()) {
+                        String id = doc.getId();
+                        Task task = doc.toObject(Task.class).withId(id);
 
                         // Add task to taskList
                         taskList.add(task);
                         adapter.notifyDataSetChanged();
                     }
                 }
-
-                // Reverse the order as newest first
-                Collections.reverse(taskList);
             }
         });
     }

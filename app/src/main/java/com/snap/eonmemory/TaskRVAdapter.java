@@ -16,6 +16,7 @@ import com.google.firebase.firestore.FirebaseFirestore;
 
 import java.util.ArrayList;
 
+import model.OnCardClickListener;
 import model.Task;
 
 public class TaskRVAdapter extends RecyclerView.Adapter<TaskRVAdapter.TaskViewHolder> {
@@ -30,7 +31,6 @@ public class TaskRVAdapter extends RecyclerView.Adapter<TaskRVAdapter.TaskViewHo
         this.taskList = taskList;
         this.cardClickListener = cardListener;
     }
-
 
     @NonNull
     @Override

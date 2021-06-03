@@ -1,4 +1,4 @@
-package com.snap.eonmemory;
+package model;
 
 public interface OnCardClickListener {
     void onClick(int position);
