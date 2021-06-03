@@ -80,7 +80,7 @@ public class ProfilePageActivity extends AppCompatActivity {
         profile_back_imageView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                intent = new Intent(getBaseContext(), HomePageActivity.class);
+                intent = new Intent(getBaseContext(), MainPageActivity.class);
                 intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
 
                 finish();
