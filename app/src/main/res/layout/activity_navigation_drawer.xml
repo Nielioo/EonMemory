@@ -13,7 +13,7 @@
         android:layout_height="wrap_content" />
 
     <include
-        layout="@layout/content_main"
+        layout="@layout/activity_home_page"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content" />
 
@@ -25,4 +25,5 @@
         android:fitsSystemWindows="true"
         app:headerLayout="@layout/header_navigation_drawer"
         app:menu="@menu/navigation_drawer_menu" />
+
 </androidx.drawerlayout.widget.DrawerLayout>
