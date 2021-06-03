@@ -18,9 +18,6 @@
         android:theme="@style/Theme.EonMemory"
         android:usesCleartextTraffic="true">
         <activity
-            android:name=".NavigationDrawerActivity"
-            android:screenOrientation="portrait" />
-        <activity
             android:name=".EditTaskActivity"
             android:screenOrientation="portrait" />
         <activity
