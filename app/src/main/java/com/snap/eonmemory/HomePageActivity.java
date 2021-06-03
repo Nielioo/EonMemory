@@ -1,10 +1,19 @@
 package com.snap.eonmemory;
 
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.widget.Toolbar;
 import androidx.fragment.app.Fragment;
 
+import android.app.Dialog;
 import android.os.Bundle;
+import android.view.Menu;
+import android.view.MenuInflater;
 import android.view.MenuItem;
+import android.view.View;
+import android.view.ViewGroup;
+import android.view.WindowManager;
+import android.widget.TextView;
+import android.widget.Toast;
 
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.google.android.material.textfield.TextInputEditText;
@@ -16,7 +25,7 @@ import com.google.firebase.firestore.FirebaseFirestore;
 
 public class HomePageActivity extends AppCompatActivity {
 
-//    private Toolbar home_toolbar;
+    private Toolbar home_toolbar;
     private BottomNavigationView home_bottomNavigation;
     private Dialog createCategory_dialog;
     private TextInputLayout createCategory_textInput_category;
@@ -34,6 +43,8 @@ public class HomePageActivity extends AppCompatActivity {
         initFirebase();
         initView();
         setBottomNavigation();
+        setListener();
+        setDialog();
     }
 
     private void createCategory(String category) {
@@ -123,9 +134,8 @@ public class HomePageActivity extends AppCompatActivity {
     }
 
     private void initView() {
+        home_toolbar = findViewById(R.id.home_toolbar);
         home_bottomNavigation = findViewById(R.id.home_bottomNavigation);
-
-//        home_toolbar = (Toolbar) findViewById(R.id.home_toolbar);
 //        setSupportActionBar(home_toolbar);
 //        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
