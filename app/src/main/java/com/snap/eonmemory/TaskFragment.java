@@ -1,9 +1,10 @@
 package com.snap.eonmemory;
 
-import android.content.Intent;
 import android.os.Bundle;
 
+import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentManager;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
@@ -11,25 +12,23 @@ import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Toast;
 
-import com.android.volley.Request;
-import com.android.volley.RequestQueue;
-import com.android.volley.Response;
-import com.android.volley.VolleyError;
-import com.android.volley.toolbox.JsonObjectRequest;
-import com.android.volley.toolbox.Volley;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
-
-import org.json.JSONArray;
-import org.json.JSONException;
-import org.json.JSONObject;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.firestore.EventListener;
+import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.firebase.firestore.FirebaseFirestoreException;
+import com.google.firebase.firestore.Query;
+import com.google.firebase.firestore.QueryDocumentSnapshot;
+import com.google.firebase.firestore.QuerySnapshot;
 
 import java.util.ArrayList;
 
+import model.OnCardClickListener;
 import model.Task;
+import model.setRefresh;
 
-public class TaskFragment extends Fragment implements OnCardClickListener {
+public class TaskFragment extends Fragment implements OnCardClickListener, setRefresh {
 
     private View view;
     private RecyclerView home_recyclerView_task;
@@ -38,26 +37,44 @@ public class TaskFragment extends Fragment implements OnCardClickListener {
     private ArrayList<Task> taskList;
     private TaskRVAdapter adapter;
 
+    private Query taskReference;
+
+    private FirebaseAuth mAuth;
+    private FirebaseFirestore fStore;
+    private String userID;
+
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         view = inflater.inflate(R.layout.fragment_task, container, false);
 
+        initFirebase();
         initView();
         setRecyclerView();
-//        loadDataDB();
+        loadTask();
         setListener();
         setSwipeRefresh();
 
         return view;
     }
 
-    private void setSwipeRefresh() {
+    @Override
+    public void onClick(int position) {
+//        int id = taskList.get(position).getId();
+//        Intent intent = new Intent(getContext(), EditTaskActivity.class);
+//        intent.putExtra("id", id);
+//        startActivity(intent);
+    }
+
+    @Override
+    public void setSwipeRefresh() {
         task_swipeRefresh.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
             @Override
             public void onRefresh() {
-                loadDataDB();
+                taskList.clear();
+                loadTask();
+//                adapter.notifyDataSetChanged();
 
                 task_swipeRefresh.setRefreshing(false);
             }
@@ -68,58 +85,35 @@ public class TaskFragment extends Fragment implements OnCardClickListener {
         task_FAB_create.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                CreateTaskFragment createTask = new CreateTaskFragment();
-                createTask.show(getParentFragmentManager(), null);
+                FragmentManager fm = getParentFragmentManager();
+                CreateTaskFragment createTask = new CreateTaskFragment(TaskFragment.this);
+                createTask.show(fm, null);
             }
         });
     }
 
-    private void loadDataDB() {
-        // Clear arraylist to prevent same data to be loaded twice
-        taskList.clear();
+    private void loadTask() {
+        taskReference = fStore.collection("user_collection")
+                .document(userID).collection("task_collection")
+                .orderBy("created", Query.Direction.DESCENDING);
 
-        // Localhost
-        String url = "http://192.168.1.6/EonMemory/EonMemoryDB/ReadAllTask.php";
+        taskReference.addSnapshotListener(new EventListener<QuerySnapshot>() {
+            @Override
+            public void onEvent(@Nullable QuerySnapshot value, @Nullable FirebaseFirestoreException error) {
+                taskList.clear();
 
-        RequestQueue queue = Volley.newRequestQueue(getContext());
+                for (QueryDocumentSnapshot doc : value) {
+                    if (!value.isEmpty()) {
+                        String id = doc.getId();
+                        Task task = doc.toObject(Task.class).withId(id);
 
-        JsonObjectRequest request = new JsonObjectRequest(Request.Method.GET, url, null,
-                new Response.Listener<JSONObject>() {
-                    @Override
-                    public void onResponse(JSONObject response) {
-                        try {
-                            JSONArray jsonItem = response.getJSONArray("task");
-                            for (int i = 0; i < jsonItem.length(); i++) {
-                                JSONObject objectItem = jsonItem.getJSONObject(i);
-
-                                // Get task details
-                                Task newTask = new Task();
-                                newTask.setId(objectItem.getInt("id"));
-                                newTask.setUsername(objectItem.getString("username"));
-                                newTask.setTitle(objectItem.getString("title"));
-                                newTask.setDescription(objectItem.getString("description"));
-                                newTask.setCategory(objectItem.getString("category"));
-                                newTask.setDue_date(objectItem.getString("due_date"));
-                                newTask.setTime(objectItem.getString("time"));
-                                newTask.setCreated(objectItem.getString("created"));
-                                newTask.setUpdated(objectItem.getString("updated"));
-                                taskList.add(newTask);
-                            }
-                            adapter.notifyDataSetChanged();
-                        } catch (JSONException e) {
-                            e.printStackTrace();
-                        }
-                    }
-                },
-                new Response.ErrorListener() {
-                    @Override
-                    public void onErrorResponse(VolleyError error) {
-                        Toast.makeText(getContext(), error.toString(), Toast.LENGTH_SHORT).show();
+                        // Add task to taskList
+                        taskList.add(task);
+                        adapter.notifyDataSetChanged();
                     }
                 }
-        );
-
-        queue.add(request);
+            }
+        });
     }
 
     private void setRecyclerView() {
@@ -136,11 +130,9 @@ public class TaskFragment extends Fragment implements OnCardClickListener {
         adapter = new TaskRVAdapter(taskList, this); // Add card listener later
     }
 
-    @Override
-    public void onClick(int position) {
-        int id = taskList.get(position).getId();
-        Intent intent = new Intent(getContext(), EditTaskActivity.class);
-        intent.putExtra("id", id);
-        startActivity(intent);
+    private void initFirebase() {
+        mAuth = FirebaseAuth.getInstance();
+        fStore = FirebaseFirestore.getInstance();
+        userID = mAuth.getCurrentUser().getUid();
     }
 }

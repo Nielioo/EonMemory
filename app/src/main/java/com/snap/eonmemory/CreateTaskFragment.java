@@ -1,43 +1,34 @@
 package com.snap.eonmemory;
 
-import android.content.DialogInterface;
-import android.content.Intent;
-import android.graphics.Color;
 import android.os.Bundle;
 
 import android.text.Editable;
 import android.text.TextWatcher;
-import android.view.Gravity;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
-import android.view.WindowManager;
 import android.widget.Button;
 import android.widget.ImageButton;
 import android.widget.PopupMenu;
 import android.widget.Toast;
 
+import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
-import androidx.fragment.app.FragmentManager;
 
-import com.android.volley.AuthFailureError;
-import com.android.volley.Request;
-import com.android.volley.RequestQueue;
-import com.android.volley.Response;
-import com.android.volley.VolleyError;
-import com.android.volley.toolbox.StringRequest;
-import com.android.volley.toolbox.Volley;
-import com.google.android.material.bottomsheet.BottomSheetBehavior;
-import com.google.android.material.bottomsheet.BottomSheetDialog;
+import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment;
-import com.google.android.material.textfield.TextInputEditText;
 import com.google.android.material.textfield.TextInputLayout;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.firestore.CollectionReference;
+import com.google.firebase.firestore.FieldValue;
+import com.google.firebase.firestore.FirebaseFirestore;
 
 import java.util.HashMap;
 import java.util.Map;
 
-import model.Task;
+import model.setRefresh;
 
 public class CreateTaskFragment extends BottomSheetDialogFragment {
 
@@ -48,7 +39,14 @@ public class CreateTaskFragment extends BottomSheetDialogFragment {
     private PopupMenu categoryList;
     private boolean validateTitle;
 
-    public CreateTaskFragment() {
+    private FirebaseAuth mAuth;
+    private FirebaseFirestore fStore;
+    private String userID;
+
+    private setRefresh refresh;
+
+    public CreateTaskFragment(setRefresh refresh) {
+        this.refresh = refresh;
     }
 
     @Override
@@ -63,6 +61,7 @@ public class CreateTaskFragment extends BottomSheetDialogFragment {
         // Inflate the layout for this fragment
         view = inflater.inflate(R.layout.fragment_create_task, container, false);
 
+        initFirebase();
         initView();
         setListener();
 
@@ -76,27 +75,17 @@ public class CreateTaskFragment extends BottomSheetDialogFragment {
 
         Map<String, Object> task = new HashMap<>();
         task.put("title", title);
+        task.put("status", 0);
         task.put("created", FieldValue.serverTimestamp());
 
-                new Response.ErrorListener() {
-                    @Override
-                    public void onErrorResponse(VolleyError error) {
-                        Toast.makeText(getContext(), error.toString(), Toast.LENGTH_SHORT).show();
-                    }
-                }
-        ){
+        taskReference.add(task).addOnFailureListener(new OnFailureListener() {
             @Override
-            protected Map<String, String> getParams() throws AuthFailureError {
-                Map<String, String> data = new HashMap<>();
-                data.put("username", task.getUsername());
-                data.put("title", task.getTitle());
-                data.put("category", task.getCategory());
-
-                return data;
+            public void onFailure(@NonNull Exception e) {
+                Log.d("error", e.toString());
             }
-        };
+        });
 
-        queue.add(request);
+        dismiss();
     }
 
     private void isSaveValid(boolean validateTitle) {
@@ -154,8 +143,7 @@ public class CreateTaskFragment extends BottomSheetDialogFragment {
 
                 createTask(title);
 
-                // Close bottom sheet
-                dismiss();
+                refresh.setSwipeRefresh();
             }
         });
     }
@@ -165,7 +153,7 @@ public class CreateTaskFragment extends BottomSheetDialogFragment {
 
 //        DocumentReference category = fStore.collection("user_collection").document(userID)
 //                .collection("category_collection").document("category_list");
-        
+
         categoryList.getMenu().add("category 2");
         categoryList.getMenuInflater().inflate(R.menu.category_menu, categoryList.getMenu());
 
@@ -188,5 +176,11 @@ public class CreateTaskFragment extends BottomSheetDialogFragment {
 
         createTask_TILayout_title.requestFocus();
         createTask_imageButton_save.setEnabled(false);
+    }
+
+    private void initFirebase() {
+        mAuth = FirebaseAuth.getInstance();
+        fStore = FirebaseFirestore.getInstance();
+        userID = mAuth.getCurrentUser().getUid();
     }
 }
