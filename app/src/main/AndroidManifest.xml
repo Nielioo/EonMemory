@@ -17,7 +17,11 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.EonMemory"
         android:usesCleartextTraffic="true">
-        <activity android:name=".NavigationDrawerActivity"></activity>
+        <activity android:name=".NavigationDrawerActivity"><intent-filter>
+            <action android:name="android.intent.action.MAIN" />
+
+            <category android:name="android.intent.category.LAUNCHER" />
+        </intent-filter></activity>
         <activity
             android:name=".EditTaskActivity"
             android:screenOrientation="portrait" />
@@ -51,11 +55,7 @@
         <activity
             android:name=".SplashScreenActivity"
             android:screenOrientation="portrait">
-            <intent-filter>
-                <action android:name="android.intent.action.MAIN" />
 
-                <category android:name="android.intent.category.LAUNCHER" />
-            </intent-filter>
         </activity>
 
         <meta-data
