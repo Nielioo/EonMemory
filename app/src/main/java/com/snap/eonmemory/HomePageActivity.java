@@ -156,7 +156,7 @@ public class HomePageActivity extends AppCompatActivity implements NavigationVie
 //        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
         drawer = findViewById(R.id.drawer);
-        drawer_navigation_view = findViewById(R.id.drawer_navigation_view);
+        drawer_navigation_view = findViewById(R.id.navigation_view);
         drawer_navigation_view.setNavigationItemSelectedListener(this);
 
         setSupportActionBar(home_toolbar);

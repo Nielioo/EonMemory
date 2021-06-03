@@ -17,6 +17,7 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.EonMemory"
         android:usesCleartextTraffic="true">
+        <activity android:name=".MainPageActivity"></activity>
         <activity
             android:name=".EditTaskActivity"
             android:screenOrientation="portrait" />
@@ -37,9 +38,7 @@
             android:screenOrientation="portrait" />
         <activity
             android:name=".HomePageActivity"
-            android:screenOrientation="portrait">
-
-        </activity>
+            android:screenOrientation="portrait"></activity>
         <activity
             android:name=".RegisterActivity"
             android:screenOrientation="portrait" />

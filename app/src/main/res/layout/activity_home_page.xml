@@ -8,12 +8,12 @@
     tools:context=".HomePageActivity">
 
     <com.google.android.material.navigation.NavigationView
-        android:id="@+id/drawer_navigation_view"
+        android:id="@+id/navigation_view"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:layout_gravity="start"
         android:fitsSystemWindows="true"
-        app:headerLayout="@layout/header_navigation_drawer"
+        app:headerLayout="@layout/drawer_header"
         app:menu="@menu/navigation_drawer_menu" >
 
     </com.google.android.material.navigation.NavigationView>

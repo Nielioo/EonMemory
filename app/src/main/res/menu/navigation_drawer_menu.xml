@@ -8,6 +8,7 @@
                 android:title="Profile" />
             <item
                 android:id="@+id/menu_settings"
+                android:icon="@drawable/ic_baseline_settings_black"
                 android:title="Settings" />
         </menu>
     </item>
@@ -15,12 +16,15 @@
         <menu>
             <item
                 android:id="@+id/menu_task"
+                android:icon="@drawable/ic_baseline_assignment_24"
                 android:title="Task" />
             <item
                 android:id="@+id/menu_calendar"
+                android:icon="@drawable/ic_baseline_calendar_today_24"
                 android:title="Calendar" />
             <item
                 android:id="@+id/menu_note"
+                android:icon="@drawable/ic_baseline_text_snippet_24"
                 android:title="Note" />
         </menu>
     </item>
