@@ -21,7 +21,8 @@
             android:background="?attr/colorPrimary"
             android:minHeight="?attr/actionBarSize"
             android:visibility="visible"
-            app:menu="@menu/home_toolbar_menu" />
+            app:menu="@menu/home_toolbar_menu"
+            app:title="Eon Memory" />
     </com.google.android.material.appbar.AppBarLayout>
 
 </androidx.constraintlayout.widget.ConstraintLayout>

@@ -118,7 +118,6 @@ public class EditTaskActivity extends AppCompatActivity implements setRefresh {
                         finish();
                         break;
                 }
-
                 return true;
             }
         });
@@ -132,6 +131,7 @@ public class EditTaskActivity extends AppCompatActivity implements setRefresh {
         taskReference.addSnapshotListener(new EventListener<DocumentSnapshot>() {
             @Override
             public void onEvent(@Nullable DocumentSnapshot value, @Nullable FirebaseFirestoreException error) {
+                editTask_toolbar.setTitle(value.getString("category"));
                 editTask_TILayout_title.getEditText().setText(value.getString("title"));
                 editTask_TILayout_description.getEditText().setText(value.getString("description"));
             }

@@ -236,18 +236,21 @@ public class MainPageActivity extends AppCompatActivity implements NavigationVie
             fragmentTransaction = fragmentManager.beginTransaction();
             fragmentTransaction.replace(R.id.main_container, new TaskFragment());
             fragmentTransaction.commit();
+            main_toolbar.setTitle("Task");
         }
         if (item.getItemId() == R.id.menu_calendar) {
             fragmentManager = getSupportFragmentManager();
             fragmentTransaction = fragmentManager.beginTransaction();
             fragmentTransaction.replace(R.id.main_container, new CalendarFragment());
             fragmentTransaction.commit();
+            main_toolbar.setTitle("Calendar");
         }
         if (item.getItemId() == R.id.menu_note) {
             fragmentManager = getSupportFragmentManager();
             fragmentTransaction = fragmentManager.beginTransaction();
             fragmentTransaction.replace(R.id.main_container, new NoteFragment());
             fragmentTransaction.commit();
+//            main_toolbar.setTitle("Note");
         }
         return true;
     }

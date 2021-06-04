@@ -3,16 +3,16 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="175dp"
+    android:layout_height="125dp"
     android:background="@color/amber_500">
 
     <androidx.cardview.widget.CardView
         android:id="@+id/cardView5"
-        android:layout_width="120dp"
-        android:layout_height="120dp"
-        android:layout_marginStart="36dp"
+        android:layout_width="80dp"
+        android:layout_height="80dp"
+        android:layout_marginStart="24dp"
         app:cardBackgroundColor="@color/white"
-        app:cardCornerRadius="60dp"
+        app:cardCornerRadius="40dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent">
@@ -38,14 +38,13 @@
         android:id="@+id/drawer_username"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginStart="24dp"
-        android:layout_marginTop="20dp"
+        android:layout_marginStart="12dp"
         android:fontFamily="@font/roboto_bold"
         android:text="Mona Megistus"
         android:textColor="@color/gray_900"
-        android:textSize="18sp"
+        android:textSize="16sp"
         app:layout_constraintBottom_toBottomOf="@+id/cardView5"
         app:layout_constraintStart_toEndOf="@+id/cardView5"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintTop_toTopOf="@+id/cardView5" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>
