@@ -22,12 +22,22 @@ import com.google.android.material.bottomsheet.BottomSheetDialogFragment;
 import com.google.android.material.textfield.TextInputLayout;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.firestore.CollectionReference;
+import com.google.firebase.firestore.DocumentReference;
+import com.google.firebase.firestore.DocumentSnapshot;
+import com.google.firebase.firestore.EventListener;
 import com.google.firebase.firestore.FieldValue;
 import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.firebase.firestore.FirebaseFirestoreException;
+import com.google.firebase.firestore.Query;
+import com.google.firebase.firestore.QueryDocumentSnapshot;
+import com.google.firebase.firestore.QuerySnapshot;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
 
+import model.Category;
+import model.Task;
 import model.setRefresh;
 
 public class CreateTaskFragment extends BottomSheetDialogFragment {
@@ -38,6 +48,8 @@ public class CreateTaskFragment extends BottomSheetDialogFragment {
     private ImageButton createTask_imageButton_calendar, createTask_imageButton_save;
     private PopupMenu categoryList;
     private boolean validateTitle;
+
+    private ArrayList<String> categoryItemList;
 
     private FirebaseAuth mAuth;
     private FirebaseFirestore fStore;
@@ -152,21 +164,34 @@ public class CreateTaskFragment extends BottomSheetDialogFragment {
     private void setPopupMenu() {
         categoryList = new PopupMenu(getContext(), view);
 
-//        DocumentReference category = fStore.collection("user_collection").document(userID)
-//                .collection("category_collection").document("category_list");
+        DocumentReference categoryReference = fStore.collection("user_collection").document(userID)
+                .collection("category_collection").document("category_list");
 
-        categoryList.getMenu().add("category 2");
-        categoryList.getMenuInflater().inflate(R.menu.category_menu, categoryList.getMenu());
-
-        categoryList.setOnMenuItemClickListener(new PopupMenu.OnMenuItemClickListener() {
+        categoryReference.addSnapshotListener(new EventListener<DocumentSnapshot>() {
             @Override
-            public boolean onMenuItemClick(MenuItem item) {
-                Toast.makeText(getContext(), "You clicked " + item.getTitle(), Toast.LENGTH_SHORT).show();
-                return true;
+            public void onEvent(@Nullable DocumentSnapshot value, @Nullable FirebaseFirestoreException error) {
+                Category categoryObj = value.toObject(Category.class);
+
+                categoryItemList = categoryObj.getCategory();
+
+                for (String category : categoryItemList) {
+                    categoryList.getMenu().add(category);
+                }
+
+                categoryList.getMenuInflater().inflate(R.menu.category_menu, categoryList.getMenu());
+
+                categoryList.setOnMenuItemClickListener(new PopupMenu.OnMenuItemClickListener() {
+                    @Override
+                    public boolean onMenuItemClick(MenuItem item) {
+                        createTask_button_category.setText(item.getTitle());
+                        Toast.makeText(getContext(), "You clicked " + item.getTitle(), Toast.LENGTH_SHORT).show();
+                        return true;
+                    }
+                });
+
+                categoryList.show();
             }
         });
-
-        categoryList.show();
     }
 
     private void initView() {

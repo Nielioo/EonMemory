@@ -6,12 +6,14 @@ import androidx.fragment.app.Fragment;
 
 import android.app.Dialog;
 import android.os.Bundle;
+import android.os.Handler;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.WindowManager;
+import android.view.inputmethod.InputMethodManager;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -71,10 +73,22 @@ public class HomePageActivity extends AppCompatActivity {
             public void onClick(View v) {
                 String category = createCategory_textInput_category.getEditText().getText().toString().trim();
 
-                createCategory(category);
+                if (!category.isEmpty()) {
+                    createCategory(category);
 
-                createCategory_dialog.dismiss();
-                Toast.makeText(getBaseContext(), "Category created", Toast.LENGTH_SHORT).show();
+                    createCategory_dialog.dismiss();
+
+                    Handler handler = new Handler();
+
+                    handler.postDelayed(new Runnable() {
+                        @Override
+                        public void run() {
+                            Toast.makeText(getApplicationContext(), "Category created", Toast.LENGTH_SHORT).show();
+                        }
+                    }, 500);
+                } else {
+                    Toast.makeText(getBaseContext(), "Category name can't be empty", Toast.LENGTH_SHORT).show();
+                }
             }
         });
 
@@ -92,8 +106,12 @@ public class HomePageActivity extends AppCompatActivity {
             public boolean onMenuItemClick(MenuItem item) {
                 switch (item.getItemId()) {
                     case R.id.home_toolbar_menu_addCategory:
+                        createCategory_textInput_category.getEditText().setText("");
                         createCategory_dialog.show();
                         createCategory_textInput_category.getEditText().requestFocus();
+
+                        InputMethodManager inputMethodManager = (InputMethodManager) getBaseContext().getSystemService(getBaseContext().INPUT_METHOD_SERVICE);
+                        inputMethodManager.toggleSoftInput(InputMethodManager.SHOW_FORCED, 0);
                         break;
                 }
                 return true;

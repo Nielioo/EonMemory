@@ -53,6 +53,7 @@
         android:paddingEnd="16dp"
         android:singleLine="true"
         android:text="Personal"
+        android:textAllCaps="false"
         android:textColor="@drawable/create_task_category_text_state"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintStart_toStartOf="@+id/createTask_TILayout_title"
