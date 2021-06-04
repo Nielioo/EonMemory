@@ -13,10 +13,12 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 import androidx.core.view.GravityCompat;
 import androidx.drawerlayout.widget.DrawerLayout;
+import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentTransaction;
 
 import com.google.android.gms.tasks.OnSuccessListener;
+import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.google.android.material.navigation.NavigationView;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
@@ -39,6 +41,8 @@ public class MainPageActivity extends AppCompatActivity implements NavigationVie
     TextView drawer_username;
     Intent intent;
 
+    private BottomNavigationView main_bottomNavigation;
+
     FragmentManager fragmentManager;
     FragmentTransaction fragmentTransaction;
 
@@ -55,6 +59,7 @@ public class MainPageActivity extends AppCompatActivity implements NavigationVie
         setContentView(R.layout.activity_main_page);
 
         initialize();
+        setBottomNavigation();
 
         mAuth = FirebaseAuth.getInstance();
         fStore = FirebaseFirestore.getInstance();
@@ -81,6 +86,31 @@ public class MainPageActivity extends AppCompatActivity implements NavigationVie
 
     }
 
+    private void setBottomNavigation() {
+        main_bottomNavigation.setOnNavigationItemSelectedListener(new BottomNavigationView.OnNavigationItemSelectedListener() {
+            @Override
+            public boolean onNavigationItemSelected(MenuItem item) {
+                Fragment fragment = null;
+
+                switch (item.getItemId()) {
+                    case R.id.menu_task:
+                        fragment = new TaskFragment();
+                        break;
+                    case R.id.menu_calendar:
+                        fragment = new CalendarFragment();
+                        break;
+                    case R.id.menu_note:
+                        fragment = new NoteFragment();
+                        break;
+                }
+
+                getSupportFragmentManager().beginTransaction().replace(R.id.main_container, fragment).commit();
+
+                return true;
+            }
+        });
+    }
+
     private void initialize() {
         main_toolbar = findViewById(R.id.main_toolbar);
         setSupportActionBar(main_toolbar);
@@ -94,6 +124,8 @@ public class MainPageActivity extends AppCompatActivity implements NavigationVie
         drawer_layout.addDrawerListener(actionBarDrawerToggle);
         actionBarDrawerToggle.setDrawerIndicatorEnabled(true);
         actionBarDrawerToggle.syncState();
+
+        main_bottomNavigation = findViewById(R.id.bottomNavigationView);
 
         fragmentManager = getSupportFragmentManager();
         fragmentTransaction = fragmentManager.beginTransaction().add(R.id.main_container, new TaskFragment());
