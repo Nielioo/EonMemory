@@ -12,6 +12,7 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.firestore.DocumentReference;
+import com.google.firebase.firestore.FieldValue;
 import com.google.firebase.firestore.FirebaseFirestore;
 
 import java.util.ArrayList;
@@ -22,14 +23,15 @@ import model.Task;
 public class TaskRVAdapter extends RecyclerView.Adapter<TaskRVAdapter.TaskViewHolder> {
 
     private ArrayList<Task> taskList;
-    private OnCardClickListener cardClickListener;
+    private OnCardClickListener cardListener;
+
     private FirebaseAuth mAuth;
     private FirebaseFirestore fStore;
     private String userID;
 
     public TaskRVAdapter(ArrayList<Task> taskList, OnCardClickListener cardListener) {
         this.taskList = taskList;
-        this.cardClickListener = cardListener;
+        this.cardListener = cardListener;
     }
 
     @NonNull
@@ -97,7 +99,7 @@ public class TaskRVAdapter extends RecyclerView.Adapter<TaskRVAdapter.TaskViewHo
             taskView.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    cardClickListener.onClick(getAdapterPosition());
+                    cardListener.onClick(getAdapterPosition());
                 }
             });
 

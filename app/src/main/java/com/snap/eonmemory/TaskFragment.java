@@ -1,5 +1,6 @@
 package com.snap.eonmemory;
 
+import android.content.Intent;
 import android.os.Bundle;
 
 import androidx.annotation.Nullable;
@@ -9,12 +10,16 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 
+import android.os.Parcelable;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Toast;
 
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.firestore.DocumentChange;
+import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.EventListener;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.FirebaseFirestoreException;
@@ -61,10 +66,12 @@ public class TaskFragment extends Fragment implements OnCardClickListener, setRe
 
     @Override
     public void onClick(int position) {
-//        int id = taskList.get(position).getId();
-//        Intent intent = new Intent(getContext(), EditTaskActivity.class);
-//        intent.putExtra("id", id);
-//        startActivity(intent);
+        Task task = taskList.get(position);
+        String taskId = task.TaskId;
+
+        Intent intent = new Intent(getContext(), EditTaskActivity.class);
+        intent.putExtra("taskId", taskId);
+        startActivity(intent);
     }
 
     @Override
@@ -74,7 +81,6 @@ public class TaskFragment extends Fragment implements OnCardClickListener, setRe
             public void onRefresh() {
                 taskList.clear();
                 loadTask();
-//                adapter.notifyDataSetChanged();
 
                 task_swipeRefresh.setRefreshing(false);
             }
@@ -103,7 +109,7 @@ public class TaskFragment extends Fragment implements OnCardClickListener, setRe
                 taskList.clear();
 
                 for (QueryDocumentSnapshot doc : value) {
-                    if (!value.isEmpty()) {
+                    if (doc != null) {
                         String id = doc.getId();
                         Task task = doc.toObject(Task.class).withId(id);
 
@@ -127,7 +133,7 @@ public class TaskFragment extends Fragment implements OnCardClickListener, setRe
         task_swipeRefresh = view.findViewById(R.id.task_swipeRefresh);
         task_FAB_create = view.findViewById(R.id.task_FAB_create);
         taskList = new ArrayList<Task>();
-        adapter = new TaskRVAdapter(taskList, this); // Add card listener later
+        adapter = new TaskRVAdapter(taskList, this);
     }
 
     private void initFirebase() {
