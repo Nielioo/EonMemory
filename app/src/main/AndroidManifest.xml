@@ -17,6 +17,7 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.EonMemory"
         android:usesCleartextTraffic="true">
+        <activity android:name=".EditNoteActivity"></activity>
         <activity
             android:name=".MainPageActivity"
             android:screenOrientation="portrait" />
@@ -40,7 +41,7 @@
             android:screenOrientation="portrait" />
         <activity
             android:name=".HomePageActivity"
-            android:screenOrientation="portrait"></activity>
+            android:screenOrientation="portrait" />
         <activity
             android:name=".RegisterActivity"
             android:screenOrientation="portrait" />
