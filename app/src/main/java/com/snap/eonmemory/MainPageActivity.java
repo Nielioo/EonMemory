@@ -1,12 +1,18 @@
 package com.snap.eonmemory;
 
+import android.app.Dialog;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
+import android.os.Handler;
 import android.view.MenuItem;
 import android.view.View;
+import android.view.ViewGroup;
+import android.view.WindowManager;
+import android.view.inputmethod.InputMethodManager;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.ActionBarDrawerToggle;
@@ -21,11 +27,13 @@ import androidx.fragment.app.FragmentTransaction;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.google.android.material.navigation.NavigationView;
+import com.google.android.material.textfield.TextInputLayout;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.EventListener;
+import com.google.firebase.firestore.FieldValue;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.FirebaseFirestoreException;
 import com.google.firebase.storage.FirebaseStorage;
@@ -39,7 +47,9 @@ public class MainPageActivity extends AppCompatActivity implements NavigationVie
     ActionBarDrawerToggle actionBarDrawerToggle;
     NavigationView drawer_navigation_view;
     ImageView drawer_image;
-    TextView drawer_username;
+    TextView drawer_username, createCategory_textView_create, createCategory_textView_cancel;
+    Dialog createCategory_dialog;
+    TextInputLayout createCategory_textInput_category;
     BottomNavigationView main_bottomNavigation;
     View headerView;
     Intent intent;
@@ -60,6 +70,8 @@ public class MainPageActivity extends AppCompatActivity implements NavigationVie
         setContentView(R.layout.activity_main_page);
 
         initialize();
+        setDialog();
+        setListener();
         setBottomNavigation();
 
         mAuth = FirebaseAuth.getInstance();
@@ -107,6 +119,82 @@ public class MainPageActivity extends AppCompatActivity implements NavigationVie
 
                 getSupportFragmentManager().beginTransaction().replace(R.id.main_container, fragment).commit();
 
+                return true;
+            }
+        });
+    }
+
+    private void createCategory(String category) {
+        DocumentReference categoryList = fStore.collection("user_collection").document(userID)
+                .collection("category_collection").document("category_list");
+
+        categoryList.update("category", FieldValue.arrayUnion(category));
+    }
+
+    private void setDialog() {
+        createCategory_dialog = new Dialog(MainPageActivity.this);
+        createCategory_dialog.setContentView(R.layout.dialog_create_category);
+        createCategory_dialog.getWindow().setBackgroundDrawable(getDrawable(R.drawable.dialog_create_category_shape));
+        createCategory_dialog.getWindow().setElevation(8f);
+        createCategory_dialog.getWindow().setLayout(ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT);
+        createCategory_dialog.getWindow().addFlags(WindowManager.LayoutParams.FLAG_DIM_BEHIND);
+
+        createCategory_textInput_category = createCategory_dialog.findViewById(R.id.createCategory_textInput_category);
+        createCategory_textView_create = createCategory_dialog.findViewById(R.id.createCategory_textView_create);
+        createCategory_textView_cancel = createCategory_dialog.findViewById(R.id.createCategory_textView_cancel);
+
+        createCategory_textView_create.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                String category = createCategory_textInput_category.getEditText().getText().toString().trim();
+
+                if (!category.isEmpty()) {
+                    createCategory(category);
+
+//                    InputMethodManager inputMethodManager = (InputMethodManager) getBaseContext().getSystemService(getBaseContext().INPUT_METHOD_SERVICE);
+//                    inputMethodManager.toggleSoftInput(InputMethodManager.HIDE_IMPLICIT_ONLY, 0);
+
+                    createCategory_dialog.dismiss();
+
+                    Handler handler = new Handler();
+
+                    handler.postDelayed(new Runnable() {
+                        @Override
+                        public void run() {
+                            Toast.makeText(getApplicationContext(), "Category created", Toast.LENGTH_SHORT).show();
+                        }
+                    }, 1000);
+                } else {
+                    Toast.makeText(getBaseContext(), "Category name can't be empty", Toast.LENGTH_SHORT).show();
+                }
+            }
+        });
+
+        createCategory_textView_cancel.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+//                InputMethodManager inputMethodManager = (InputMethodManager) getBaseContext().getSystemService(getBaseContext().INPUT_METHOD_SERVICE);
+//                inputMethodManager.toggleSoftInput(InputMethodManager.HIDE_IMPLICIT_ONLY, 0);
+
+                createCategory_dialog.dismiss();
+            }
+        });
+    }
+
+    private void setListener() {
+        main_toolbar.setOnMenuItemClickListener(new Toolbar.OnMenuItemClickListener() {
+            @Override
+            public boolean onMenuItemClick(MenuItem item) {
+                switch (item.getItemId()) {
+                    case R.id.home_toolbar_menu_addCategory:
+                        createCategory_textInput_category.getEditText().setText("");
+                        createCategory_dialog.show();
+                        createCategory_textInput_category.getEditText().requestFocus();
+
+//                        InputMethodManager inputMethodManager = (InputMethodManager) getBaseContext().getSystemService(getBaseContext().INPUT_METHOD_SERVICE);
+//                        inputMethodManager.toggleSoftInput(InputMethodManager.SHOW_IMPLICIT, 0);
+                        break;
+                }
                 return true;
             }
         });

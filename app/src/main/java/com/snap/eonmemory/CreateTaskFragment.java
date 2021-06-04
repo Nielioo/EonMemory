@@ -81,7 +81,7 @@ public class CreateTaskFragment extends BottomSheetDialogFragment {
     }
 
     // Using Firebase
-    private void createTask(String title) {
+    private void createTask(String title, String category) {
         CollectionReference taskReference = fStore.collection("user_collection")
                 .document(userID).collection("task_collection");
 
@@ -89,6 +89,7 @@ public class CreateTaskFragment extends BottomSheetDialogFragment {
         task.put("title", title);
         task.put("description", "");
         task.put("status", 0);
+        task.put("category", category);
         task.put("created", FieldValue.serverTimestamp());
 
         taskReference.add(task).addOnFailureListener(new OnFailureListener() {
@@ -153,8 +154,9 @@ public class CreateTaskFragment extends BottomSheetDialogFragment {
             public void onClick(View v) {
                 // Save task to database
                 String title = createTask_TILayout_title.getEditText().getText().toString().trim();
+                String category = createTask_button_category.getText().toString().trim();
 
-                createTask(title);
+                createTask(title, category);
 
                 refresh.setSwipeRefresh();
             }
@@ -184,7 +186,7 @@ public class CreateTaskFragment extends BottomSheetDialogFragment {
                     @Override
                     public boolean onMenuItemClick(MenuItem item) {
                         createTask_button_category.setText(item.getTitle());
-                        Toast.makeText(getContext(), "You clicked " + item.getTitle(), Toast.LENGTH_SHORT).show();
+//                        Toast.makeText(getContext(), "You clicked " + item.getTitle(), Toast.LENGTH_SHORT).show();
                         return true;
                     }
                 });
