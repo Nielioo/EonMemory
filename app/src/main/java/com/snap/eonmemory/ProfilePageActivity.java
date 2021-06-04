@@ -125,14 +125,13 @@ public class ProfilePageActivity extends AppCompatActivity {
         profile_sign_out_imageView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                FirebaseFirestore.getInstance().terminate();
                 FirebaseAuth.getInstance().signOut();
 
                 Toast.makeText(ProfilePageActivity.this, "Cya! Have a Nice Day!", Toast.LENGTH_SHORT).show();
 
                 intent = new Intent(getBaseContext(), WelcomePageActivity.class);
-                intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK | Intent.FLAG_ACTIVITY_NEW_TASK);
-
-                finish();
+                intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
                 startActivity(intent);
             }
         });
