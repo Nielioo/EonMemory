@@ -1,5 +1,6 @@
 package com.snap.eonmemory;
 
+import android.app.DatePickerDialog;
 import android.os.Bundle;
 
 import android.text.Editable;
@@ -10,6 +11,7 @@ import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.DatePicker;
 import android.widget.ImageButton;
 import android.widget.PopupMenu;
 import android.widget.Toast;
@@ -33,6 +35,7 @@ import com.google.firebase.firestore.QueryDocumentSnapshot;
 import com.google.firebase.firestore.QuerySnapshot;
 
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -48,6 +51,7 @@ public class CreateTaskFragment extends BottomSheetDialogFragment {
     private ImageButton createTask_imageButton_calendar, createTask_imageButton_save;
     private PopupMenu categoryList;
     private boolean validateTitle;
+    private String dueDate;
 
     private ArrayList<String> categoryItemList;
 
@@ -81,7 +85,7 @@ public class CreateTaskFragment extends BottomSheetDialogFragment {
     }
 
     // Using Firebase
-    private void createTask(String title, String category) {
+    private void createTask(String title, String category, String dueDate) {
         CollectionReference taskReference = fStore.collection("user_collection")
                 .document(userID).collection("task_collection");
 
@@ -89,6 +93,7 @@ public class CreateTaskFragment extends BottomSheetDialogFragment {
         task.put("title", title);
         task.put("description", "");
         task.put("status", 0);
+        task.put("dueDate", dueDate);
         task.put("category", category);
         task.put("created", FieldValue.serverTimestamp());
 
@@ -145,7 +150,23 @@ public class CreateTaskFragment extends BottomSheetDialogFragment {
             @Override
             public void onClick(View v) {
                 // Open calendar picker
-                Toast.makeText(getContext(), "Calendar", Toast.LENGTH_SHORT).show();
+                Calendar calendar = Calendar.getInstance();
+
+                int MONTH = calendar.get(Calendar.MONTH);
+                int YEAR = calendar.get(Calendar.YEAR);
+                int DAY = calendar.get(Calendar.DATE);
+
+                DatePickerDialog datePickerDialog = new DatePickerDialog(getContext(), new DatePickerDialog.OnDateSetListener() {
+                    @Override
+                    public void onDateSet(DatePicker view, int year, int month, int dayOfMonth) {
+                        month = month + 1;
+                        // Set date text later
+
+                        dueDate = dayOfMonth + "/" + month + "/" + year;
+                    }
+                }, YEAR, MONTH, DAY);
+
+                datePickerDialog.show();
             }
         });
 
@@ -156,7 +177,7 @@ public class CreateTaskFragment extends BottomSheetDialogFragment {
                 String title = createTask_TILayout_title.getEditText().getText().toString().trim();
                 String category = createTask_button_category.getText().toString().trim();
 
-                createTask(title, category);
+                createTask(title, category, dueDate);
 
                 refresh.setSwipeRefresh();
             }
@@ -204,6 +225,8 @@ public class CreateTaskFragment extends BottomSheetDialogFragment {
 
         createTask_TILayout_title.requestFocus();
         createTask_imageButton_save.setEnabled(false);
+
+        dueDate = "";
     }
 
     private void initFirebase() {
