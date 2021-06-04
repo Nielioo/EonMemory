@@ -1,10 +1,7 @@
 package com.snap.eonmemory;
 
-import androidx.appcompat.app.AppCompatActivity;
-import androidx.appcompat.widget.Toolbar;
-import androidx.fragment.app.Fragment;
-
 import android.app.Dialog;
+import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
 import android.view.Menu;
@@ -17,25 +14,38 @@ import android.view.inputmethod.InputMethodManager;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import androidx.appcompat.app.ActionBarDrawerToggle;
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.widget.Toolbar;
+import androidx.drawerlayout.widget.DrawerLayout;
+import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentManager;
+import androidx.fragment.app.FragmentTransaction;
+
 import com.google.android.material.bottomnavigation.BottomNavigationView;
-import com.google.android.material.textfield.TextInputEditText;
+import com.google.android.material.navigation.NavigationView;
 import com.google.android.material.textfield.TextInputLayout;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.FieldValue;
 import com.google.firebase.firestore.FirebaseFirestore;
 
-public class HomePageActivity extends AppCompatActivity {
+public class HomePageActivity extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener {
 
+    FirebaseAuth mAuth;
+    FirebaseFirestore fStore;
+    String userID;
+    private DrawerLayout drawer;
+    private ActionBarDrawerToggle drawer_actionBarDrawerToggle;
+    private NavigationView drawer_navigation_view;
+    private FragmentManager fragmentManager;
+    private FragmentTransaction fragmentTransaction;
     private Toolbar home_toolbar;
     private BottomNavigationView home_bottomNavigation;
     private Dialog createCategory_dialog;
     private TextInputLayout createCategory_textInput_category;
     private TextView createCategory_textView_create, createCategory_textView_cancel;
-
-    FirebaseAuth mAuth;
-    FirebaseFirestore fStore;
-    String userID;
+    private Intent intent;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -44,9 +54,17 @@ public class HomePageActivity extends AppCompatActivity {
 
         initFirebase();
         initView();
+
+        drawer_actionBarDrawerToggle = new ActionBarDrawerToggle(this, drawer,
+                home_toolbar, R.string.open, R.string.close);
+        drawer.addDrawerListener(drawer_actionBarDrawerToggle);
+        drawer_actionBarDrawerToggle.setDrawerIndicatorEnabled(true);
+        drawer_actionBarDrawerToggle.syncState();
+
         setBottomNavigation();
         setListener();
         setDialog();
+        drawer_navigation_view.setNavigationItemSelectedListener(this);
     }
 
     private void createCategory(String category) {
@@ -157,6 +175,16 @@ public class HomePageActivity extends AppCompatActivity {
 //        setSupportActionBar(home_toolbar);
 //        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
+        drawer = findViewById(R.id.drawer);
+        drawer_navigation_view = findViewById(R.id.navigation_view);
+        drawer_navigation_view.setNavigationItemSelectedListener(this);
+
+        setSupportActionBar(home_toolbar);
+
+        fragmentManager = getSupportFragmentManager();
+        fragmentTransaction = fragmentManager.beginTransaction().add(R.id.home_fragmentContainer, new TaskFragment());
+        fragmentTransaction.commit();
+
         getSupportFragmentManager().beginTransaction().replace(R.id.home_fragmentContainer, new TaskFragment()).commit();
     }
 
@@ -164,5 +192,35 @@ public class HomePageActivity extends AppCompatActivity {
         mAuth = FirebaseAuth.getInstance();
         fStore = FirebaseFirestore.getInstance();
         userID = mAuth.getCurrentUser().getUid();
+    }
+
+    @Override
+    public boolean onNavigationItemSelected(MenuItem item) {
+        if (item.getItemId() == R.id.menu_profile) {
+
+            intent = new Intent(getBaseContext(), ProfilePageActivity.class);
+            startActivity(intent);
+        }
+        if (item.getItemId() == R.id.menu_settings) {
+
+        }
+        if (item.getItemId() == R.id.menu_task) {
+            fragmentTransaction = fragmentManager.beginTransaction().replace(R.id.home_fragmentContainer, new TaskFragment());
+            fragmentTransaction.commit();
+        }
+        if (item.getItemId() == R.id.menu_calendar) {
+            fragmentTransaction = fragmentManager.beginTransaction().replace(R.id.home_fragmentContainer, new CalendarFragment());
+            fragmentTransaction.commit();
+        }
+        if (item.getItemId() == R.id.menu_note) {
+            fragmentTransaction = fragmentManager.beginTransaction().replace(R.id.home_fragmentContainer, new NoteFragment());
+            fragmentTransaction.commit();
+        }
+        return true;
+    }
+
+    @Override
+    public void onPointerCaptureChanged(boolean hasCapture) {
+
     }
 }

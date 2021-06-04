@@ -122,6 +122,7 @@ public class TaskRVAdapter extends RecyclerView.Adapter<TaskRVAdapter.TaskViewHo
 //                    taskReference.update("updated", FieldValue.serverTimestamp());
                 }
             });
+
         }
     }
 }

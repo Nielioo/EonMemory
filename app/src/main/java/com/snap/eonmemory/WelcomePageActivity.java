@@ -36,7 +36,7 @@ public class WelcomePageActivity extends AppCompatActivity {
         FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
 
         if (user != null) {
-            intent = new Intent(getBaseContext(), ProfilePageActivity.class);
+            intent = new Intent(getBaseContext(), MainPageActivity.class);
             intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
             startActivity(intent);
         }
