@@ -72,7 +72,8 @@ public class MainPageActivity extends AppCompatActivity implements NavigationVie
         profilePictureReference.getDownloadUrl().addOnSuccessListener(new OnSuccessListener<Uri>() {
             @Override
             public void onSuccess(Uri uri) {
-                Picasso.get().load(uri).into(drawer_image);
+//                tempcomment
+//                Picasso.get().load(uri).into(drawer_image);
             }
         });
 
@@ -80,7 +81,8 @@ public class MainPageActivity extends AppCompatActivity implements NavigationVie
         userReference.addSnapshotListener(this, new EventListener<DocumentSnapshot>() {
             @Override
             public void onEvent(DocumentSnapshot documentSnapshot, FirebaseFirestoreException error) {
-                drawer_username.setText(documentSnapshot.getString("username"));
+//                tempcomment
+//                drawer_username.setText(documentSnapshot.getString("username"));
             }
         });
 
