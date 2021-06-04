@@ -4,6 +4,7 @@ import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
 import android.view.MenuItem;
+import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
 
@@ -40,6 +41,7 @@ public class MainPageActivity extends AppCompatActivity implements NavigationVie
     ImageView drawer_image;
     TextView drawer_username;
     BottomNavigationView main_bottomNavigation;
+    View headerView;
     Intent intent;
 
     FragmentManager fragmentManager;
@@ -115,15 +117,16 @@ public class MainPageActivity extends AppCompatActivity implements NavigationVie
         drawer_layout = findViewById(R.id.drawer_layout);
         drawer_navigation_view = findViewById(R.id.drawer_navigation_view);
         drawer_navigation_view.setNavigationItemSelectedListener(this);
-        drawer_image = findViewById(R.id.drawer_image);
-        drawer_username = findViewById(R.id.drawer_username);
+        headerView = drawer_navigation_view.getHeaderView(0);
+        drawer_image = headerView.findViewById(R.id.drawer_image);
+        drawer_username = headerView.findViewById(R.id.drawer_username);
+        main_bottomNavigation = findViewById(R.id.bottomNavigationView);
 
         actionBarDrawerToggle = new ActionBarDrawerToggle(this, drawer_layout, R.string.open, R.string.close);
         drawer_layout.addDrawerListener(actionBarDrawerToggle);
         actionBarDrawerToggle.setDrawerIndicatorEnabled(true);
         actionBarDrawerToggle.syncState();
 
-        main_bottomNavigation = findViewById(R.id.bottomNavigationView);
 
         fragmentManager = getSupportFragmentManager();
         fragmentTransaction = fragmentManager.beginTransaction().add(R.id.main_container, new TaskFragment());
