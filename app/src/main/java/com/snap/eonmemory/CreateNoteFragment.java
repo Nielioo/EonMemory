@@ -12,6 +12,7 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.Toast;
 
@@ -33,7 +34,7 @@ public class CreateNoteFragment extends BottomSheetDialogFragment{
 
     View view;
     TextInputLayout createNote_title_textInput;
-    ImageView createNote_save_imageView;
+    ImageButton createNote_save_imageButton;
 
     boolean validateTitle;
 
@@ -89,7 +90,7 @@ public class CreateNoteFragment extends BottomSheetDialogFragment{
     }
 
     private void isSaveValid(boolean validateTitle) {
-        createNote_save_imageView.setEnabled(validateTitle);
+        createNote_save_imageButton.setEnabled(validateTitle);
     }
 
     private void setListener(){
@@ -119,7 +120,7 @@ public class CreateNoteFragment extends BottomSheetDialogFragment{
             }
         });
 
-        createNote_save_imageView.setOnClickListener(new View.OnClickListener() {
+        createNote_save_imageButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 String title = createNote_title_textInput.getEditText().getText().toString().trim();
@@ -133,9 +134,9 @@ public class CreateNoteFragment extends BottomSheetDialogFragment{
 
     private void initialize() {
         createNote_title_textInput = view.findViewById(R.id.createNote_title_textInput);
-        createNote_save_imageView = view.findViewById(R.id.createNote_save_imageView);
+        createNote_save_imageButton = view.findViewById(R.id.createNote_save_imageButton);
 
         createNote_title_textInput.requestFocus();
-        createNote_save_imageView.setEnabled(false);
+        createNote_save_imageButton.setEnabled(false);
     }
 }

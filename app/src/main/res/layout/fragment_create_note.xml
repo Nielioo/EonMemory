@@ -31,7 +31,7 @@
         app:boxStrokeColor="@color/amber_500"
         app:hintEnabled="false"
         app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toStartOf="@+id/createNote_save_imageView"
+        app:layout_constraintEnd_toStartOf="@+id/createNote_save_imageButton"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent">
 
@@ -43,8 +43,8 @@
             android:maxLines="3" />
     </com.google.android.material.textfield.TextInputLayout>
 
-    <ImageView
-        android:id="@+id/createNote_save_imageView"
+    <ImageButton
+        android:id="@+id/createNote_save_imageButton"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginEnd="16dp"
