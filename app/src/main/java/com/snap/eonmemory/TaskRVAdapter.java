@@ -12,6 +12,7 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.firestore.DocumentReference;
+import com.google.firebase.firestore.FieldValue;
 import com.google.firebase.firestore.FirebaseFirestore;
 
 import java.util.ArrayList;
@@ -22,14 +23,15 @@ import model.Task;
 public class TaskRVAdapter extends RecyclerView.Adapter<TaskRVAdapter.TaskViewHolder> {
 
     private ArrayList<Task> taskList;
-    private OnCardClickListener cardClickListener;
+    private OnCardClickListener cardListener;
+
     private FirebaseAuth mAuth;
     private FirebaseFirestore fStore;
     private String userID;
 
     public TaskRVAdapter(ArrayList<Task> taskList, OnCardClickListener cardListener) {
         this.taskList = taskList;
-        this.cardClickListener = cardListener;
+        this.cardListener = cardListener;
     }
 
     @NonNull
@@ -55,19 +57,20 @@ public class TaskRVAdapter extends RecyclerView.Adapter<TaskRVAdapter.TaskViewHo
         holder.cardView_checkBox_task.setChecked(toBoolean(task.getStatus()));
         // Add etc
 
-        holder.cardView_checkBox_task.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
-            @Override
-            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
-                DocumentReference taskReference = fStore.collection("user_collection").document(userID)
-                        .collection("task_collection").document(task.TaskId);
-
-                if (isChecked) {
-                    taskReference.update("status", 1);
-                } else {
-                    taskReference.update("status", 0);
-                }
-            }
-        });
+        // This should not be here
+//        holder.cardView_checkBox_task.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+//            @Override
+//            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+//                DocumentReference taskReference = fStore.collection("user_collection").document(userID)
+//                        .collection("task_collection").document(task.TaskId);
+//
+//                if (isChecked) {
+//                    taskReference.update("status", 1);
+//                } else {
+//                    taskReference.update("status", 0);
+//                }
+//            }
+//        });
     }
 
     private Boolean toBoolean(int status) {
@@ -96,10 +99,29 @@ public class TaskRVAdapter extends RecyclerView.Adapter<TaskRVAdapter.TaskViewHo
             taskView.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    cardClickListener.onClick(getAdapterPosition());
+                    cardListener.onClick(getAdapterPosition());
                 }
             });
 
+            // Each card check event
+            cardView_checkBox_task.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+                @Override
+                public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+                    int position = getAdapterPosition();
+                    Task task = taskList.get(position);
+
+                    DocumentReference taskReference = fStore.collection("user_collection").document(userID)
+                            .collection("task_collection").document(task.TaskId);
+
+                    if (isChecked) {
+                        taskReference.update("status", 1);
+                    } else {
+                        taskReference.update("status", 0);
+                    }
+                    // Nightmare, fires almost everytime
+//                    taskReference.update("updated", FieldValue.serverTimestamp());
+                }
+            });
         }
     }
 }

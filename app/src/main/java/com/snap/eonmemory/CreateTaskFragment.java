@@ -75,6 +75,7 @@ public class CreateTaskFragment extends BottomSheetDialogFragment {
 
         Map<String, Object> task = new HashMap<>();
         task.put("title", title);
+        task.put("description", "");
         task.put("status", 0);
         task.put("created", FieldValue.serverTimestamp());
 

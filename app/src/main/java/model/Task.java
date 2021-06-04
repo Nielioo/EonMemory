@@ -2,10 +2,14 @@ package model;
 
 import com.google.firebase.Timestamp;
 
-public class Task extends TaskId {
+public class Task extends TaskId{
     private int status;
     private String title, description, category, due_date, time;
     private Timestamp created, updated;
+
+    public Task() {
+
+    }
 
     public int getStatus() {
         return status;
