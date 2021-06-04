@@ -181,6 +181,8 @@ public class RegisterActivity extends AppCompatActivity {
                                     }
                                 });
 
+                                FirebaseAuth.getInstance().signOut();
+
                                 intent = new Intent(getBaseContext(), WelcomePageActivity.class);
                                 intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
 
