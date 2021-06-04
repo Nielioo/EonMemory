@@ -84,7 +84,7 @@ public class SignInActivity extends AppCompatActivity {
                         @Override
                         public void onSuccess(AuthResult authResult) {
 
-                            intent = new Intent(getBaseContext(), ProfilePageActivity.class);
+                            intent = new Intent(getBaseContext(), MainPageActivity.class);
                             Toast.makeText(SignInActivity.this, "Login Successful", Toast.LENGTH_SHORT).show();
 
                             sign_in_email_textInput.getEditText().setText("");
