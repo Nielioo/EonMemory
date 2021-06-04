@@ -17,7 +17,9 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.EonMemory"
         android:usesCleartextTraffic="true">
-        <activity android:name=".MainPageActivity"></activity>
+        <activity
+            android:name=".MainPageActivity"
+            android:screenOrientation="portrait" />
         <activity
             android:name=".EditTaskActivity"
             android:screenOrientation="portrait" />

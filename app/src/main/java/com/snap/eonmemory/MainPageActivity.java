@@ -39,9 +39,8 @@ public class MainPageActivity extends AppCompatActivity implements NavigationVie
     NavigationView drawer_navigation_view;
     ImageView drawer_image;
     TextView drawer_username;
+    BottomNavigationView main_bottomNavigation;
     Intent intent;
-
-    private BottomNavigationView main_bottomNavigation;
 
     FragmentManager fragmentManager;
     FragmentTransaction fragmentTransaction;
@@ -72,8 +71,7 @@ public class MainPageActivity extends AppCompatActivity implements NavigationVie
         profilePictureReference.getDownloadUrl().addOnSuccessListener(new OnSuccessListener<Uri>() {
             @Override
             public void onSuccess(Uri uri) {
-//                tempcomment
-//                Picasso.get().load(uri).into(drawer_image);
+                Picasso.get().load(uri).into(drawer_image);
             }
         });
 
@@ -81,8 +79,7 @@ public class MainPageActivity extends AppCompatActivity implements NavigationVie
         userReference.addSnapshotListener(this, new EventListener<DocumentSnapshot>() {
             @Override
             public void onEvent(DocumentSnapshot documentSnapshot, FirebaseFirestoreException error) {
-//                tempcomment
-//                drawer_username.setText(documentSnapshot.getString("username"));
+                drawer_username.setText(documentSnapshot.getString("username"));
             }
         });
 
@@ -115,7 +112,6 @@ public class MainPageActivity extends AppCompatActivity implements NavigationVie
 
     private void initialize() {
         main_toolbar = findViewById(R.id.main_toolbar);
-        setSupportActionBar(main_toolbar);
         drawer_layout = findViewById(R.id.drawer_layout);
         drawer_navigation_view = findViewById(R.id.drawer_navigation_view);
         drawer_navigation_view.setNavigationItemSelectedListener(this);
