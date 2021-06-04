@@ -130,7 +130,7 @@ public class ProfilePageActivity extends AppCompatActivity {
                 Toast.makeText(ProfilePageActivity.this, "Cya! Have a Nice Day!", Toast.LENGTH_SHORT).show();
 
                 intent = new Intent(getBaseContext(), WelcomePageActivity.class);
-                intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
+                intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK | Intent.FLAG_ACTIVITY_NEW_TASK);
 
                 finish();
                 startActivity(intent);
