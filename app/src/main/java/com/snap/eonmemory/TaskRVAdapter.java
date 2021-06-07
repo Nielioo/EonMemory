@@ -53,8 +53,14 @@ public class TaskRVAdapter extends RecyclerView.Adapter<TaskRVAdapter.TaskViewHo
     public void onBindViewHolder(@NonNull TaskRVAdapter.TaskViewHolder holder, int position) {
         // Set elements
         Task task = taskList.get(position);
+        String dueDate = task.getDueDate();
+
         holder.cardView_textView_title.setText(task.getTitle());
         holder.cardView_checkBox_task.setChecked(toBoolean(task.getStatus()));
+
+//        if (!dueDate.isEmpty()) {
+            holder.cardView_textView_dueDate.setText(task.getDueDate());
+//        }
         // Add etc
 
         // This should not be here
@@ -85,7 +91,7 @@ public class TaskRVAdapter extends RecyclerView.Adapter<TaskRVAdapter.TaskViewHo
     public class TaskViewHolder extends RecyclerView.ViewHolder {
         // Card elements
         private CheckBox cardView_checkBox_task;
-        private TextView cardView_textView_title;
+        private TextView cardView_textView_title, cardView_textView_dueDate;
 
         public TaskViewHolder(@NonNull View taskView) {
             // Something needed
@@ -94,6 +100,7 @@ public class TaskRVAdapter extends RecyclerView.Adapter<TaskRVAdapter.TaskViewHo
             // Initialize
             cardView_checkBox_task = taskView.findViewById(R.id.cardView_checkBox_task);
             cardView_textView_title = taskView.findViewById(R.id.cardView_textView_title);
+            cardView_textView_dueDate = taskView.findViewById(R.id.cardView_textView_dueDate);
 
             // Each card click event
             taskView.setOnClickListener(new View.OnClickListener() {

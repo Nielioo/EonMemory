@@ -4,7 +4,7 @@ import com.google.firebase.Timestamp;
 
 public class Task extends TaskId{
     private int status;
-    private String title, description, category, due_date, time;
+    private String title, description, category, dueDate, time;
     private Timestamp created, updated;
 
     public Task() {
@@ -43,12 +43,12 @@ public class Task extends TaskId{
         this.category = category;
     }
 
-    public String getDue_date() {
-        return due_date;
+    public String getDueDate() {
+        return dueDate;
     }
 
-    public void setDue_date(String due_date) {
-        this.due_date = due_date;
+    public void setDueDate(String dueDate) {
+        this.dueDate = dueDate;
     }
 
     public String getTime() {

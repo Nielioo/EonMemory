@@ -23,4 +23,5 @@
     <string name="attachment_summary_off">Only download attachments when manually requested</string>
     <string name="open">open</string>
     <string name="close">close</string>
+    <string name="set_due_date">Set due date</string>
 </resources>

@@ -163,7 +163,7 @@ public class MainPageActivity extends AppCompatActivity implements NavigationVie
                         public void run() {
                             Toast.makeText(getApplicationContext(), "Category created", Toast.LENGTH_SHORT).show();
                         }
-                    }, 1000);
+                    }, 300);
                 } else {
                     Toast.makeText(getBaseContext(), "Category name can't be empty", Toast.LENGTH_SHORT).show();
                 }
@@ -236,14 +236,14 @@ public class MainPageActivity extends AppCompatActivity implements NavigationVie
             fragmentTransaction = fragmentManager.beginTransaction();
             fragmentTransaction.replace(R.id.main_container, new TaskFragment());
             fragmentTransaction.commit();
-            main_toolbar.setTitle("Task");
+//            main_toolbar.setTitle("Task");
         }
         if (item.getItemId() == R.id.menu_calendar) {
             fragmentManager = getSupportFragmentManager();
             fragmentTransaction = fragmentManager.beginTransaction();
             fragmentTransaction.replace(R.id.main_container, new CalendarFragment());
             fragmentTransaction.commit();
-            main_toolbar.setTitle("Calendar");
+//            main_toolbar.setTitle("Calendar");
         }
         if (item.getItemId() == R.id.menu_note) {
             fragmentManager = getSupportFragmentManager();

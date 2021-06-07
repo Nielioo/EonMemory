@@ -96,14 +96,16 @@ public class HomePageActivity extends AppCompatActivity implements NavigationVie
 
                     createCategory_dialog.dismiss();
 
-                    Handler handler = new Handler();
+                    Toast.makeText(getApplicationContext(), "Category created", Toast.LENGTH_SHORT).show();
 
-                    handler.postDelayed(new Runnable() {
-                        @Override
-                        public void run() {
-                            Toast.makeText(getApplicationContext(), "Category created", Toast.LENGTH_SHORT).show();
-                        }
-                    }, 500);
+//                    Handler handler = new Handler();
+//
+//                    handler.postDelayed(new Runnable() {
+//                        @Override
+//                        public void run() {
+//
+//                        }
+//                    }, 200);
                 } else {
                     Toast.makeText(getBaseContext(), "Category name can't be empty", Toast.LENGTH_SHORT).show();
                 }
