@@ -2,13 +2,16 @@ package com.snap.eonmemory;
 
 import android.app.Activity;
 import android.app.AlertDialog;
+import android.app.Dialog;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
+import android.os.CountDownTimer;
 import android.provider.MediaStore;
 import android.util.Log;
 import android.view.View;
+import android.view.Window;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
@@ -38,6 +41,8 @@ public class ProfilePageActivity extends AppCompatActivity {
     TextView profile_username_textView, profile_email_textView, profile_pending_task_textView, profile_completed_task_textView;
     Button profile_delete_button;
     Intent intent;
+
+    Dialog dialog;
 
     FirebaseAuth mAuth;
     FirebaseUser user;
@@ -95,6 +100,28 @@ public class ProfilePageActivity extends AppCompatActivity {
                 Intent openGalleryIntent = new Intent(Intent.ACTION_PICK, MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
                 startActivityForResult(openGalleryIntent, 1000);
 
+                dialog = new Dialog(ProfilePageActivity.this);
+                dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
+                dialog.setContentView(R.layout.loading_bar);
+                dialog.setCanceledOnTouchOutside(false);
+                dialog.show();
+
+                new CountDownTimer(10000, 1000) {
+
+                    @Override
+                    public void onTick(long millisUntilFinished) {
+
+                    }
+
+                    @Override
+                    public void onFinish() {
+                        if (!isDestroyed()) {
+                            dialog.dismiss();
+                        }
+                    }
+                }.start();
+
+
             }
         });
 
@@ -128,6 +155,27 @@ public class ProfilePageActivity extends AppCompatActivity {
                 FirebaseFirestore.getInstance().terminate();
                 FirebaseAuth.getInstance().signOut();
 
+                dialog = new Dialog(ProfilePageActivity.this);
+                dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
+                dialog.setContentView(R.layout.loading_bar);
+                dialog.setCanceledOnTouchOutside(false);
+                dialog.show();
+
+                new CountDownTimer(9999, 1000) {
+
+                    @Override
+                    public void onTick(long millisUntilFinished) {
+
+                    }
+
+                    @Override
+                    public void onFinish() {
+                        if (!isDestroyed()) {
+                            dialog.dismiss();
+                        }
+                    }
+                }.start();
+
                 Toast.makeText(ProfilePageActivity.this, "Cya! Have a Nice Day!", Toast.LENGTH_SHORT).show();
 
                 intent = new Intent(getBaseContext(), WelcomePageActivity.class);
@@ -139,12 +187,12 @@ public class ProfilePageActivity extends AppCompatActivity {
         profile_delete_button.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                AlertDialog.Builder dialog = new AlertDialog.Builder(ProfilePageActivity.this);
-                dialog.setTitle("Are you sure?");
-                dialog.setMessage("Deleting this account will result in completely removing your account from the system and you won't be able to access it anymore.");
-                dialog.setPositiveButton("Delete", new DialogInterface.OnClickListener() {
+                AlertDialog.Builder adialog = new AlertDialog.Builder(ProfilePageActivity.this);
+                adialog.setTitle("Are you sure?");
+                adialog.setMessage("Deleting this account will result in completely removing your account from the system and you won't be able to access it anymore.");
+                adialog.setPositiveButton("Delete", new DialogInterface.OnClickListener() {
                     @Override
-                    public void onClick(DialogInterface dialog, int which) {
+                    public void onClick(DialogInterface adialog, int which) {
                         userReference.delete();
                         profilePictureReference.delete();
                         user.delete().addOnCompleteListener(new OnCompleteListener<Void>() {
@@ -152,6 +200,27 @@ public class ProfilePageActivity extends AppCompatActivity {
                             public void onComplete(Task<Void> task) {
                                 if (task.isSuccessful()) {
                                     Toast.makeText(ProfilePageActivity.this, "Account deleted!", Toast.LENGTH_SHORT).show();
+
+                                    dialog = new Dialog(ProfilePageActivity.this);
+                                    dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
+                                    dialog.setContentView(R.layout.loading_bar);
+                                    dialog.setCanceledOnTouchOutside(false);
+                                    dialog.show();
+
+                                    new CountDownTimer(8000, 1000) {
+
+                                        @Override
+                                        public void onTick(long millisUntilFinished) {
+
+                                        }
+
+                                        @Override
+                                        public void onFinish() {
+                                            if (!isDestroyed()) {
+                                                dialog.dismiss();
+                                            }
+                                        }
+                                    }.start();
 
                                     intent = new Intent(getBaseContext(), WelcomePageActivity.class);
                                     intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
@@ -165,16 +234,18 @@ public class ProfilePageActivity extends AppCompatActivity {
                         });
                     }
                 });
-                dialog.setNegativeButton("Dismiss", new DialogInterface.OnClickListener() {
+                adialog.setNegativeButton("Dismiss", new DialogInterface.OnClickListener() {
                     @Override
-                    public void onClick(DialogInterface dialog, int which) {
-                        dialog.dismiss();
+                    public void onClick(DialogInterface adialog, int which) {
+                        adialog.dismiss();
                     }
                 });
 
-                AlertDialog alertDialog = dialog.create();
+                AlertDialog alertDialog = adialog.create();
                 alertDialog.show();
+
             }
+
         });
 
     }
@@ -231,4 +302,5 @@ public class ProfilePageActivity extends AppCompatActivity {
         profile_completed_task_textView = findViewById(R.id.profile_completed_task_textView);
         profile_delete_button = findViewById(R.id.profile_delete_button);
     }
+
 }

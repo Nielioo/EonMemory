@@ -1,11 +1,14 @@
 package com.snap.eonmemory;
 
+import android.app.Dialog;
 import android.content.Intent;
 import android.os.Bundle;
+import android.os.CountDownTimer;
 import android.text.Editable;
 import android.text.TextWatcher;
 import android.util.Log;
 import android.view.View;
+import android.view.Window;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.Toast;
@@ -32,6 +35,8 @@ public class RegisterActivity extends AppCompatActivity {
     TextInputLayout register_username_textInput, register_email_textInput, register_password_textInput, register_confirm_password_textInput;
     Button register_register_button;
     Intent intent;
+
+    Dialog dialog;
 
     FirebaseAuth mAuth;
     FirebaseFirestore fStore;
@@ -172,6 +177,12 @@ public class RegisterActivity extends AppCompatActivity {
                                     @Override
                                     public void onSuccess(Void unused) {
                                         Toast.makeText(RegisterActivity.this, "Account Registered!", Toast.LENGTH_SHORT).show();
+
+                                        FirebaseAuth.getInstance().signOut();
+
+                                        intent = new Intent(getBaseContext(), WelcomePageActivity.class);
+                                        intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK);
+                                        startActivity(intent);
                                     }
                                 }).addOnFailureListener(new OnFailureListener() {
                                     @Override
@@ -180,17 +191,10 @@ public class RegisterActivity extends AppCompatActivity {
                                         Log.d("error", e.toString());
                                     }
                                 });
-
-                                FirebaseAuth.getInstance().signOut();
-
-                                intent = new Intent(getBaseContext(), WelcomePageActivity.class);
-                                intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
-
-                                finish();
-                                startActivity(intent);
                             } else {
                                 Toast.makeText(RegisterActivity.this, "Failed to Create Account!", Toast.LENGTH_SHORT).show();
                             }
+
                         }
                     });
 

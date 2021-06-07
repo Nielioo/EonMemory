@@ -1,17 +1,20 @@
 package com.snap.eonmemory;
 
+import android.app.Dialog;
 import android.os.Bundle;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 
+import android.os.CountDownTimer;
 import android.text.Editable;
 import android.text.TextWatcher;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.Window;
 import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.Toast;
@@ -128,6 +131,7 @@ public class CreateNoteFragment extends BottomSheetDialogFragment{
                 createNote(title);
 
                 refresh.setSwipeRefresh();
+
             }
         });
     };
@@ -139,4 +143,5 @@ public class CreateNoteFragment extends BottomSheetDialogFragment{
         createNote_title_textInput.requestFocus();
         createNote_save_imageButton.setEnabled(false);
     }
+
 }

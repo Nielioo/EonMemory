@@ -1,16 +1,19 @@
 package com.snap.eonmemory;
 
-import androidx.appcompat.app.AppCompatActivity;
-
+import android.app.Dialog;
 import android.content.Intent;
 import android.os.Bundle;
+import android.os.CountDownTimer;
 import android.text.Editable;
 import android.text.TextWatcher;
 import android.util.Log;
 import android.view.View;
+import android.view.Window;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.Toast;
+
+import androidx.appcompat.app.AppCompatActivity;
 
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
@@ -30,6 +33,8 @@ public class ChangeEmailActivity extends AppCompatActivity {
     TextInputLayout change_email_new_email_textInput, change_email_confirm_email_textInput;
     Button change_email_save_button;
     Intent intent;
+
+    Dialog dialog;
 
     FirebaseAuth mAuth;
     FirebaseFirestore fStore;
@@ -136,9 +141,32 @@ public class ChangeEmailActivity extends AppCompatActivity {
                             newEmail.put("email", email);
                             emailReference.update(newEmail);
 
-                            Toast.makeText(ChangeEmailActivity.this, "Email changed!", Toast.LENGTH_SHORT).show();
                             intent = new Intent(getBaseContext(), ProfilePageActivity.class);
                             intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK | Intent.FLAG_ACTIVITY_NEW_TASK);
+
+                            dialog = new Dialog(ChangeEmailActivity.this);
+                            dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
+                            dialog.setContentView(R.layout.loading_bar);
+                            dialog.setCanceledOnTouchOutside(false);
+                            dialog.show();
+
+                            new CountDownTimer(10000, 1000) {
+
+                                @Override
+                                public void onTick(long millisUntilFinished) {
+
+                                }
+
+                                @Override
+                                public void onFinish() {
+                                    if (!isDestroyed()) {
+                                        dialog.dismiss();
+                                    }
+                                }
+                            }.start();
+
+
+                            Toast.makeText(ChangeEmailActivity.this, "Email changed!", Toast.LENGTH_SHORT).show();
 
                             finish();
                             startActivity(intent);
@@ -157,7 +185,7 @@ public class ChangeEmailActivity extends AppCompatActivity {
 
     }
 
-    private void initialize(){
+    private void initialize() {
         change_email_back_imageView = findViewById(R.id.change_email_back_imageView);
         change_email_new_email_textInput = findViewById(R.id.change_email_new_email_textInput);
         change_email_confirm_email_textInput = findViewById(R.id.change_email_confirm_email_textInput);

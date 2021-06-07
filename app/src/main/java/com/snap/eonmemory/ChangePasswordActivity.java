@@ -1,11 +1,14 @@
 package com.snap.eonmemory;
 
+import android.app.Dialog;
 import android.content.Intent;
 import android.os.Bundle;
+import android.os.CountDownTimer;
 import android.text.Editable;
 import android.text.TextWatcher;
 import android.util.Log;
 import android.view.View;
+import android.view.Window;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.Toast;
@@ -26,6 +29,8 @@ public class ChangePasswordActivity extends AppCompatActivity {
     TextInputLayout change_password_new_password_textInput, change_password_confirm_password_textInput;
     Button change_password_save_button;
     Intent intent;
+
+    Dialog dialog;
 
     FirebaseAuth mAuth;
     FirebaseUser user;
@@ -128,9 +133,33 @@ public class ChangePasswordActivity extends AppCompatActivity {
                     user.updatePassword(password).addOnSuccessListener(new OnSuccessListener<Void>() {
                         @Override
                         public void onSuccess(Void unused) {
-                            Toast.makeText(ChangePasswordActivity.this, "Password changed!", Toast.LENGTH_SHORT).show();
                             intent = new Intent(getBaseContext(), ProfilePageActivity.class);
                             intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK | Intent.FLAG_ACTIVITY_NEW_TASK);
+
+                            dialog = new Dialog(ChangePasswordActivity.this);
+                            dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
+                            dialog.setContentView(R.layout.loading_bar);
+                            dialog.setCanceledOnTouchOutside(false);
+                            dialog.show();
+
+                            new CountDownTimer(10000, 1000) {
+
+                                @Override
+                                public void onTick(long millisUntilFinished) {
+
+                                }
+
+                                @Override
+                                public void onFinish() {
+                                    if (!isDestroyed()) {
+                                        dialog.dismiss();
+                                    }
+                                }
+                            }.start();
+
+
+
+                            Toast.makeText(ChangePasswordActivity.this, "Password changed!", Toast.LENGTH_SHORT).show();
 
                             finish();
                             startActivity(intent);

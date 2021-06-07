@@ -1,11 +1,14 @@
 package com.snap.eonmemory;
 
+import android.app.Dialog;
 import android.content.Intent;
 import android.os.Bundle;
+import android.os.CountDownTimer;
 import android.text.Editable;
 import android.text.TextWatcher;
 import android.util.Log;
 import android.view.View;
+import android.view.Window;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.Toast;
@@ -25,6 +28,8 @@ public class SignInActivity extends AppCompatActivity {
     TextInputLayout sign_in_email_textInput, sign_in_password_textInput;
     Button sign_in_sign_in_button;
     Intent intent;
+
+    Dialog dialog;
 
     FirebaseAuth mAuth;
 
@@ -88,12 +93,33 @@ public class SignInActivity extends AppCompatActivity {
                         public void onSuccess(AuthResult authResult) {
 
                             intent = new Intent(getBaseContext(), MainPageActivity.class);
-                            Toast.makeText(SignInActivity.this, "Login Successful", Toast.LENGTH_SHORT).show();
-
                             sign_in_email_textInput.getEditText().setText("");
                             sign_in_email_textInput.setError("");
                             sign_in_password_textInput.getEditText().setText("");
                             sign_in_password_textInput.setError("");
+
+                            dialog = new Dialog(SignInActivity.this);
+                            dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
+                            dialog.setContentView(R.layout.loading_bar);
+                            dialog.setCanceledOnTouchOutside(false);
+                            dialog.show();
+
+                            new CountDownTimer(8000, 1000) {
+
+                                @Override
+                                public void onTick(long millisUntilFinished) {
+
+                                }
+
+                                @Override
+                                public void onFinish() {
+                                    if (!isDestroyed()) {
+                                        dialog.dismiss();
+                                    }
+                                }
+                            }.start();
+
+                            Toast.makeText(SignInActivity.this, "Login Successful", Toast.LENGTH_SHORT).show();
 
                             finish();
                             startActivity(intent);
@@ -102,7 +128,7 @@ public class SignInActivity extends AppCompatActivity {
                         @Override
                         public void onFailure(@NonNull Exception e) {
                             Toast.makeText(SignInActivity.this, "Wrong email or password", Toast.LENGTH_SHORT).show();
-                            Log.d("error",e.toString());
+                            Log.d("error", e.toString());
                         }
                     });
 
