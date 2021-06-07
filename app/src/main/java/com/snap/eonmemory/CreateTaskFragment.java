@@ -19,7 +19,10 @@ import android.widget.Toast;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 
+import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnFailureListener;
+import com.google.android.gms.tasks.OnSuccessListener;
+import com.google.android.gms.tasks.Task;
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment;
 import com.google.android.material.textfield.TextInputLayout;
 import com.google.firebase.auth.FirebaseAuth;
@@ -40,7 +43,6 @@ import java.util.HashMap;
 import java.util.Map;
 
 import model.Category;
-import model.Task;
 import model.setRefresh;
 
 public class CreateTaskFragment extends BottomSheetDialogFragment {
@@ -187,32 +189,34 @@ public class CreateTaskFragment extends BottomSheetDialogFragment {
     private void setPopupMenu() {
         categoryList = new PopupMenu(getContext(), view);
 
-        DocumentReference categoryReference = fStore.collection("user_collection").document(userID)
-                .collection("category_collection").document("category_list");
+        CollectionReference categoryReference = fStore.collection("user_collection").document(userID)
+                .collection("category_collection");
 
-        categoryReference.addSnapshotListener(new EventListener<DocumentSnapshot>() {
+        categoryReference.get().addOnSuccessListener(new OnSuccessListener<QuerySnapshot>() {
             @Override
-            public void onEvent(@Nullable DocumentSnapshot value, @Nullable FirebaseFirestoreException error) {
-                Category categoryObj = value.toObject(Category.class);
+            public void onSuccess(QuerySnapshot queryDocumentSnapshots) {
+                for (QueryDocumentSnapshot data : queryDocumentSnapshots) {
+                    Category categoryObject = data.toObject(Category.class);
 
-                categoryItemList = categoryObj.getCategory();
+                    categoryItemList = categoryObject.getCategory();
 
-                for (String category : categoryItemList) {
-                    categoryList.getMenu().add(category);
-                }
-
-                categoryList.getMenuInflater().inflate(R.menu.category_menu, categoryList.getMenu());
-
-                categoryList.setOnMenuItemClickListener(new PopupMenu.OnMenuItemClickListener() {
-                    @Override
-                    public boolean onMenuItemClick(MenuItem item) {
-                        createTask_button_category.setText(item.getTitle());
-//                        Toast.makeText(getContext(), "You clicked " + item.getTitle(), Toast.LENGTH_SHORT).show();
-                        return true;
+                    for (String category : categoryItemList) {
+                        categoryList.getMenu().add(category);
                     }
-                });
 
-                categoryList.show();
+                    categoryList.getMenuInflater().inflate(R.menu.category_menu, categoryList.getMenu());
+
+                    categoryList.show();
+                }
+            }
+        });
+
+        categoryList.setOnMenuItemClickListener(new PopupMenu.OnMenuItemClickListener() {
+            @Override
+            public boolean onMenuItemClick(MenuItem item) {
+                createTask_button_category.setText(item.getTitle());
+//                        Toast.makeText(getContext(), "You clicked " + item.getTitle(), Toast.LENGTH_SHORT).show();
+                return true;
             }
         });
     }
