@@ -13,7 +13,6 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.firestore.DocumentReference;
-import com.google.firebase.firestore.FieldValue;
 import com.google.firebase.firestore.FirebaseFirestore;
 
 import java.util.ArrayList;
@@ -107,7 +106,7 @@ public class TaskRVAdapter extends RecyclerView.Adapter<TaskRVAdapter.TaskViewHo
                     if (isChecked) {
                         taskReference.update("status", 1);
                         taskList.remove(position);
-//                        notifyDataSetChanged();
+                        notifyItemRemoved(position);
                         mediaPlayer.start();
                     }
                     // Nightmare, fires almost everytime
