@@ -231,7 +231,6 @@ public class MainPageActivity extends AppCompatActivity implements NavigationVie
             startActivity(intent);
         }
         if (item.getItemId() == R.id.menu_settings) {
-
         }
         if (item.getItemId() == R.id.menu_task) {
             fragmentManager = getSupportFragmentManager();
@@ -253,6 +252,10 @@ public class MainPageActivity extends AppCompatActivity implements NavigationVie
             fragmentTransaction.replace(R.id.main_container, new NoteFragment());
             fragmentTransaction.commit();
 //            main_toolbar.setTitle("Note");
+        }
+        if (item.getItemId() == R.id.menu_manage_category) {
+            intent = new Intent(getBaseContext(), ManageCategoryActivity.class).setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+            startActivity(intent);
         }
         return true;
     }

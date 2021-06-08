@@ -14,26 +14,18 @@ import android.widget.Button;
 import android.widget.DatePicker;
 import android.widget.ImageButton;
 import android.widget.PopupMenu;
-import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 
-import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
-import com.google.android.gms.tasks.Task;
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment;
 import com.google.android.material.textfield.TextInputLayout;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.firestore.CollectionReference;
-import com.google.firebase.firestore.DocumentReference;
-import com.google.firebase.firestore.DocumentSnapshot;
-import com.google.firebase.firestore.EventListener;
 import com.google.firebase.firestore.FieldValue;
 import com.google.firebase.firestore.FirebaseFirestore;
-import com.google.firebase.firestore.FirebaseFirestoreException;
-import com.google.firebase.firestore.Query;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
 import com.google.firebase.firestore.QuerySnapshot;
 
@@ -42,7 +34,7 @@ import java.util.Calendar;
 import java.util.HashMap;
 import java.util.Map;
 
-import model.Category;
+import model.CategoryList;
 import model.setRefresh;
 
 public class CreateTaskFragment extends BottomSheetDialogFragment {
@@ -196,7 +188,7 @@ public class CreateTaskFragment extends BottomSheetDialogFragment {
             @Override
             public void onSuccess(QuerySnapshot queryDocumentSnapshots) {
                 for (QueryDocumentSnapshot data : queryDocumentSnapshots) {
-                    Category categoryObject = data.toObject(Category.class);
+                    CategoryList categoryObject = data.toObject(CategoryList.class);
 
                     categoryItemList = categoryObject.getCategory();
 
@@ -230,7 +222,7 @@ public class CreateTaskFragment extends BottomSheetDialogFragment {
         createTask_TILayout_title.requestFocus();
         createTask_imageButton_save.setEnabled(false);
 
-        dueDate = "";
+        dueDate = null;
     }
 
     private void initFirebase() {

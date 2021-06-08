@@ -46,7 +46,7 @@ import java.util.Map;
 import model.Task;
 import model.setRefresh;
 
-public class EditTaskActivity extends AppCompatActivity implements setRefresh {
+public class EditTaskActivity extends AppCompatActivity {
 
     private Toolbar editTask_toolbar;
     private TextInputLayout editTask_TILayout_title, editTask_TILayout_description;
@@ -83,7 +83,6 @@ public class EditTaskActivity extends AppCompatActivity implements setRefresh {
     private void saveTask() {
         String title = editTask_TILayout_title.getEditText().getText().toString().trim();
         String description = editTask_TILayout_description.getEditText().getText().toString().trim();
-//        String dueDate = this.dueDate;
 
         DocumentReference taskReference = fStore.collection("user_collection")
                 .document(userID).collection("task_collection")
@@ -175,33 +174,38 @@ public class EditTaskActivity extends AppCompatActivity implements setRefresh {
                 .document(taskId);
 
         // Listen to every changes
-//        taskReference.addSnapshotListener(new EventListener<DocumentSnapshot>() {
-//            @Override
-//            public void onEvent(@Nullable DocumentSnapshot value, @Nullable FirebaseFirestoreException error) {
-//                editTask_toolbar.setTitle(value.getString("category"));
-//                editTask_TILayout_title.getEditText().setText(value.getString("title"));
-//                editTask_TILayout_description.getEditText().setText(value.getString("description"));
-//                editTask_textView_dueDate.setText(value.getString("dueDate"));
-//            }
-//        });
-
-        // Read data once
-        taskReference.get().addOnSuccessListener(new OnSuccessListener<DocumentSnapshot>() {
+        taskReference.addSnapshotListener(new EventListener<DocumentSnapshot>() {
             @Override
-            public void onSuccess(DocumentSnapshot documentSnapshot) {
-                String dueDate = documentSnapshot.getString("dueDate");
-
-                editTask_toolbar.setTitle(documentSnapshot.getString("category"));
-                editTask_TILayout_title.getEditText().setText(documentSnapshot.getString("title"));
-                editTask_TILayout_description.getEditText().setText(documentSnapshot.getString("description"));
+            public void onEvent(@Nullable DocumentSnapshot value, @Nullable FirebaseFirestoreException error) {
+                editTask_toolbar.setTitle(value.getString("category"));
+                editTask_TILayout_title.getEditText().setText(value.getString("title"));
+                editTask_TILayout_description.getEditText().setText(value.getString("description"));
 
                 if (dueDate == null) {
                     editTask_textView_dueDate.setText("Set due date");
                 } else {
-                    editTask_textView_dueDate.setText(documentSnapshot.getString("dueDate"));
+                    editTask_textView_dueDate.setText(value.getString("dueDate"));
                 }
             }
         });
+
+        // Read data once
+//        taskReference.get().addOnSuccessListener(new OnSuccessListener<DocumentSnapshot>() {
+//            @Override
+//            public void onSuccess(DocumentSnapshot documentSnapshot) {
+//                String dueDate = documentSnapshot.getString("dueDate");
+//
+//                editTask_toolbar.setTitle(documentSnapshot.getString("category"));
+//                editTask_TILayout_title.getEditText().setText(documentSnapshot.getString("title"));
+//                editTask_TILayout_description.getEditText().setText(documentSnapshot.getString("description"));
+//
+//                if (dueDate == null) {
+//                    editTask_textView_dueDate.setText("Set due date");
+//                } else {
+//                    editTask_textView_dueDate.setText(documentSnapshot.getString("dueDate"));
+//                }
+//            }
+//        });
     }
 
     private void initView() {
@@ -220,10 +224,5 @@ public class EditTaskActivity extends AppCompatActivity implements setRefresh {
         mAuth = FirebaseAuth.getInstance();
         fStore = FirebaseFirestore.getInstance();
         userID = mAuth.getCurrentUser().getUid();
-    }
-
-    @Override
-    public void setSwipeRefresh() {
-
     }
 }
