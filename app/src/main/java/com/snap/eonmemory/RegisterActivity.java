@@ -23,8 +23,12 @@ import com.google.android.material.textfield.TextInputLayout;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.firestore.DocumentReference;
+import com.google.firebase.firestore.FieldValue;
 import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.firebase.firestore.SetOptions;
 
+import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.regex.Pattern;
@@ -177,6 +181,14 @@ public class RegisterActivity extends AppCompatActivity {
                                     @Override
                                     public void onSuccess(Void unused) {
                                         Toast.makeText(RegisterActivity.this, "Account Registered!", Toast.LENGTH_SHORT).show();
+
+                                        DocumentReference categoryList = fStore.collection("user_collection").document(userID)
+                                                .collection("category_collection").document("category_list");
+
+                                        Map<String, Object> category = new HashMap<>();
+                                        category.put("category", Arrays.asList("Personal"));
+
+                                        categoryList.set(category);
 
                                         FirebaseAuth.getInstance().signOut();
                                         FirebaseFirestore.getInstance().terminate();
