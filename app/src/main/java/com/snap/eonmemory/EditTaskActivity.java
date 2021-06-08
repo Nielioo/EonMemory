@@ -162,7 +162,7 @@ public class EditTaskActivity extends AppCompatActivity {
         editTask_imageView_clearDueDate.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                dueDate = "";
+                dueDate = null;
                 editTask_textView_dueDate.setText(R.string.set_due_date);
             }
         });
@@ -177,6 +177,8 @@ public class EditTaskActivity extends AppCompatActivity {
         taskReference.addSnapshotListener(new EventListener<DocumentSnapshot>() {
             @Override
             public void onEvent(@Nullable DocumentSnapshot value, @Nullable FirebaseFirestoreException error) {
+                dueDate = value.getString("dueDate");
+
                 editTask_toolbar.setTitle(value.getString("category"));
                 editTask_TILayout_title.getEditText().setText(value.getString("title"));
                 editTask_TILayout_description.getEditText().setText(value.getString("description"));
