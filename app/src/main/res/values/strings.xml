@@ -24,4 +24,5 @@
     <string name="open">open</string>
     <string name="close">close</string>
     <string name="set_due_date">Set due date</string>
+    <string name="set_time">Set time</string>
 </resources>

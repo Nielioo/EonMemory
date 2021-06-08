@@ -67,10 +67,21 @@
         android:background="@drawable/create_task_icon_shape"
         android:src="@drawable/ic_baseline_calendar_today_24"
         app:layout_constraintBottom_toBottomOf="@+id/createTask_button_category"
-        app:layout_constraintEnd_toStartOf="@+id/guideline2"
-        app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toEndOf="@+id/createTask_button_category"
         app:layout_constraintTop_toTopOf="@+id/createTask_button_category" />
+
+    <ImageButton
+        android:id="@+id/createTask_imageButton_time"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="8dp"
+        android:background="@drawable/create_task_icon_shape"
+        android:src="@drawable/ic_baseline_access_time_24"
+        app:layout_constraintBottom_toBottomOf="@+id/createTask_imageButton_calendar"
+        app:layout_constraintEnd_toStartOf="@+id/guideline2"
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintStart_toEndOf="@+id/createTask_imageButton_calendar"
+        app:layout_constraintTop_toTopOf="@+id/createTask_imageButton_calendar" />
 
     <androidx.constraintlayout.widget.Guideline
         android:id="@+id/guideline2"

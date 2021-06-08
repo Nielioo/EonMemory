@@ -1,10 +1,12 @@
 package com.snap.eonmemory;
 
 import android.app.DatePickerDialog;
+import android.app.TimePickerDialog;
 import android.os.Bundle;
 
 import android.text.Editable;
 import android.text.TextWatcher;
+import android.text.format.DateFormat;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.MenuItem;
@@ -14,6 +16,7 @@ import android.widget.Button;
 import android.widget.DatePicker;
 import android.widget.ImageButton;
 import android.widget.PopupMenu;
+import android.widget.TimePicker;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -42,10 +45,11 @@ public class CreateTaskFragment extends BottomSheetDialogFragment {
     private View view;
     private TextInputLayout createTask_TILayout_title;
     private Button createTask_button_category;
-    private ImageButton createTask_imageButton_calendar, createTask_imageButton_save;
+    private ImageButton createTask_imageButton_calendar, createTask_imageButton_time, createTask_imageButton_save;
     private PopupMenu categoryList;
     private boolean validateTitle;
-    private String dueDate;
+    private String dueDate, time;
+    private int HOUR, MINUTE;
 
     private ArrayList<String> categoryItemList;
 
@@ -79,7 +83,7 @@ public class CreateTaskFragment extends BottomSheetDialogFragment {
     }
 
     // Using Firebase
-    private void createTask(String title, String category, String dueDate) {
+    private void createTask(String title, String category, String dueDate, String time) {
         CollectionReference taskReference = fStore.collection("user_collection")
                 .document(userID).collection("task_collection");
 
@@ -88,6 +92,7 @@ public class CreateTaskFragment extends BottomSheetDialogFragment {
         task.put("description", "");
         task.put("status", 0);
         task.put("dueDate", dueDate);
+        task.put("time", time);
         task.put("category", category);
         task.put("created", FieldValue.serverTimestamp());
 
@@ -164,6 +169,35 @@ public class CreateTaskFragment extends BottomSheetDialogFragment {
             }
         });
 
+        createTask_imageButton_time.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                // Open time picker
+                TimePickerDialog timePickerDialog = new TimePickerDialog(getContext(), new TimePickerDialog.OnTimeSetListener() {
+                    @Override
+                    public void onTimeSet(TimePicker view, int hourOfDay, int minute) {
+                        // Initialize hour and minute
+                        HOUR = hourOfDay;
+                        MINUTE = minute;
+
+                        // Initialize calendar
+                        Calendar calendar = Calendar.getInstance();
+
+                        // Set hour and minute
+                        calendar.set(0, 0, 0, HOUR, MINUTE);
+
+                        time = DateFormat.format("hh:mm aa", calendar).toString();
+                    }
+                }, 12, 0, false);
+
+                // Display selected time
+                timePickerDialog.updateTime(HOUR, MINUTE);
+
+                // Show dialog
+                timePickerDialog.show();
+            }
+        });
+
         createTask_imageButton_save.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -171,7 +205,7 @@ public class CreateTaskFragment extends BottomSheetDialogFragment {
                 String title = createTask_TILayout_title.getEditText().getText().toString().trim();
                 String category = createTask_button_category.getText().toString().trim();
 
-                createTask(title, category, dueDate);
+                createTask(title, category, dueDate, time);
 
                 refresh.setSwipeRefresh();
             }
@@ -217,12 +251,14 @@ public class CreateTaskFragment extends BottomSheetDialogFragment {
         createTask_TILayout_title = view.findViewById(R.id.createTask_TILayout_title);
         createTask_button_category = view.findViewById(R.id.createTask_button_category);
         createTask_imageButton_calendar = view.findViewById(R.id.createTask_imageButton_calendar);
+        createTask_imageButton_time = view.findViewById(R.id.createTask_imageButton_time);
         createTask_imageButton_save = view.findViewById(R.id.createTask_imageButton_save);
 
         createTask_TILayout_title.requestFocus();
         createTask_imageButton_save.setEnabled(false);
 
         dueDate = null;
+        time = null;
     }
 
     private void initFirebase() {

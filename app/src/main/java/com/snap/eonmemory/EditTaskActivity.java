@@ -7,8 +7,10 @@ import androidx.appcompat.widget.Toolbar;
 import androidx.cardview.widget.CardView;
 
 import android.app.DatePickerDialog;
+import android.app.TimePickerDialog;
 import android.content.Intent;
 import android.os.Bundle;
+import android.text.format.DateFormat;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -19,6 +21,7 @@ import android.widget.DatePicker;
 import android.widget.ImageView;
 import android.widget.PopupMenu;
 import android.widget.TextView;
+import android.widget.TimePicker;
 import android.widget.Toast;
 
 import com.android.volley.Request;
@@ -60,11 +63,11 @@ public class EditTaskActivity extends AppCompatActivity {
 
     private Toolbar editTask_toolbar;
     private TextInputLayout editTask_TILayout_title, editTask_TILayout_description;
-    private CardView editTask_cardView_dueDate;
-    private TextView editTask_textView_dueDate;
-    private ImageView editTask_imageView_clearDueDate;
-    private PopupMenu categoryList;
-    private String taskId, dueDate;
+    private CardView editTask_cardView_dueDate, editTask_cardView_time;
+    private TextView editTask_textView_dueDate, editTask_textView_time;
+    private ImageView editTask_imageView_clearDueDate, editTask_imageView_clearTime;
+    private String taskId, dueDate, time;
+    private int HOUR, MINUTE;
 
     private FirebaseAuth mAuth;
     private FirebaseFirestore fStore;
@@ -104,6 +107,7 @@ public class EditTaskActivity extends AppCompatActivity {
         task.put("title", title);
         task.put("description", description);
         task.put("dueDate", dueDate);
+        task.put("time", time);
         task.put("updated", FieldValue.serverTimestamp());
 
         taskReference.update(task).addOnFailureListener(new OnFailureListener() {
@@ -186,6 +190,45 @@ public class EditTaskActivity extends AppCompatActivity {
                 editTask_textView_dueDate.setText(R.string.set_due_date);
             }
         });
+
+        editTask_cardView_time.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                // Open time picker
+                TimePickerDialog timePickerDialog = new TimePickerDialog(EditTaskActivity.this, new TimePickerDialog.OnTimeSetListener() {
+                    @Override
+                    public void onTimeSet(TimePicker view, int hourOfDay, int minute) {
+                        // Initialize hour and minute
+                        HOUR = hourOfDay;
+                        MINUTE = minute;
+
+                        // Initialize calendar
+                        Calendar calendar = Calendar.getInstance();
+
+                        // Set hour and minute
+                        calendar.set(0, 0, 0, HOUR, MINUTE);
+
+                        time = DateFormat.format("hh:mm aa", calendar).toString();
+
+                        editTask_textView_time.setText(time);
+                    }
+                }, 12, 0, false);
+
+                // Display selected time
+                timePickerDialog.updateTime(HOUR, MINUTE);
+
+                // Show dialog
+                timePickerDialog.show();
+            }
+        });
+
+        editTask_imageView_clearTime.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                time = null;
+                editTask_textView_time.setText(R.string.set_time);
+            }
+        });
     }
 
     private void loadTask() {
@@ -198,6 +241,7 @@ public class EditTaskActivity extends AppCompatActivity {
             @Override
             public void onEvent(@Nullable DocumentSnapshot value, @Nullable FirebaseFirestoreException error) {
                 dueDate = value.getString("dueDate");
+                time = value.getString("time");
 
                 editTask_toolbar.setTitle(value.getString("category"));
                 editTask_TILayout_title.getEditText().setText(value.getString("title"));
@@ -207,6 +251,12 @@ public class EditTaskActivity extends AppCompatActivity {
                     editTask_textView_dueDate.setText("Set due date");
                 } else {
                     editTask_textView_dueDate.setText(value.getString("dueDate"));
+                }
+
+                if (time == null) {
+                    editTask_textView_time.setText("Set time");
+                } else {
+                    editTask_textView_time.setText(value.getString("time"));
                 }
             }
         });
@@ -226,6 +276,12 @@ public class EditTaskActivity extends AppCompatActivity {
 //                } else {
 //                    editTask_textView_dueDate.setText(documentSnapshot.getString("dueDate"));
 //                }
+
+//                if (time == null) {
+//                  editTask_textView_time.setText("Set time");
+//                } else {
+//                  editTask_textView_time.setText(value.getString("time"));
+//              }
 //            }
 //        });
     }
@@ -263,9 +319,12 @@ public class EditTaskActivity extends AppCompatActivity {
         editTask_toolbar = findViewById(R.id.editTask_toolbar);
         editTask_TILayout_title = findViewById(R.id.editTask_TILayout_title);
         editTask_TILayout_description = findViewById(R.id.editTask_TILayout_description);
-        editTask_textView_dueDate = findViewById(R.id.editTask_textView_dueDate);
         editTask_cardView_dueDate = findViewById(R.id.editTask_cardView_dueDate);
+        editTask_textView_dueDate = findViewById(R.id.editTask_textView_dueDate);
         editTask_imageView_clearDueDate = findViewById(R.id.editTask_imageView_clearDueDate);
+        editTask_cardView_time = findViewById(R.id.editTask_cardView_time);
+        editTask_textView_time = findViewById(R.id.editTask_textView_time);
+        editTask_imageView_clearTime = findViewById(R.id.editTask_imageView_clearTime);
 
         Intent intent = getIntent();
         taskId = intent.getStringExtra("taskId");

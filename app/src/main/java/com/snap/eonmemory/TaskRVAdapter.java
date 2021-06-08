@@ -53,27 +53,11 @@ public class TaskRVAdapter extends RecyclerView.Adapter<TaskRVAdapter.TaskViewHo
     public void onBindViewHolder(@NonNull TaskRVAdapter.TaskViewHolder holder, int position) {
         // Set elements
         Task task = taskList.get(position);
-        String dueDate = task.getDueDate();
 
         holder.cardView_textView_title.setText(task.getTitle());
         holder.cardView_checkBox_task.setChecked(toBoolean(task.getStatus()));
         holder.cardView_textView_dueDate.setText(task.getDueDate());
-        // Add etc
-
-        // This should not be here
-//        holder.cardView_checkBox_task.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
-//            @Override
-//            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
-//                DocumentReference taskReference = fStore.collection("user_collection").document(userID)
-//                        .collection("task_collection").document(task.TaskId);
-//
-//                if (isChecked) {
-//                    taskReference.update("status", 1);
-//                } else {
-//                    taskReference.update("status", 0);
-//                }
-//            }
-//        });
+        holder.cardView_textView_time.setText(task.getTime());
     }
 
     private Boolean toBoolean(int status) {
@@ -88,7 +72,7 @@ public class TaskRVAdapter extends RecyclerView.Adapter<TaskRVAdapter.TaskViewHo
     public class TaskViewHolder extends RecyclerView.ViewHolder {
         // Card elements
         private CheckBox cardView_checkBox_task;
-        private TextView cardView_textView_title, cardView_textView_dueDate;
+        private TextView cardView_textView_title, cardView_textView_dueDate, cardView_textView_time;
 
         public TaskViewHolder(@NonNull View taskView) {
             // Something needed
@@ -98,6 +82,7 @@ public class TaskRVAdapter extends RecyclerView.Adapter<TaskRVAdapter.TaskViewHo
             cardView_checkBox_task = taskView.findViewById(R.id.cardView_checkBox_task);
             cardView_textView_title = taskView.findViewById(R.id.cardView_textView_title);
             cardView_textView_dueDate = taskView.findViewById(R.id.cardView_textView_dueDate);
+            cardView_textView_time = taskView.findViewById(R.id.cardView_textView_time);
 
             // Each card click event
             taskView.setOnClickListener(new View.OnClickListener() {

@@ -49,9 +49,20 @@
                 android:layout_height="wrap_content"
                 android:layout_marginEnd="16dp"
                 android:text="TextView"
-                app:layout_constraintBottom_toBottomOf="@+id/cardView_textView_title"
+                android:textSize="10sp"
+                app:layout_constraintBottom_toTopOf="@+id/cardView_textView_time"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintTop_toTopOf="@+id/cardView_textView_title" />
+
+            <TextView
+                android:id="@+id/cardView_textView_time"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="TextView"
+                android:textSize="10sp"
+                app:layout_constraintBottom_toBottomOf="@+id/cardView_textView_title"
+                app:layout_constraintEnd_toEndOf="@+id/cardView_textView_dueDate"
+                app:layout_constraintTop_toBottomOf="@+id/cardView_textView_dueDate" />
 
         </androidx.constraintlayout.widget.ConstraintLayout>
 
