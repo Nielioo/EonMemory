@@ -3,6 +3,8 @@ package com.snap.eonmemory;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Filter;
+import android.widget.Filterable;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
@@ -12,14 +14,16 @@ import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.firestore.FirebaseFirestore;
 
 import java.util.ArrayList;
+import java.util.Collection;
+import java.util.List;
 
 import model.Note;
 import model.OnCardClickListener;
-import model.Task;
 
-public class NoteRVAdapter extends RecyclerView.Adapter<NoteRVAdapter.NoteViewHolder> {
+public class NoteRVAdapter extends RecyclerView.Adapter<NoteRVAdapter.NoteViewHolder> implements Filterable {
 
     private ArrayList<Note> noteList;
+//    private ArrayList<Note> noteListAll;
     private OnCardClickListener cardListener;
 
     private FirebaseAuth mAuth;
@@ -28,6 +32,7 @@ public class NoteRVAdapter extends RecyclerView.Adapter<NoteRVAdapter.NoteViewHo
 
     public NoteRVAdapter(ArrayList<Note> noteList, OnCardClickListener cardListener) {
         this.noteList = noteList;
+//        this.noteListAll = new ArrayList<>(noteList);
         this.cardListener = cardListener;
     }
 
@@ -54,6 +59,41 @@ public class NoteRVAdapter extends RecyclerView.Adapter<NoteRVAdapter.NoteViewHo
     public int getItemCount() {
         return noteList.size();
     }
+
+    @Override
+    public Filter getFilter() {
+        return filter;
+    }
+
+    Filter filter = new Filter() {
+        @Override
+        protected FilterResults performFiltering(CharSequence charSequence) {
+
+            List<Note> filteredList = new ArrayList<>();
+
+            if(charSequence.toString().isEmpty()){
+                filteredList.addAll(noteList);
+            } else {
+                for (Note note: noteList){
+                    if(note.getTitle().toLowerCase().trim().contains(charSequence.toString().toLowerCase().trim())){
+                        filteredList.add(note);
+                    }
+                }
+            }
+
+            FilterResults filterResults = new FilterResults();
+            filterResults.values = filteredList;
+
+            return filterResults;
+        }
+
+        @Override
+        protected void publishResults(CharSequence constraint, FilterResults results) {
+            noteList.clear();
+            noteList.addAll((Collection<? extends Note>) results.values);
+            notifyDataSetChanged();
+        }
+    };
 
     public class NoteViewHolder extends RecyclerView.ViewHolder {
 
