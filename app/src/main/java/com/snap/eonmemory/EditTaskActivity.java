@@ -175,15 +175,15 @@ public class EditTaskActivity extends AppCompatActivity implements setRefresh {
                 .document(taskId);
 
         // Listen to every changes
-        taskReference.addSnapshotListener(new EventListener<DocumentSnapshot>() {
-            @Override
-            public void onEvent(@Nullable DocumentSnapshot value, @Nullable FirebaseFirestoreException error) {
+//        taskReference.addSnapshotListener(new EventListener<DocumentSnapshot>() {
+//            @Override
+//            public void onEvent(@Nullable DocumentSnapshot value, @Nullable FirebaseFirestoreException error) {
 //                editTask_toolbar.setTitle(value.getString("category"));
 //                editTask_TILayout_title.getEditText().setText(value.getString("title"));
 //                editTask_TILayout_description.getEditText().setText(value.getString("description"));
 //                editTask_textView_dueDate.setText(value.getString("dueDate"));
-            }
-        });
+//            }
+//        });
 
         // Read data once
         taskReference.get().addOnSuccessListener(new OnSuccessListener<DocumentSnapshot>() {
