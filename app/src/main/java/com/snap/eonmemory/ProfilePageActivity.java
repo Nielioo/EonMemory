@@ -63,7 +63,7 @@ public class ProfilePageActivity extends AppCompatActivity {
         storageReference = FirebaseStorage.getInstance().getReference();
 
         user = mAuth.getCurrentUser();
-        userID = mAuth.getCurrentUser().getUid();
+        userID = user.getUid();
 
         StorageReference profilePictureReference = storageReference.child("user_collection/" + userID + "/profile_picture.png");
         profilePictureReference.getDownloadUrl().addOnSuccessListener(new OnSuccessListener<Uri>() {
@@ -152,8 +152,9 @@ public class ProfilePageActivity extends AppCompatActivity {
         profile_sign_out_imageView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                FirebaseFirestore.getInstance().terminate();
+
                 FirebaseAuth.getInstance().signOut();
+                FirebaseFirestore.getInstance().terminate();
 
                 dialog = new Dialog(ProfilePageActivity.this);
                 dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
@@ -221,6 +222,8 @@ public class ProfilePageActivity extends AppCompatActivity {
                                             }
                                         }
                                     }.start();
+
+                                    FirebaseFirestore.getInstance().terminate();
 
                                     intent = new Intent(getBaseContext(), WelcomePageActivity.class);
                                     intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);

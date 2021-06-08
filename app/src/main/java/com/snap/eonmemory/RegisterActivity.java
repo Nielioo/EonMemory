@@ -179,6 +179,28 @@ public class RegisterActivity extends AppCompatActivity {
                                         Toast.makeText(RegisterActivity.this, "Account Registered!", Toast.LENGTH_SHORT).show();
 
                                         FirebaseAuth.getInstance().signOut();
+                                        FirebaseFirestore.getInstance().terminate();
+
+                                        dialog = new Dialog(RegisterActivity.this);
+                                        dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
+                                        dialog.setContentView(R.layout.loading_bar);
+                                        dialog.setCanceledOnTouchOutside(false);
+                                        dialog.show();
+
+                                        new CountDownTimer(8000, 1000) {
+
+                                            @Override
+                                            public void onTick(long millisUntilFinished) {
+
+                                            }
+
+                                            @Override
+                                            public void onFinish() {
+                                                if (!isDestroyed()) {
+                                                    dialog.dismiss();
+                                                }
+                                            }
+                                        }.start();
 
                                         intent = new Intent(getBaseContext(), WelcomePageActivity.class);
                                         intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK);

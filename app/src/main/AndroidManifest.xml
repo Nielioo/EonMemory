@@ -40,9 +40,6 @@
             android:name=".ProfilePageActivity"
             android:screenOrientation="portrait" />
         <activity
-            android:name=".HomePageActivity"
-            android:screenOrientation="portrait" />
-        <activity
             android:name=".RegisterActivity"
             android:screenOrientation="portrait" />
         <activity
