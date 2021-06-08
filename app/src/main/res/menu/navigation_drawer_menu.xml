@@ -12,7 +12,7 @@
                 android:title="Settings" />
         </menu>
     </item>
-    <item android:title="List">
+    <item android:title="Navigation">
         <menu>
             <item
                 android:id="@+id/menu_task"
@@ -28,5 +28,12 @@
                 android:title="Note" />
         </menu>
     </item>
-
+    <item android:title="Category">
+        <menu>
+            <item
+                android:id="@+id/menu_manage_category"
+                android:icon="@drawable/ic_baseline_category_24"
+                android:title="Manage category" />
+        </menu>
+    </item>
 </menu>

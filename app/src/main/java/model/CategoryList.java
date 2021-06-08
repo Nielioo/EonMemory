@@ -2,7 +2,7 @@ package model;
 
 import java.util.ArrayList;
 
-public class Category {
+public class CategoryList {
     private ArrayList<String> category;
 
     public ArrayList<String> getCategory() {

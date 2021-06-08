@@ -17,7 +17,8 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.EonMemory"
         android:usesCleartextTraffic="true">
-        <activity android:name=".EditNoteActivity"></activity>
+        <activity android:name=".ManageCategoryActivity"></activity>
+        <activity android:name=".EditNoteActivity" />
         <activity
             android:name=".MainPageActivity"
             android:screenOrientation="portrait" />
