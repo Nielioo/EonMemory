@@ -1,5 +1,6 @@
 package com.snap.eonmemory;
 
+import android.media.MediaPlayer;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -98,6 +99,7 @@ public class TaskRVAdapter extends RecyclerView.Adapter<TaskRVAdapter.TaskViewHo
                 public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
                     int position = getAdapterPosition();
                     Task task = taskList.get(position);
+                    MediaPlayer mediaPlayer = MediaPlayer.create(taskView.getContext(), R.raw.ting_sound_effect);
 
                     DocumentReference taskReference = fStore.collection("user_collection").document(userID)
                             .collection("task_collection").document(task.TaskId);
@@ -105,9 +107,8 @@ public class TaskRVAdapter extends RecyclerView.Adapter<TaskRVAdapter.TaskViewHo
                     if (isChecked) {
                         taskReference.update("status", 1);
                         taskList.remove(position);
-                        notifyDataSetChanged();
-                    } else {
-                        taskReference.update("status", 0);
+//                        notifyDataSetChanged();
+                        mediaPlayer.start();
                     }
                     // Nightmare, fires almost everytime
 //                    taskReference.update("updated", FieldValue.serverTimestamp());
