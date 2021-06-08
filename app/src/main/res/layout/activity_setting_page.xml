@@ -7,11 +7,13 @@
     tools:context=".SettingPageActivity">
 
     <ImageView
-        android:id="@+id/imageView20"
+        android:id="@+id/setting_imageView_back"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginStart="36dp"
-        android:layout_marginTop="36dp"
+        android:layout_marginStart="32dp"
+        android:layout_marginTop="32dp"
+        android:paddingRight="16dp"
+        android:paddingBottom="16dp"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
         app:srcCompat="@drawable/back_arrow" />
@@ -25,8 +27,8 @@
         android:text="Settings"
         android:textColor="@color/gray_900"
         android:textSize="36sp"
-        app:layout_constraintStart_toStartOf="@+id/imageView20"
-        app:layout_constraintTop_toBottomOf="@+id/imageView20" />
+        app:layout_constraintStart_toStartOf="@+id/setting_imageView_back"
+        app:layout_constraintTop_toBottomOf="@+id/setting_imageView_back" />
 
     <TextView
         android:id="@+id/textView34"
