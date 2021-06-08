@@ -61,7 +61,7 @@ public class CalendarFragment extends Fragment implements OnCardClickListener {
         setRecyclerView();
         loadTask(date);
         setListener();
-        
+
         return view;
     }
 
@@ -107,10 +107,12 @@ public class CalendarFragment extends Fragment implements OnCardClickListener {
                         Task task = doc.toObject(Task.class).withId(id);
 
                         // Add task to taskList
-                        taskList.add(task);
-                        adapter.notifyDataSetChanged();
+                        if (task.getStatus() == 0) {
+                            taskList.add(task);
+                        }
                     }
                 }
+                adapter.notifyDataSetChanged();
             }
         });
     }
