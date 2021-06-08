@@ -315,13 +315,10 @@ public class MainPageActivity extends AppCompatActivity implements NavigationVie
                 taskFragment.setArguments(bundle);
                 fragmentTransaction.replace(R.id.main_container, taskFragment);
                 fragmentTransaction.commit();
+                main_bottomNavigation.setSelectedItemId(R.id.menu_task);
             }
         }
         return true;
-    }
-
-    public String getCategoryType() {
-        return categoryType;
     }
 
     @Override
