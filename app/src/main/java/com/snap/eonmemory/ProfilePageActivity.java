@@ -70,6 +70,27 @@ public class ProfilePageActivity extends AppCompatActivity {
             @Override
             public void onSuccess(Uri uri) {
                 Picasso.get().load(uri).into(profile_image_imageView);
+
+//                Dialog dialog = new Dialog(ProfilePageActivity.this);
+//                dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
+//                dialog.setContentView(R.layout.loading_bar);
+//                dialog.setCanceledOnTouchOutside(false);
+//                dialog.show();
+//
+//                new CountDownTimer(5000, 1000) {
+//
+//                    @Override
+//                    public void onTick(long millisUntilFinished) {
+//
+//                    }
+//
+//                    @Override
+//                    public void onFinish() {
+//                        if (!isDestroyed()) {
+//                            dialog.dismiss();
+//                        }
+//                    }
+//                }.start();
             }
         });
 
