@@ -17,6 +17,7 @@ import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 
 import com.google.android.gms.tasks.OnCompleteListener;
@@ -25,11 +26,15 @@ import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.firestore.CollectionReference;
 import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.EventListener;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.FirebaseFirestoreException;
+import com.google.firebase.firestore.Query;
+import com.google.firebase.firestore.QueryDocumentSnapshot;
+import com.google.firebase.firestore.QuerySnapshot;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
 import com.google.firebase.storage.UploadTask;
@@ -100,6 +105,34 @@ public class ProfilePageActivity extends AppCompatActivity {
             public void onEvent(DocumentSnapshot documentSnapshot, FirebaseFirestoreException error) {
                 profile_username_textView.setText(documentSnapshot.getString("username"));
                 profile_email_textView.setText(documentSnapshot.getString("email"));
+            }
+        });
+
+        CollectionReference taskReference = fStore.collection("user_collection")
+                .document(userID).collection("task_collection");
+
+        taskReference.addSnapshotListener(new EventListener<QuerySnapshot>() {
+            @Override
+            public void onEvent(@Nullable QuerySnapshot value, @Nullable FirebaseFirestoreException error) {
+                int pending = 0;
+                int completed = 0;
+
+                for (QueryDocumentSnapshot doc : value) {
+                    if (doc != null) {
+                        String id = doc.getId();
+                        model.Task task = doc.toObject(model.Task.class).withId(id);
+
+                        // Check status
+                        if (task.getStatus() == 0) {
+                            pending++;
+                        } else {
+                            completed++;
+                        }
+                    }
+                }
+
+                profile_pending_task_textView.setText(String.valueOf(pending));
+                profile_completed_task_textView.setText(String.valueOf(completed));
             }
         });
 
