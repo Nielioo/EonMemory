@@ -5,8 +5,6 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.CheckBox;
 import android.widget.CompoundButton;
-import android.widget.Filter;
-import android.widget.Filterable;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
@@ -18,14 +16,11 @@ import com.google.firebase.firestore.FieldValue;
 import com.google.firebase.firestore.FirebaseFirestore;
 
 import java.util.ArrayList;
-import java.util.Collection;
-import java.util.List;
 
-import model.Note;
 import model.OnCardClickListener;
 import model.Task;
 
-public class TaskRVAdapter extends RecyclerView.Adapter<TaskRVAdapter.TaskViewHolder> implements Filterable {
+public class TaskRVAdapter extends RecyclerView.Adapter<TaskRVAdapter.TaskViewHolder> {
 
     private ArrayList<Task> taskList;
     private OnCardClickListener cardListener;
@@ -89,41 +84,6 @@ public class TaskRVAdapter extends RecyclerView.Adapter<TaskRVAdapter.TaskViewHo
     public int getItemCount() {
         return taskList.size();
     }
-
-    @Override
-    public Filter getFilter() {
-        return filter;
-    }
-
-    Filter filter = new Filter() {
-        @Override
-        protected FilterResults performFiltering(CharSequence charSequence) {
-
-            List<Task> filteredList = new ArrayList<>();
-
-            if(charSequence.toString().isEmpty()){
-                filteredList.addAll(taskList);
-            } else {
-                for (Task task: taskList){
-                    if(task.getTitle().toLowerCase().trim().contains(charSequence.toString().toLowerCase().trim())){
-                        filteredList.add(task);
-                    }
-                }
-            }
-
-            FilterResults filterResults = new FilterResults();
-            filterResults.values = filteredList;
-
-            return filterResults;
-        }
-
-        @Override
-        protected void publishResults(CharSequence constraint, FilterResults results) {
-            taskList.clear();
-            taskList.addAll((Collection<? extends Task>) results.values);
-            notifyDataSetChanged();
-        }
-    };
 
     public class TaskViewHolder extends RecyclerView.ViewHolder {
         // Card elements

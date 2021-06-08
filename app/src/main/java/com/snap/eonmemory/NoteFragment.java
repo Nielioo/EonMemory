@@ -5,7 +5,6 @@ import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.SearchView;
 
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
@@ -27,6 +26,7 @@ import java.util.ArrayList;
 
 import model.Note;
 import model.OnCardClickListener;
+import model.Task;
 import model.setRefresh;
 
 public class NoteFragment extends Fragment implements OnCardClickListener, setRefresh {
@@ -35,7 +35,6 @@ public class NoteFragment extends Fragment implements OnCardClickListener, setRe
     RecyclerView note_recyclerView;
     SwipeRefreshLayout note_swipeRefresh;
     FloatingActionButton note_FAB_create;
-    SearchView note_search_input;
     ArrayList<Note> noteList;
     NoteRVAdapter adapter;
 
@@ -58,32 +57,11 @@ public class NoteFragment extends Fragment implements OnCardClickListener, setRe
         initialize();
 
         loadNote();
-        setSearch();
 
         setListener();
         setSwipeRefresh();
 
         return view;
-    }
-
-    private void setSearch() {
-        if(note_search_input != null){
-            note_search_input.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
-                @Override
-                public boolean onQueryTextSubmit(String query) {
-                    return false;
-                }
-
-                @Override
-                public boolean onQueryTextChange(String newText) {
-                    if(newText != null){
-                        adapter.getFilter().filter(newText);
-                    }
-
-                    return false;
-                }
-            });
-        }
     }
 
     @Override
@@ -94,9 +72,6 @@ public class NoteFragment extends Fragment implements OnCardClickListener, setRe
         Intent intent = new Intent(getContext(), EditNoteActivity.class);
         intent.putExtra("noteId", noteId);
         startActivity(intent);
-
-        note_search_input.clearFocus();
-        note_search_input.setQuery("", false);
     }
 
     @Override
@@ -151,7 +126,6 @@ public class NoteFragment extends Fragment implements OnCardClickListener, setRe
         note_recyclerView = view.findViewById(R.id.note_recyclerView);
         note_swipeRefresh = view.findViewById(R.id.note_swipeRefresh);
         note_FAB_create = view.findViewById(R.id.note_FAB_create);
-        note_search_input = view.findViewById(R.id.note_search_input);
         noteList = new ArrayList<Note>();
         adapter = new NoteRVAdapter(noteList, this);
 
