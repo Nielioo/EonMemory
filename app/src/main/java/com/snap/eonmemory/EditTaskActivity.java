@@ -10,10 +10,14 @@ import android.app.DatePickerDialog;
 import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.Menu;
+import android.view.MenuInflater;
 import android.view.MenuItem;
+import android.view.SubMenu;
 import android.view.View;
 import android.widget.DatePicker;
 import android.widget.ImageView;
+import android.widget.PopupMenu;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -28,6 +32,7 @@ import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.material.textfield.TextInputEditText;
 import com.google.android.material.textfield.TextInputLayout;
 import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.firestore.CollectionReference;
 import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.EventListener;
@@ -35,14 +40,19 @@ import com.google.firebase.firestore.FieldValue;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.FirebaseFirestoreException;
 import com.google.firebase.firestore.Query;
+import com.google.firebase.firestore.QueryDocumentSnapshot;
+import com.google.firebase.firestore.QuerySnapshot;
 
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.zip.Inflater;
 
+import model.CategoryList;
 import model.Task;
 import model.setRefresh;
 
@@ -53,6 +63,7 @@ public class EditTaskActivity extends AppCompatActivity {
     private CardView editTask_cardView_dueDate;
     private TextView editTask_textView_dueDate;
     private ImageView editTask_imageView_clearDueDate;
+    private PopupMenu categoryList;
     private String taskId, dueDate;
 
     private FirebaseAuth mAuth;
@@ -66,6 +77,7 @@ public class EditTaskActivity extends AppCompatActivity {
 
         initFirebase();
         initView();
+        setToolbarMenu();
         loadTask();
         setListener();
     }
@@ -114,20 +126,28 @@ public class EditTaskActivity extends AppCompatActivity {
         editTask_toolbar.setOnMenuItemClickListener(new Toolbar.OnMenuItemClickListener() {
             @Override
             public boolean onMenuItemClick(MenuItem item) {
-                switch (item.getItemId()) {
-                    case R.id.edit_task_menu_delete:
-                        DocumentReference taskReference = fStore.collection("user_collection")
-                                .document(userID).collection("task_collection").document(taskId);
+                if (item.getTitle().equals("Delete")) {
+                    DocumentReference taskReference = fStore.collection("user_collection")
+                            .document(userID).collection("task_collection").document(taskId);
 
-                        taskReference.delete().addOnFailureListener(new OnFailureListener() {
-                            @Override
-                            public void onFailure(@NonNull Exception e) {
-                                Log.d("error", e.toString());
-                            }
-                        });
+                    taskReference.delete().addOnFailureListener(new OnFailureListener() {
+                        @Override
+                        public void onFailure(@NonNull Exception e) {
+                            Log.d("error", e.toString());
+                        }
+                    });
 
-                        finish();
-                        break;
+                    finish();
+                }
+
+                if (item.getGroupId() == 1) {
+                    String category = item.getTitle().toString().trim();
+
+                    DocumentReference taskReference = fStore.collection("user_collection")
+                            .document(userID).collection("task_collection")
+                            .document(taskId);
+
+                    taskReference.update("category", category);
                 }
                 return true;
             }
@@ -208,6 +228,35 @@ public class EditTaskActivity extends AppCompatActivity {
 //                }
 //            }
 //        });
+    }
+
+    private void setToolbarMenu() {
+        Menu menu = editTask_toolbar.getMenu();
+        SubMenu subMenu = menu.addSubMenu("Change category");
+        subMenu.clearHeader();
+
+        CollectionReference categoryReference = fStore.collection("user_collection").document(userID)
+                .collection("category_collection");
+
+        categoryReference.addSnapshotListener(new EventListener<QuerySnapshot>() {
+            @Override
+            public void onEvent(@Nullable QuerySnapshot value, @Nullable FirebaseFirestoreException error) {
+                subMenu.clear();
+
+                for (QueryDocumentSnapshot doc : value) {
+                    if (doc != null) {
+                        CategoryList categoryObject = doc.toObject(CategoryList.class);
+                        ArrayList<String> categoryItemList = categoryObject.getCategory();
+
+                        for (int i = 0; i < categoryItemList.size(); i++) {
+                            subMenu.add(1, i, i, categoryItemList.get(i)).setIcon(R.drawable.ic_baseline_dehaze_24);
+                        }
+                    }
+                }
+            }
+        });
+
+        menu.add("Delete");
     }
 
     private void initView() {
