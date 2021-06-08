@@ -41,6 +41,7 @@ public class TaskFragment extends Fragment implements OnCardClickListener, setRe
     private FloatingActionButton task_FAB_create;
     private ArrayList<Task> taskList;
     private TaskRVAdapter adapter;
+    private String category;
 
     private Query taskReference;
 
@@ -53,6 +54,12 @@ public class TaskFragment extends Fragment implements OnCardClickListener, setRe
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         view = inflater.inflate(R.layout.fragment_task, container, false);
+
+        Bundle bundle = getArguments();
+        if (bundle != null) {
+            category = bundle.getString("category");
+            Toast.makeText(getContext(), category, Toast.LENGTH_SHORT).show();
+        }
 
         initFirebase();
         initView();
@@ -100,8 +107,9 @@ public class TaskFragment extends Fragment implements OnCardClickListener, setRe
 
     private void loadTask() {
         taskReference = fStore.collection("user_collection")
-                .document(userID).collection("task_collection")
-                .orderBy("created", Query.Direction.DESCENDING);
+                .document(userID).collection("task_collection");
+
+        taskReference.orderBy("created", Query.Direction.DESCENDING);
 
         taskReference.addSnapshotListener(new EventListener<QuerySnapshot>() {
             @Override
@@ -114,10 +122,19 @@ public class TaskFragment extends Fragment implements OnCardClickListener, setRe
                         Task task = doc.toObject(Task.class).withId(id);
 
                         // Add task to taskList
-                        taskList.add(task);
-                        adapter.notifyDataSetChanged();
+                        if (task.getStatus() == 0) {
+                            if (category != null) {
+                                if (task.getCategory().equalsIgnoreCase(category)) {
+                                    taskList.add(task);
+                                }
+                            } else {
+                                taskList.add(task);
+                            }
+                        }
                     }
                 }
+
+                adapter.notifyDataSetChanged();
             }
         });
     }
