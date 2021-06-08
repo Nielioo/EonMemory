@@ -32,19 +32,28 @@
                 android:text="TextView"
                 android:textAppearance="@style/TextAppearance.MaterialComponents.Subtitle1"
                 app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintEnd_toStartOf="@+id/manageCategory_imageView_clear"
-                app:layout_constraintHorizontal_bias="0.0"
+                app:layout_constraintEnd_toStartOf="@+id/manageCategory_imageView_edit"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent" />
+
+            <ImageView
+                android:id="@+id/manageCategory_imageView_edit"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:padding="24dp"
+                app:layout_constraintBottom_toBottomOf="@+id/manageCategory_textView_category"
+                app:layout_constraintEnd_toStartOf="@+id/manageCategory_imageView_clear"
+                app:layout_constraintTop_toTopOf="@+id/manageCategory_textView_category"
+                app:srcCompat="@drawable/ic_baseline_edit_24" />
 
             <ImageView
                 android:id="@+id/manageCategory_imageView_clear"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:padding="24dp"
-                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintBottom_toBottomOf="@+id/manageCategory_imageView_edit"
                 app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintTop_toTopOf="@+id/manageCategory_imageView_edit"
                 app:srcCompat="@drawable/ic_baseline_clear_24" />
         </androidx.constraintlayout.widget.ConstraintLayout>
     </androidx.cardview.widget.CardView>

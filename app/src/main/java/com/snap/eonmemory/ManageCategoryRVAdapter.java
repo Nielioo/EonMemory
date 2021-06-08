@@ -1,5 +1,6 @@
 package com.snap.eonmemory;
 
+import android.content.Intent;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -64,6 +65,7 @@ public class ManageCategoryRVAdapter extends RecyclerView.Adapter<ManageCategory
         if (category.equalsIgnoreCase("Personal")) {
             holder.manageCategory_textView_category.setVisibility(View.GONE);
             holder.manageCategory_imageView_clear.setVisibility(View.GONE);
+            holder.manageCategory_imageView_edit.setVisibility(View.GONE);
         } else {
             holder.manageCategory_textView_category.setText(category);
         }
@@ -76,13 +78,14 @@ public class ManageCategoryRVAdapter extends RecyclerView.Adapter<ManageCategory
 
     public class ManageCategoryViewHolder extends RecyclerView.ViewHolder {
         private TextView manageCategory_textView_category;
-        private ImageView manageCategory_imageView_clear;
+        private ImageView manageCategory_imageView_clear, manageCategory_imageView_edit;
 
         public ManageCategoryViewHolder(@NonNull View manageCategoryView) {
             super(manageCategoryView);
 
             manageCategory_textView_category = manageCategoryView.findViewById(R.id.manageCategory_textView_category);
             manageCategory_imageView_clear = manageCategoryView.findViewById(R.id.manageCategory_imageView_clear);
+            manageCategory_imageView_edit = manageCategoryView.findViewById(R.id.manageCategory_imageView_edit);
 
             manageCategory_imageView_clear.setOnClickListener(new View.OnClickListener() {
                 @Override
@@ -116,6 +119,17 @@ public class ManageCategoryRVAdapter extends RecyclerView.Adapter<ManageCategory
                             }
                         }
                     });
+                }
+            });
+
+            manageCategory_imageView_edit.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    String category = manageCategory_textView_category.getText().toString().trim();
+
+                    Intent intent = new Intent(manageCategory_imageView_edit.getContext(), EditCategoryActivity.class);
+                    intent.putExtra("category", category);
+                    manageCategory_imageView_edit.getContext().startActivity(intent);
                 }
             });
         }
