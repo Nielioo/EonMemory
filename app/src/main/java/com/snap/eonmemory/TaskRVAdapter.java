@@ -57,10 +57,7 @@ public class TaskRVAdapter extends RecyclerView.Adapter<TaskRVAdapter.TaskViewHo
 
         holder.cardView_textView_title.setText(task.getTitle());
         holder.cardView_checkBox_task.setChecked(toBoolean(task.getStatus()));
-
-//        if (!dueDate.isEmpty()) {
-            holder.cardView_textView_dueDate.setText(task.getDueDate());
-//        }
+        holder.cardView_textView_dueDate.setText(task.getDueDate());
         // Add etc
 
         // This should not be here
@@ -122,6 +119,8 @@ public class TaskRVAdapter extends RecyclerView.Adapter<TaskRVAdapter.TaskViewHo
 
                     if (isChecked) {
                         taskReference.update("status", 1);
+                        taskList.remove(position);
+                        notifyDataSetChanged();
                     } else {
                         taskReference.update("status", 0);
                     }
