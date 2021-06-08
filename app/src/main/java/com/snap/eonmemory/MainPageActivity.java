@@ -6,7 +6,9 @@ import android.net.Uri;
 import android.os.Bundle;
 import android.os.CountDownTimer;
 import android.os.Handler;
+import android.view.Menu;
 import android.view.MenuItem;
+import android.view.SubMenu;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.Window;
@@ -17,6 +19,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import androidx.appcompat.app.ActionBarDrawerToggle;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
@@ -32,15 +35,24 @@ import com.google.android.material.navigation.NavigationView;
 import com.google.android.material.textfield.TextInputLayout;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.firestore.CollectionReference;
 import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.EventListener;
 import com.google.firebase.firestore.FieldValue;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.FirebaseFirestoreException;
+import com.google.firebase.firestore.Query;
+import com.google.firebase.firestore.QueryDocumentSnapshot;
+import com.google.firebase.firestore.QuerySnapshot;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
 import com.squareup.picasso.Picasso;
+
+import java.util.ArrayList;
+
+import model.CategoryList;
+import model.Task;
 
 public class MainPageActivity extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener {
 
@@ -55,6 +67,7 @@ public class MainPageActivity extends AppCompatActivity implements NavigationVie
     BottomNavigationView main_bottomNavigation;
     View headerView;
     Intent intent;
+    String categoryType;
 
     FragmentManager fragmentManager;
     FragmentTransaction fragmentTransaction;
@@ -99,6 +112,37 @@ public class MainPageActivity extends AppCompatActivity implements NavigationVie
             }
         });
 
+        setDrawerNavigationCategoryMenu();
+    }
+
+    private void setDrawerNavigationCategoryMenu() {
+        Menu menu = drawer_navigation_view.getMenu();
+        SubMenu subMenu = menu.addSubMenu("Category");
+
+        CollectionReference categoryReference = fStore.collection("user_collection").document(userID)
+                .collection("category_collection");
+
+        categoryReference.addSnapshotListener(new EventListener<QuerySnapshot>() {
+            @Override
+            public void onEvent(@Nullable QuerySnapshot value, @Nullable FirebaseFirestoreException error) {
+                subMenu.clear();
+
+                for (QueryDocumentSnapshot doc : value) {
+                    if (doc != null) {
+                        CategoryList categoryObject = doc.toObject(CategoryList.class);
+                        ArrayList<String> categoryItemList = categoryObject.getCategory();
+
+                        for (int i = 0; i < categoryItemList.size(); i++) {
+                            subMenu.add(3, i, i, categoryItemList.get(i)).setIcon(R.drawable.ic_baseline_dehaze_24);
+
+                            if (i == categoryItemList.size() - 1) {
+                                subMenu.add(3, -1, (i + 1), "Manage category").setIcon(R.drawable.ic_baseline_category_24);
+                            }
+                        }
+                    }
+                }
+            }
+        });
     }
 
     private void setBottomNavigation() {
@@ -231,6 +275,8 @@ public class MainPageActivity extends AppCompatActivity implements NavigationVie
             startActivity(intent);
         }
         if (item.getItemId() == R.id.menu_settings) {
+            intent = new Intent(getBaseContext(), SettingPageActivity.class).setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+            startActivity(intent);
         }
         if (item.getItemId() == R.id.menu_task) {
             fragmentManager = getSupportFragmentManager();
@@ -253,11 +299,29 @@ public class MainPageActivity extends AppCompatActivity implements NavigationVie
             fragmentTransaction.commit();
 //            main_toolbar.setTitle("Note");
         }
-        if (item.getItemId() == R.id.menu_manage_category) {
-            intent = new Intent(getBaseContext(), ManageCategoryActivity.class).setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-            startActivity(intent);
+        if (item.getGroupId() == 3) {
+            if (item.getItemId() == -1) {
+                intent = new Intent(getBaseContext(), ManageCategoryActivity.class).setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                startActivity(intent);
+            } else {
+                categoryType = item.getTitle().toString().trim();
+
+                Bundle bundle = new Bundle();
+                bundle.putString("category", categoryType);
+
+                fragmentManager = getSupportFragmentManager();
+                fragmentTransaction = fragmentManager.beginTransaction();
+                TaskFragment taskFragment = new TaskFragment();
+                taskFragment.setArguments(bundle);
+                fragmentTransaction.replace(R.id.main_container, taskFragment);
+                fragmentTransaction.commit();
+            }
         }
         return true;
+    }
+
+    public String getCategoryType() {
+        return categoryType;
     }
 
     @Override
