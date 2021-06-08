@@ -309,13 +309,13 @@ public class MainPageActivity extends AppCompatActivity implements NavigationVie
                 Bundle bundle = new Bundle();
                 bundle.putString("category", categoryType);
 
+                main_bottomNavigation.setSelectedItemId(R.id.menu_task);
                 fragmentManager = getSupportFragmentManager();
                 fragmentTransaction = fragmentManager.beginTransaction();
                 TaskFragment taskFragment = new TaskFragment();
                 taskFragment.setArguments(bundle);
                 fragmentTransaction.replace(R.id.main_container, taskFragment);
                 fragmentTransaction.commit();
-                main_bottomNavigation.setSelectedItemId(R.id.menu_task);
             }
         }
         return true;
