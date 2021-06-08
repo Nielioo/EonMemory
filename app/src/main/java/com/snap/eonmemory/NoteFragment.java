@@ -115,9 +115,9 @@ public class NoteFragment extends Fragment implements OnCardClickListener, setRe
                         Note note = doc.toObject(Note.class).withId(id);
 
                         noteList.add(note);
-                        adapter.notifyDataSetChanged();
                     }
                 }
+                adapter.notifyDataSetChanged();
             }
         });
     }
