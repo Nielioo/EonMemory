@@ -12,6 +12,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 
 import com.google.android.gms.tasks.OnFailureListener;
+import com.google.android.material.textfield.TextInputEditText;
 import com.google.android.material.textfield.TextInputLayout;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.firestore.DocumentReference;
@@ -62,6 +63,16 @@ public class EditNoteActivity extends AppCompatActivity implements setRefresh {
 
         setListener();
 
+    }
+
+    @Override
+    public void onBackPressed() {
+        if (getCurrentFocus() instanceof TextInputEditText) {
+            getCurrentFocus().clearFocus();
+        } else {
+            saveNote();
+            super.onBackPressed();
+        }
     }
 
     private void saveNote(){
