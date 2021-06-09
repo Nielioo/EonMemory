@@ -95,12 +95,10 @@ public class WelcomePageActivity extends AppCompatActivity {
                     public void onComplete(@NonNull Task<AuthResult> task) {
                         if (task.isSuccessful()) {
                             // Sign in success, update UI with the signed-in user's information
-                            Log.d("success", "signInWithCredential:success");
                             Toast.makeText(WelcomePageActivity.this, "Login Successful", Toast.LENGTH_SHORT).show();
                             FirebaseUser user = mAuth.getCurrentUser();
                         } else {
                             // If sign in fails, display a message to the user.
-                            Log.w("error", "signInWithCredential:failure", task.getException());
                             Toast.makeText(WelcomePageActivity.this, "Login Failed", Toast.LENGTH_SHORT).show();
                         }
                     }
