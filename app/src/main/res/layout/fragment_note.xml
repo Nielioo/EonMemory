@@ -7,10 +7,34 @@
     tools:context=".NoteFragment">
 
     <!-- TODO: Update blank fragment layout -->
+
+    <SearchView
+        android:id="@+id/note_search_input"
+        android:layout_width="0dp"
+        android:layout_height="48dp"
+        android:layout_marginStart="16dp"
+        android:layout_marginTop="16dp"
+        android:layout_marginEnd="16dp"
+        android:background="@drawable/search_outline"
+        android:paddingLeft="4dp"
+        android:paddingTop="10dp"
+        android:paddingRight="4dp"
+        android:paddingBottom="10dp"
+        android:queryHint="Search Here"
+        android:textSize="16sp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
     <androidx.swiperefreshlayout.widget.SwipeRefreshLayout
         android:id="@+id/note_swipeRefresh"
         android:layout_width="match_parent"
-        android:layout_height="match_parent">
+        android:layout_height="0dp"
+        android:layout_marginTop="16dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/note_search_input">
 
         <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/note_recyclerView"

@@ -13,6 +13,10 @@ import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.LayoutInflater;
+import android.view.View;
+import android.view.ViewGroup;
+import android.widget.SearchView;
 
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.firebase.auth.FirebaseAuth;
@@ -33,6 +37,7 @@ public class TaskFragment extends Fragment implements OnCardClickListener, setRe
 
     private View view;
     private RecyclerView home_recyclerView_task;
+    private SearchView task_search_input;
     private SwipeRefreshLayout task_swipeRefresh;
     private FloatingActionButton task_FAB_create;
     private ArrayList<Task> taskList;
@@ -60,10 +65,33 @@ public class TaskFragment extends Fragment implements OnCardClickListener, setRe
         initView();
         setRecyclerView();
         loadTask();
+        setSearch();
         setListener();
         setSwipeRefresh();
 
         return view;
+    }
+
+    private void setSearch() {
+
+        if (task_search_input != null) {
+            task_search_input.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
+                @Override
+                public boolean onQueryTextSubmit(String query) {
+                    return false;
+                }
+
+                @Override
+                public boolean onQueryTextChange(String newText) {
+                    if (newText != null) {
+                        adapter.getFilter().filter(newText);
+                    }
+
+                    return false;
+                }
+            });
+        }
+
     }
 
     @Override
@@ -74,6 +102,9 @@ public class TaskFragment extends Fragment implements OnCardClickListener, setRe
         Intent intent = new Intent(getContext(), EditTaskActivity.class);
         intent.putExtra("taskId", taskId);
         startActivity(intent);
+
+        task_search_input.clearFocus();
+        task_search_input.setQuery("", false);
     }
 
     @Override
@@ -144,6 +175,7 @@ public class TaskFragment extends Fragment implements OnCardClickListener, setRe
         home_recyclerView_task = view.findViewById(R.id.home_recyclerView_task);
         task_swipeRefresh = view.findViewById(R.id.task_swipeRefresh);
         task_FAB_create = view.findViewById(R.id.task_FAB_create);
+        task_search_input = view.findViewById(R.id.task_search_input);
         taskList = new ArrayList<Task>();
         adapter = new TaskRVAdapter(taskList, this);
     }
