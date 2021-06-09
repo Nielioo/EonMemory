@@ -279,24 +279,15 @@ public class MainPageActivity extends AppCompatActivity implements NavigationVie
             startActivity(intent);
         }
         if (item.getItemId() == R.id.menu_task) {
-            fragmentManager = getSupportFragmentManager();
-            fragmentTransaction = fragmentManager.beginTransaction();
-            fragmentTransaction.replace(R.id.main_container, new TaskFragment());
-            fragmentTransaction.commit();
+            main_bottomNavigation.setSelectedItemId(R.id.menu_task);
 //            main_toolbar.setTitle("Task");
         }
         if (item.getItemId() == R.id.menu_calendar) {
-            fragmentManager = getSupportFragmentManager();
-            fragmentTransaction = fragmentManager.beginTransaction();
-            fragmentTransaction.replace(R.id.main_container, new CalendarFragment());
-            fragmentTransaction.commit();
+            main_bottomNavigation.setSelectedItemId(R.id.menu_calendar);
 //            main_toolbar.setTitle("Calendar");
         }
         if (item.getItemId() == R.id.menu_note) {
-            fragmentManager = getSupportFragmentManager();
-            fragmentTransaction = fragmentManager.beginTransaction();
-            fragmentTransaction.replace(R.id.main_container, new NoteFragment());
-            fragmentTransaction.commit();
+            main_bottomNavigation.setSelectedItemId(R.id.menu_note);
 //            main_toolbar.setTitle("Note");
         }
         if (item.getGroupId() == 3) {
