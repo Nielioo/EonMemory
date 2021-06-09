@@ -277,8 +277,6 @@ public class ProfilePageActivity extends AppCompatActivity {
                                         }
                                     }.start();
 
-                                    FirebaseFirestore.getInstance().terminate();
-
                                     intent = new Intent(getBaseContext(), WelcomePageActivity.class);
                                     intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
 
@@ -289,6 +287,7 @@ public class ProfilePageActivity extends AppCompatActivity {
                                 }
                             }
                         });
+                        FirebaseFirestore.getInstance().terminate();
                     }
                 });
                 adialog.setNegativeButton("Dismiss", new DialogInterface.OnClickListener() {
