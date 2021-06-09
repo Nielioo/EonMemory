@@ -79,9 +79,11 @@ public class WelcomePageActivity extends AppCompatActivity {
                 GoogleSignInAccount account = task.getResult(ApiException.class);
                 Log.d("success", "firebaseAuthWithGoogle:" + account.getId());
                 firebaseAuthWithGoogle(account.getIdToken());
+                intent = new Intent(getBaseContext(),MainPageActivity.class);
+                startActivity(intent);
             } catch (ApiException e) {
                 // Google Sign In failed, update UI appropriately
-                Log.w("error", "Google sign in failed", e);
+                Log.w("failed", "Google sign in failed", e);
                 Toast.makeText(this, e.getMessage(), Toast.LENGTH_SHORT).show();
             }
         }
