@@ -67,6 +67,13 @@ public class NoteFragment extends Fragment implements OnCardClickListener, setRe
     }
 
     private void setSearch() {
+        note_search_input.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                note_search_input.onActionViewExpanded();
+            }
+        });
+
         if(note_search_input != null){
             note_search_input.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
                 @Override

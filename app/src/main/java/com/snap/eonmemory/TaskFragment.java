@@ -73,6 +73,12 @@ public class TaskFragment extends Fragment implements OnCardClickListener, setRe
     }
 
     private void setSearch() {
+        task_search_input.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                task_search_input.onActionViewExpanded();
+            }
+        });
 
         if (task_search_input != null) {
             task_search_input.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
