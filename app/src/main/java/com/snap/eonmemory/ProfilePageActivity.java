@@ -20,6 +20,9 @@ import android.widget.Toast;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 
+import com.google.android.gms.auth.api.signin.GoogleSignIn;
+import com.google.android.gms.auth.api.signin.GoogleSignInAccount;
+import com.google.android.gms.auth.api.signin.GoogleSignInOptions;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
@@ -69,6 +72,12 @@ public class ProfilePageActivity extends AppCompatActivity {
 
         user = mAuth.getCurrentUser();
         userID = user.getUid();
+
+        GoogleSignInAccount signInAccount = GoogleSignIn.getLastSignedInAccount(this);
+        if(signInAccount != null){
+            profile_username_textView.setText(signInAccount.getDisplayName());
+            profile_email_textView.setText(signInAccount.getEmail());
+        }
 
         StorageReference profilePictureReference = storageReference.child("user_collection/" + userID + "/profile_picture.png");
         profilePictureReference.getDownloadUrl().addOnSuccessListener(new OnSuccessListener<Uri>() {
