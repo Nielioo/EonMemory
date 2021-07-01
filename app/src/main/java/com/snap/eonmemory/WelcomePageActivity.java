@@ -32,6 +32,7 @@ public class WelcomePageActivity extends AppCompatActivity {
     TextView welcome_page_register_textView;
     Intent intent;
 
+    private static final int RC_SIGN_IN = 100;
     GoogleSignInClient googleSignInClient;
     FirebaseAuth firebaseAuth;
 
@@ -91,7 +92,7 @@ public class WelcomePageActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 intent = googleSignInClient.getSignInIntent();
-                startActivityForResult(intent, 100);
+                startActivityForResult(intent, RC_SIGN_IN);
             }
         });
     }
@@ -100,7 +101,7 @@ public class WelcomePageActivity extends AppCompatActivity {
     protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
 
-        if (resultCode == 100) {
+        if (requestCode == RC_SIGN_IN) {
             Task<GoogleSignInAccount> signInAccountTask = GoogleSignIn.getSignedInAccountFromIntent(data);
 
             if (signInAccountTask.isSuccessful()) {
